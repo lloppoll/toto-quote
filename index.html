@@ -250,7 +250,59 @@ function syncAutoCalculations() {
 }
         function removeItem(id) { selectedItems = selectedItems.filter(s => s.id !== id); updateAll(); }
         function updateAll() { updateDashboard(); updateChart(); updatePrintView(); }
-        function updateDashboard() { const list = document.getElementById('selected-list'); const navTotal = document.getElementById('nav-total'); const sideTotal = document.getElementById('side-total'); const sideCount = document.getElementById('side-count'); if (!list) return; if (selectedItems.length === 0) { list.innerHTML = '<div class="text-center py-20 text-slate-300 text-xs italic">리스트가 비어있습니다.</div>'; navTotal.textContent = '0원'; sideTotal.textContent = '0원'; sideCount.textContent = '0'; return; } let directTotal = 0; list.innerHTML = ''; selectedItems.forEach(item => { const sub = item.price * item.qty; directTotal += sub; list.innerHTML += `<div class="flex justify-between items-center p-4 bg-white border border-slate-100 rounded-2xl shadow-sm m-card text-nowrap"><div class="flex items-center min-w-0 mr-3"><div class="drag-handle cursor-move p-2 mr-2 text-slate-300 hover:text-blue-50 font-bold text-lg text-nowrap text-nowrap"></div><div class="overflow-hidden"><div class="text-[9px] font-black text-blue-500 uppercase tracking-tighter">${item.cat}</div><div class="text-xs font-black truncate">${item.name}</div></div></div><div class="flex items-center space-x-2 shrink-0 text-nowrap"><input type="number" value="${item.qty}" onchange="updateQty('${item.id}', this.value)" class="w-12 border-none bg-slate-100 rounded-lg text-xs p-1.5 text-center font-bold"><div class="text-xs font-black w-20 text-right">${sub.toLocaleString()}</div><button onclick="removeItem('${item.id}')" class="text-slate-300 hover:text-red-500 ml-2">✕</button></div></div>`; }); const expRate = parseFloat(document.getElementById('rate-exp')?.value || 0) / 100; const profitRate = parseFloat(document.getElementById('rate-profit')?.value || 0) / 100; const adjustVal = parseInt(document.getElementById('val-adjust')?.value || 0) || 0; const expVal = Math.round(directTotal * expRate); const profitVal = Math.round(directTotal * profitRate); const grandTotal = directTotal + expVal + profitVal + adjustVal; const totalTxt = grandTotal.toLocaleString() + '원'; navTotal.textContent = totalTxt; sideTotal.textContent = totalTxt; sideCount.textContent = selectedItems.length; }
+        function updateDashboard() { 
+    const list = document.getElementById('selected-list'); 
+    const navTotal = document.getElementById('nav-total'); 
+    const sideTotal = document.getElementById('side-total'); 
+    const sideCount = document.getElementById('side-count'); 
+    
+    if (!list) return; 
+    
+    if (selectedItems.length === 0) { 
+        list.innerHTML = '<div class="text-center py-20 text-slate-300 text-xs italic">리스트가 비어있습니다.</div>'; 
+        navTotal.textContent = '0원'; sideTotal.textContent = '0원'; sideCount.textContent = '0'; 
+        return; 
+    } 
+
+    let directTotal = 0; 
+    list.innerHTML = ''; 
+    
+    selectedItems.forEach(item => { 
+        const sub = item.price * item.qty; 
+        directTotal += sub; 
+        
+        // 여기에 드래그 핸들 아이콘(⋮⋮)을 추가했습니다.
+        list.innerHTML += `
+            <div class="flex justify-between items-center p-4 bg-white border border-slate-100 rounded-2xl shadow-sm m-card text-nowrap">
+                <div class="flex items-center min-w-0 mr-3">
+                    <div class="drag-handle cursor-move p-2 mr-2 text-slate-400 hover:text-blue-600 font-bold text-lg">
+                        ⋮⋮
+                    </div>
+                    <div class="overflow-hidden">
+                        <div class="text-[9px] font-black text-blue-500 uppercase tracking-tighter">${item.cat}</div>
+                        <div class="text-xs font-black truncate">${item.name}</div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2 shrink-0 text-nowrap">
+                    <input type="number" value="${item.qty}" onchange="updateQty('${item.id}', this.value)" class="w-12 border-none bg-slate-100 rounded-lg text-xs p-1.5 text-center font-bold">
+                    <div class="text-xs font-black w-20 text-right">${sub.toLocaleString()}</div>
+                    <button onclick="removeItem('${item.id}')" class="text-slate-300 hover:text-red-500 ml-2">✕</button>
+                </div>
+            </div>`; 
+    }); 
+
+    const expRate = parseFloat(document.getElementById('rate-exp')?.value || 0) / 100; 
+    const profitRate = parseFloat(document.getElementById('rate-profit')?.value || 0) / 100; 
+    const adjustVal = parseInt(document.getElementById('val-adjust')?.value || 0) || 0; 
+    const expVal = Math.round(directTotal * expRate); 
+    const profitVal = Math.round(directTotal * profitRate); 
+    const grandTotal = directTotal + expVal + profitVal + adjustVal; 
+    
+    const totalTxt = grandTotal.toLocaleString() + '원'; 
+    navTotal.textContent = totalTxt; 
+    sideTotal.textContent = totalTxt; 
+    sideCount.textContent = selectedItems.length; 
+}
         function initChart() { const ctx = document.getElementById('budgetChart')?.getContext('2d'); if (!ctx) return; budgetChart = new Chart(ctx, { type: 'doughnut', data: { labels: [], datasets: [{ data: [], backgroundColor: ['#0f172a', '#2563eb', '#f97316', '#10b981', '#fb923c', '#60a5fa', '#93c5fd'], borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '78%', plugins: { legend: { display: false } } } }); }
         function updateChart() { if (!budgetChart) return; const cats = {}; selectedItems.forEach(i => cats[i.cat] = (cats[i.cat] || 0) + (i.price * i.qty)); budgetChart.data.labels = Object.keys(cats).map(l => (l.length > 10 ? l.substring(0, 10) + '...' : l)); budgetChart.data.datasets[0].data = Object.values(cats); budgetChart.update(); }
         function updatePrintView() { const client = document.getElementById('site-name').value; const date = new Date().toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' }); document.getElementById('p1-client').textContent = client; document.getElementById('p1-date').textContent = date; let directTotal = 0; const grouped = selectedItems.reduce((acc, item) => { if (!acc[item.cat]) acc[item.cat] = []; acc[item.cat].push(item); return acc; }, {}); const sortedCats = Object.keys(grouped).sort((a, b) => (orderCriteria.indexOf(a) === -1 ? 99 : orderCriteria.indexOf(a)) - (orderCriteria.indexOf(b) === -1 ? 99 : orderCriteria.indexOf(b))); const p2Tbody = document.getElementById('p2-tbody'); p2Tbody.innerHTML = ''; const p3Tbody = document.getElementById('p3-tbody'); p3Tbody.innerHTML = ''; sortedCats.forEach((cat, catIdx) => { let catSum = 0; p3Tbody.innerHTML += `<tr class="category-row text-nowrap"><td class="text-center font-bold">${catIdx + 1}</td><td colspan="6" class="font-black text-blue-800 tracking-wider">${cat}</td></tr>`; grouped[cat].forEach(item => { const sub = item.price * item.qty; catSum += sub; directTotal += sub; p3Tbody.innerHTML += `<tr class="text-nowrap"><td class="text-center text-slate-400 opacity-50 text-nowrap"></td><td class="font-black wrap-text">${item.name}</td><td class="italic text-slate-500 wrap-text leading-tight text-[9px] text-nowrap text-nowrap">${item.spec}</td><td class="text-center uppercase text-[8px] text-nowrap">${item.unit}</td><td class="text-center font-black text-nowrap">${item.qty}</td><td class="text-right text-nowrap">${item.price.toLocaleString()}</td><td class="text-right font-black text-nowrap">${sub.toLocaleString()}</td></tr>`; }); p3Tbody.innerHTML += `<tr class="subtotal-row text-nowrap text-nowrap text-nowrap"><td colspan="3"></td><td colspan="3" class="text-right text-[9px] font-bold italic uppercase tracking-tighter text-nowrap">소 계 (SUBTOTAL)</td><td class="text-right font-black text-blue-900 text-nowrap">${catSum.toLocaleString()}</td></tr>`; p2Tbody.innerHTML += `<tr class="text-nowrap text-nowrap text-nowrap"><td class="border border-slate-900 p-4 text-center font-bold text-nowrap">${catIdx + 1}</td><td class="border border-slate-900 p-4 font-black">${cat}</td><td class="border border-slate-900 p-4 text-right font-black text-nowrap text-nowrap">${catSum.toLocaleString()}</td><td class="border border-slate-900 text-center text-slate-400 italic text-[9px] text-nowrap">인건비 및 자재비 포함</td></tr>`; }); const expRate = parseFloat(document.getElementById('rate-exp')?.value || 0); const profitRate = parseFloat(document.getElementById('rate-profit')?.value || 0); const adjustVal = parseInt(document.getElementById('val-adjust')?.value || 0); const expAmt = Math.round(directTotal * (expRate / 100)); const profitAmt = Math.round(directTotal * (profitRate / 100)); const grandTotal = directTotal + expAmt + profitAmt + adjustVal; document.getElementById('p1-direct').textContent = directTotal.toLocaleString(); document.getElementById('p1-rate-exp').textContent = expRate; document.getElementById('p1-exp').textContent = expAmt.toLocaleString(); document.getElementById('p1-rate-profit').textContent = profitRate; document.getElementById('p1-profit').textContent = profitAmt.toLocaleString(); document.getElementById('p1-adjust').textContent = adjustVal.toLocaleString(); document.getElementById('p1-total').textContent = ' ' + grandTotal.toLocaleString(); document.getElementById('p1-hangeul').textContent = numToKorean(grandTotal); document.getElementById('p2-sum').textContent = directTotal.toLocaleString(); }
