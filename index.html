@@ -236,9 +236,9 @@ function addItem(id) {
         let qty = 1; 
 
         // 도배지 계수 설정 (유저 요청 반영)
-        let multiplier = 3.5; // 기본값 (표준형)
+        let multiplier = 2.5; // 기본값 (표준형)
         if (grade === "Economy") multiplier = 2.5;     // 보급형 (벽면만)
-        else if (grade === "Premium") multiplier = 4.0; // 고급형 (확장형)
+        else if (grade === "Premium") multiplier = 2.5; // 고급형 (확장형)
 
         if (item.logic === "PY_1X") qty = size; 
         // 도배지 롤수 계산: (평수 * 선택된 계수) / 5평(1롤 시공면적)
