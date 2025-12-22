@@ -248,6 +248,9 @@ function syncAutoCalculations() {
     }); 
     updateAll(); 
 }
+        function updateQty(id, val) {
+        const item = selectedItems.find(s => s.id === id);
+        if (item) item.qty = parseFloat(val) || 0; updateAll();}
         function removeItem(id) { selectedItems = selectedItems.filter(s => s.id !== id); updateAll(); }
         function updateAll() { updateDashboard(); updateChart(); updatePrintView(); }
         function updateDashboard() { 
