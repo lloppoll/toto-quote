@@ -290,13 +290,13 @@ function renderDB() {
             const item = MASTER_DB.find(i => i.id === id); const size = parseFloat(document.getElementById('site-size').value) || 0; const existing = selectedItems.find(s => s.id === id); 
             if (!existing) { 
                 let qty = 1; 
-                if (item.logic === "WALL_25") qty = Math.ceil((size * 2.5) / 5); 
-                else if (item.logic === "WALL_18") qty = Math.ceil((size * 1.8) / 5); 
+                if (item.logic === "WALL_25") qty = Math.ceil((size * 3.5) / 5); 
+                else if (item.logic === "WALL_18") qty = Math.ceil((size * 2.5) / 5); 
                 else if (item.logic === "WALL_11") qty = Math.ceil((size * 1.1) / 5); 
-                else if (item.logic === "WALL_32") qty = Math.ceil((size * 3.2) / 5); 
-                else if (item.logic === "W_SILK_LABOR") qty = Math.ceil((size * 2.5) / 18); 
-                else if (item.logic === "W_HAP_LABOR") qty = Math.ceil((size * 2.5) / 28); 
-                else if (item.logic === "W_PREM_LABOR") qty = Math.ceil((size * 2.5) / 12); 
+                else if (item.logic === "WALL_32") qty = Math.ceil((size * 4.0) / 5); 
+                else if (item.logic === "W_SILK_LABOR") qty = Math.ceil((size * 3.5) / 18); 
+                else if (item.logic === "W_HAP_LABOR") qty = Math.ceil((size * 3.5) / 28); 
+                else if (item.logic === "W_PREM_LABOR") qty = Math.ceil((size * 3.5) / 12); 
                 else if (item.logic === "PY_1X") qty = size; 
                 else if (item.logic === "FLOOR_11") qty = Math.ceil(size * 1.1); 
                 selectedItems.push({ ...item, qty }); 
@@ -306,13 +306,13 @@ function renderDB() {
         function syncAutoCalculations() { 
             const size = parseFloat(document.getElementById('site-size').value) || 0; 
             selectedItems.forEach(item => { 
-                if (item.logic === "WALL_25") item.qty = Math.ceil((size * 2.5) / 5);
-                else if (item.logic === "WALL_18") item.qty = Math.ceil((size * 1.8) / 5);
+                if (item.logic === "WALL_25") item.qty = Math.ceil((size * 3.5) / 5);
+                else if (item.logic === "WALL_18") item.qty = Math.ceil((size * 2.5) / 5);
                 else if (item.logic === "WALL_11") item.qty = Math.ceil((size * 1.1) / 5);
-                else if (item.logic === "WALL_32") item.qty = Math.ceil((size * 3.2) / 5);
-                else if (item.logic === "W_SILK_LABOR") item.qty = Math.ceil((size * 2.5) / 18);
-                else if (item.logic === "W_HAP_LABOR") item.qty = Math.ceil((size * 2.5) / 28);
-                else if (item.logic === "W_PREM_LABOR") item.qty = Math.ceil((size * 2.5) / 12);
+                else if (item.logic === "WALL_32") item.qty = Math.ceil((size * 4.0) / 5);
+                else if (item.logic === "W_SILK_LABOR") item.qty = Math.ceil((size * 3.5) / 18);
+                else if (item.logic === "W_HAP_LABOR") item.qty = Math.ceil((size * 3.5) / 28);
+                else if (item.logic === "W_PREM_LABOR") item.qty = Math.ceil((size * 3.5) / 12);
                 else if (item.logic === "PY_1X") item.qty = size; 
                 else if (item.logic === "FLOOR_11") item.qty = Math.ceil(size * 1.1); 
             }); updateAll(); 
