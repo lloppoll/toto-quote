@@ -298,7 +298,7 @@ function addItem(id) {
         // 1. 단가 변동 로직 (수량은 1식 고정)
         if (item.logic === "PY_K_FIXED") {
             qty = 1;
-            currentPrice = Math.round((450000 / 32) * size);
+            currentPrice = Math.round((450000 / 30) * size);
         } 
         // 2. 수량 변동 로직 (단가는 고정)
         else if (item.logic === "WALL_35") qty = Math.ceil(size * 3.5); 
@@ -335,7 +335,7 @@ function syncAutoCalculations() {
         // 1. 단가 재계산 로직 (수량 1식 고정형)
         if (item.logic === "PY_K_FIXED") {
             item.qty = 1;
-            item.price = Math.round((450000 / 32) * size);
+            item.price = Math.round((450000 / 30) * size);
         } 
         // 2. 수량 재계산 로직
         else if (item.logic === "WALL_35") item.qty = Math.ceil(size * 3.5);
