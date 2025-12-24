@@ -300,6 +300,10 @@ function addItem(id) {
             qty = 1;
             currentPrice = Math.round((450000 / 30) * size);
         } 
+        if (item.logic === "PY_MOLD_FIXED") {
+            qty = 1;
+            currentPrice = Math.round((90000 / 30) * size);
+        } 
         // 2. 수량 변동 로직 (단가는 고정)
         else if (item.logic === "WALL_35") qty = Math.ceil(size * 3.5); 
         else if (item.logic === "WALL_10") qty = Math.ceil(size * 1.0);
@@ -336,6 +340,10 @@ function syncAutoCalculations() {
         if (item.logic === "PY_K_FIXED") {
             item.qty = 1;
             item.price = Math.round((450000 / 30) * size);
+        } 
+        if (item.logic === "PY_MOLD_FIXED") {
+            item.qty = 1;
+            item.price = Math.round((90000 / 30) * size);
         } 
         // 2. 수량 재계산 로직
         else if (item.logic === "WALL_35") item.qty = Math.ceil(size * 3.5);
