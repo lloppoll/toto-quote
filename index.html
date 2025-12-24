@@ -312,6 +312,35 @@ function addItem(id) {
             qty = 1;
             currentPrice = Math.round((525000 / 30) * size);
         } 
+        if (item.logic === "PY_FL_DT07_FIXED") {
+           qty = 1;
+           currentPrice = Math.round((630000 / 30) * size);
+        }
+        if (item.logic === "PY_FL_JP07_FIXED") {
+           qty = 1;
+           currentPrice = Math.round((147000 / 30) * size);
+        }
+        if (item.logic === "PY_FL_TL07_FIXED") {
+           qty = 1;
+           currentPrice = Math.round((630000 / 30) * size);
+        }      
+        if (item.logic === "W_PY_FL_MR08_FIXED") {
+           qty = 1;
+           currentPrice = Math.round((600000 / 30) * size);
+        }     
+        if (item.logic === "W_PY_FL_DT08_FIXED") {
+           qty = 1;
+           currentPrice = Math.round((720000 / 30) * size);
+        }     
+       if (item.logic === "W_PY_FL_JP08_FIXED") {
+           qty = 1;
+           currentPrice = Math.round((168000 / 30) * size);
+        }     
+        if (item.logic === "W_PY_FL_TL0_FIXED") {
+           qty = 1;
+           currentPrice = Math.round((720000 / 30) * size);
+        }                                                                
+            
         // 2. 수량 변동 로직 (단가는 고정)
         else if (item.logic === "WALL_35") qty = Math.ceil(size * 3.5); 
         else if (item.logic === "WALL_10") qty = Math.ceil(size * 1.0);
@@ -361,6 +390,35 @@ function syncAutoCalculations() {
             item.qty = 1;
             item.price = Math.round((525000 / 30) * size);
         } 
+        if (item.logic === "PY_FL_DT07_FIXED") {
+            item.qty = 1;
+            item.price = Math.round((630000 / 30) * size);
+        } 
+        if (item.logic === "PY_FL_JP07_FIXED") {
+            item.qty = 1;
+            item.price = Math.round((147000 / 30) * size);
+        } 
+        if (item.logic === "PY_FL_TL07_FIXED") {
+            item.qty = 1;
+            item.price = Math.round((630000 / 30) * size);
+        } 
+        if (item.logic === "W_PY_FL_MR08_FIXED") {
+            item.qty = 1;
+            item.price = Math.round((600000 / 30) * size);
+        } 
+        if (item.logic === "W_PY_FL_DT08_FIXED") {
+            item.qty = 1;
+            item.price = Math.round((720000 / 30) * size);
+        } 
+        if (item.logic === "W_PY_FL_JP08_FIXED") {
+            item.qty = 1;
+            item.price = Math.round((168000 / 30) * size);
+        } 
+        if (item.logic === "W_PY_FL_TL08_FIXED") {
+            item.qty = 1;
+            item.price = Math.round((720000 / 30) * size);
+        } 
+            
         // 2. 수량 재계산 로직
         else if (item.logic === "WALL_35") item.qty = Math.ceil(size * 3.5);
         else if (item.logic === "WALL_10") item.qty = Math.ceil(size * 1.0);
