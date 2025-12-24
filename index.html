@@ -348,6 +348,43 @@ function addItem(id) {
         qty = 1;
         currentPrice = Math.round((660000 / 30) * size);
         }
+            if (item.logic === ""PY_WL_WALL25_FIXED"") {
+qty = 1;
+currentPrice = Math.round((375000 / 30) * size);
+}
+if (item.logic === ""PY_WL_WALL20_FIXED"") {
+qty = 1;
+currentPrice = Math.round((300000 / 30) * size);
+}
+if (item.logic === ""PY_WL_WALL1_FIXED"") {
+qty = 1;
+currentPrice = Math.round((150000 / 30) * size);
+}
+if (item.logic === ""W_PY_WL_WALL35_FIXED"") {
+qty = 1;
+currentPrice = Math.round((525000 / 30) * size);
+}
+if (item.logic === ""W_PY_WL_WALL25_FIXED"") {
+qty = 1;
+currentPrice = Math.round((375000 / 30) * size);
+}
+if (item.logic === ""W_PY_WL_WALL12_FIXED"") {
+qty = 1;
+currentPrice = Math.round((180000 / 30) * size);
+}
+if (item.logic === ""H_PY_WL_WALL35_FIXED"") {
+qty = 1;
+currentPrice = Math.round((525000 / 30) * size);
+}
+if (item.logic === ""H_PY_WL_WALL25_FIXED"") {
+qty = 1;
+currentPrice = Math.round((375000 / 30) * size);
+}
+if (item.logic === ""H_PY_WL_WALL20_FIXED"") {
+qty = 1;
+currentPrice = Math.round((300000 / 30) * size);
+}
+            
             
         // 2. 수량 변동 로직 (단가는 고정)
         else if (item.logic === "WALL_35") qty = Math.ceil(size * 3.5); 
@@ -434,6 +471,42 @@ function syncAutoCalculations() {
             item.qty = 1;
             item.price = Math.round((660000 / 30) * size);
         } 
+            if (item.logic === ""PY_WL_WALL25_FIXED"") {
+item.qty = 1;
+item.price = Math.round((375000 / 30) * size);
+} 
+if (item.logic === ""PY_WL_WALL20_FIXED"") {
+item.qty = 1;
+item.price = Math.round((300000 / 30) * size);
+} 
+if (item.logic === ""PY_WL_WALL1_FIXED"") {
+item.qty = 1;
+item.price = Math.round((150000 / 30) * size);
+} 
+if (item.logic === ""W_PY_WL_WALL35_FIXED"") {
+item.qty = 1;
+item.price = Math.round((525000 / 30) * size);
+} 
+if (item.logic === ""W_PY_WL_WALL25_FIXED"") {
+item.qty = 1;
+item.price = Math.round((375000 / 30) * size);
+} 
+if (item.logic === ""W_PY_WL_WALL12_FIXED"") {
+item.qty = 1;
+item.price = Math.round((180000 / 30) * size);
+} 
+if (item.logic === ""H_PY_WL_WALL35_FIXED"") {
+item.qty = 1;
+item.price = Math.round((525000 / 30) * size);
+} 
+if (item.logic === ""H_PY_WL_WALL25_FIXED"") {
+item.qty = 1;
+item.price = Math.round((375000 / 30) * size);
+} 
+if (item.logic === ""H_PY_WL_WALL20_FIXED"") {
+item.qty = 1;
+item.price = Math.round((300000 / 30) * size);
+} 
             
         // 2. 수량 재계산 로직
         else if (item.logic === "WALL_35") item.qty = Math.ceil(size * 3.5);
