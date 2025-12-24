@@ -285,63 +285,82 @@ function renderDB() {
     }); 
 }
 
-        /* addItem 및 syncAutoCalculations: 정밀 시나리오 로직 적용 */
-        function addItem(id) { 
-            const item = MASTER_DB.find(i => i.id === id); const size = parseFloat(document.getElementById('site-size').value) || 0; const existing = selectedItems.find(s => s.id === id); 
-            if (!existing) { 
-                let qty = 1; 
-                let currentPrice = item.price;
-                if (item.logic === "PY_K_FIXED") {qty = 1;currentPrice = Math.round((450000 / 32) * size);
-                if (item.logic === "WALL_35") qty = Math.ceil(size * 3.5); 
-                else if (item.logic === "WALL_10") qty = Math.ceil(size * 1.0);
-                else if (item.logic === "WALL_11") qty = Math.ceil(size * 1.1); 
-                else if (item.logic === "WALL_12") qty = Math.ceil(size * 1.2); 
-                else if (item.logic === "WALL_15") qty = Math.ceil(size * 1.5); 
-                else if (item.logic === "WALL_17") qty = Math.ceil(size * 1.7); 
-                else if (item.logic === "WALL_20") qty = Math.ceil(size * 2.0); 
-                else if (item.logic === "WALL_25") qty = Math.ceil(size * 2.5);
-                else if (item.logic === "WALL_27") qty = Math.ceil(size * 2.7);
-                else if (item.logic === "WALL_30") qty = Math.ceil(size * 3.0);
-                else if (item.logic === "WALL_40") qty = Math.ceil(size * 4.0); 
-                else if (item.logic === "W_SILK_LABOR") qty = Math.ceil((size * 3.5) / 15); 
-                else if (item.logic === "W_HAP_LABOR") qty = Math.ceil((size * 3.5) / 30); 
-                else if (item.logic === "W_PREM_LABOR") qty = Math.ceil((size * 3.5) / 14); 
-                else if (item.logic === "PY_1X") qty = size;
-                else if (item.logic === "PY_10") qty = Math.ceil(size / 10);
-                else if (item.logic === "FLOOR_07") qty = Math.ceil(size * 0.7); 
-                else if (item.logic === "FLOOR_08") qty = Math.ceil(size * 0.8); 
-                else if (item.logic === "FLOOR_11") qty = Math.ceil(size * 1.1); 
-                selectedItems.push({ ...item, qty, price: currentPrice }); 
+/* addItem: 항목 추가 시 정밀 시나리오 로직 적용 */
+function addItem(id) { 
+    const item = MASTER_DB.find(i => i.id === id); 
+    const size = parseFloat(document.getElementById('site-size').value) || 0; 
+    const existing = selectedItems.find(s => s.id === id); 
+    
+    if (!existing) { 
+        let qty = 1; 
+        let currentPrice = item.price; // 기본 단가 저장
+
+        // 1. 단가 변동 로직 (수량은 1식 고정)
+        if (item.logic === "PY_K_FIXED") {
+            qty = 1;
+            currentPrice = Math.round((450000 / 32) * size);
+        } 
+        // 2. 수량 변동 로직 (단가는 고정)
+        else if (item.logic === "WALL_35") qty = Math.ceil(size * 3.5); 
+        else if (item.logic === "WALL_10") qty = Math.ceil(size * 1.0);
+        else if (item.logic === "WALL_11") qty = Math.ceil(size * 1.1); 
+        else if (item.logic === "WALL_12") qty = Math.ceil(size * 1.2); 
+        else if (item.logic === "WALL_15") qty = Math.ceil(size * 1.5); 
+        else if (item.logic === "WALL_17") qty = Math.ceil(size * 1.7); 
+        else if (item.logic === "WALL_20") qty = Math.ceil(size * 2.0); 
+        else if (item.logic === "WALL_25") qty = Math.ceil(size * 2.5);
+        else if (item.logic === "WALL_27") qty = Math.ceil(size * 2.7);
+        else if (item.logic === "WALL_30") qty = Math.ceil(size * 3.0);
+        else if (item.logic === "WALL_40") qty = Math.ceil(size * 4.0); 
+        else if (item.logic === "W_SILK_LABOR") qty = Math.ceil((size * 3.5) / 15); 
+        else if (item.logic === "W_HAP_LABOR") qty = Math.ceil((size * 3.5) / 30); 
+        else if (item.logic === "W_PREM_LABOR") qty = Math.ceil((size * 3.5) / 14); 
+        else if (item.logic === "PY_1X") qty = size; 
+        else if (item.logic === "PY_10") qty = Math.ceil(size / 10); 
+        else if (item.logic === "PY_K32") qty = parseFloat((size / 32).toFixed(2));
+        else if (item.logic === "FLOOR_07") qty = Math.ceil(size * 0.7); 
+        else if (item.logic === "FLOOR_08") qty = Math.ceil(size * 0.8); 
+        else if (item.logic === "FLOOR_11") qty = Math.ceil(size * 1.1); 
+
+        // 계산된 qty와 price를 적용하여 추가
+        selectedItems.push({ ...item, qty, price: currentPrice }); 
     } 
     updateAll(); 
 }
 
-        function syncAutoCalculations() { 
-            const size = parseFloat(document.getElementById('site-size').value) || 0; 
-            selectedItems.forEach(item => {
-                if (item.logic === "PY_K_FIXED") {item.qty = 1;item.price = Math.round((450000 / 32) * size);
-                if (item.logic === "WALL_35") item.qty = Math.ceil(size * 3.5);
-                else if (item.logic === "WALL_10") item.qty = Math.ceil(size * 1.0);
-                else if (item.logic === "WALL_11") item.qty = Math.ceil(size * 1.1);
-                else if (item.logic === "WALL_12") item.qty = Math.ceil(size * 1.2);
-                else if (item.logic === "WALL_15") item.qty = Math.ceil(size * 1.5);
-                else if (item.logic === "WALL_17") item.qty = Math.ceil(size * 1.7);
-                else if (item.logic === "WALL_20") item.qty = Math.ceil(size * 2.0);
-                else if (item.logic === "WALL_25") item.qty = Math.ceil(size * 2.5);
-                else if (item.logic === "WALL_27") item.qty = Math.ceil(size * 2.7);
-                else if (item.logic === "WALL_30") item.qty = Math.ceil(size * 3.0);
-                else if (item.logic === "WALL_40") item.qty = Math.ceil(size * 4.0);
-                else if (item.logic === "W_SILK_LABOR") item.qty = Math.ceil((size * 3.5) / 15);
-                else if (item.logic === "W_HAP_LABOR") item.qty = Math.ceil((size * 3.5) / 30);
-                else if (item.logic === "W_PREM_LABOR") item.qty = Math.ceil((size * 3.5) / 14);
-                else if (item.logic === "PY_1X") item.qty = size;
-                else if (item.logic === "PY_10") item.qty = Math.ceil(size / 10);
-                else if (item.logic === "PY_K32") item.qty = parseFloat((size / 32).toFixed(2));
-                else if (item.logic === "FLOOR_07") item.qty = Math.ceil(size * 0.7); 
-                else if (item.logic === "FLOOR_08") item.qty = Math.ceil(size * 0.8); 
-                else if (item.logic === "FLOOR_11") item.qty = Math.ceil(size * 1.1); 
-            }); updateAll(); 
-        }
+/* syncAutoCalculations: 평수 변경 시 기존 리스트 재계산 */
+function syncAutoCalculations() { 
+    const size = parseFloat(document.getElementById('site-size').value) || 0; 
+    selectedItems.forEach(item => {
+        // 1. 단가 재계산 로직 (수량 1식 고정형)
+        if (item.logic === "PY_K_FIXED") {
+            item.qty = 1;
+            item.price = Math.round((450000 / 32) * size);
+        } 
+        // 2. 수량 재계산 로직
+        else if (item.logic === "WALL_35") item.qty = Math.ceil(size * 3.5);
+        else if (item.logic === "WALL_10") item.qty = Math.ceil(size * 1.0);
+        else if (item.logic === "WALL_11") item.qty = Math.ceil(size * 1.1);
+        else if (item.logic === "WALL_12") item.qty = Math.ceil(size * 1.2);
+        else if (item.logic === "WALL_15") item.qty = Math.ceil(size * 1.5);
+        else if (item.logic === "WALL_17") item.qty = Math.ceil(size * 1.7);
+        else if (item.logic === "WALL_20") item.qty = Math.ceil(size * 2.0);
+        else if (item.logic === "WALL_25") item.qty = Math.ceil(size * 2.5);
+        else if (item.logic === "WALL_27") item.qty = Math.ceil(size * 2.7);
+        else if (item.logic === "WALL_30") item.qty = Math.ceil(size * 3.0);
+        else if (item.logic === "WALL_40") item.qty = Math.ceil(size * 4.0);
+        else if (item.logic === "W_SILK_LABOR") item.qty = Math.ceil((size * 3.5) / 15);
+        else if (item.logic === "W_HAP_LABOR") item.qty = Math.ceil((size * 3.5) / 30);
+        else if (item.logic === "W_PREM_LABOR") item.qty = Math.ceil((size * 3.5) / 14);
+        else if (item.logic === "PY_1X") item.qty = size;
+        else if (item.logic === "PY_10") item.qty = Math.ceil(size / 10);
+        else if (item.logic === "PY_K32") item.qty = parseFloat((size / 32).toFixed(2));
+        else if (item.logic === "FLOOR_07") item.qty = Math.ceil(size * 0.7); 
+        else if (item.logic === "FLOOR_08") item.qty = Math.ceil(size * 0.8); 
+        else if (item.logic === "FLOOR_11") item.qty = Math.ceil(size * 1.1); 
+    }); 
+    updateAll(); 
+}
 
         function updateQty(id, val) { const item = selectedItems.find(s => s.id === id); if (item) item.qty = parseFloat(val) || 0; updateAll(); }
         function removeItem(id) { selectedItems = selectedItems.filter(s => s.id !== id); updateAll(); }
