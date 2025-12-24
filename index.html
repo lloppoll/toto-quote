@@ -290,6 +290,8 @@ function renderDB() {
             const item = MASTER_DB.find(i => i.id === id); const size = parseFloat(document.getElementById('site-size').value) || 0; const existing = selectedItems.find(s => s.id === id); 
             if (!existing) { 
                 let qty = 1; 
+                let currentPrice = item.price;
+                if (item.logic === "PY_K_FIXED") {qty = 1;currentPrice = Math.round((450000 / 32) * size);
                 if (item.logic === "WALL_35") qty = Math.ceil(size * 3.5); 
                 else if (item.logic === "WALL_10") qty = Math.ceil(size * 1.0);
                 else if (item.logic === "WALL_11") qty = Math.ceil(size * 1.1); 
@@ -304,19 +306,20 @@ function renderDB() {
                 else if (item.logic === "W_SILK_LABOR") qty = Math.ceil((size * 3.5) / 15); 
                 else if (item.logic === "W_HAP_LABOR") qty = Math.ceil((size * 3.5) / 30); 
                 else if (item.logic === "W_PREM_LABOR") qty = Math.ceil((size * 3.5) / 14); 
-                else if (item.logic === "PY_1X") qty = size;  
+                else if (item.logic === "PY_1X") qty = size;
                 else if (item.logic === "PY_10") qty = Math.ceil(size / 10);
-                else if (item.logic === "PY_K32") qty = parseFloat((size / 32).toFixed(2));
                 else if (item.logic === "FLOOR_07") qty = Math.ceil(size * 0.7); 
                 else if (item.logic === "FLOOR_08") qty = Math.ceil(size * 0.8); 
                 else if (item.logic === "FLOOR_11") qty = Math.ceil(size * 1.1); 
-                selectedItems.push({ ...item, qty }); 
-            } updateAll(); 
-        }
+                selectedItems.push({ ...item, qty, price: currentPrice }); 
+    } 
+    updateAll(); 
+}
 
         function syncAutoCalculations() { 
             const size = parseFloat(document.getElementById('site-size').value) || 0; 
-            selectedItems.forEach(item => { 
+            selectedItems.forEach(item => {
+                if (item.logic === "PY_K_FIXED") {item.qty = 1;item.price = Math.round((450000 / 32) * size);
                 if (item.logic === "WALL_35") item.qty = Math.ceil(size * 3.5);
                 else if (item.logic === "WALL_10") item.qty = Math.ceil(size * 1.0);
                 else if (item.logic === "WALL_11") item.qty = Math.ceil(size * 1.1);
@@ -332,7 +335,7 @@ function renderDB() {
                 else if (item.logic === "W_HAP_LABOR") item.qty = Math.ceil((size * 3.5) / 30);
                 else if (item.logic === "W_PREM_LABOR") item.qty = Math.ceil((size * 3.5) / 14);
                 else if (item.logic === "PY_1X") item.qty = size;
-                else if (item.logic === "PY_10") item.qty = Math.ceil(size / 10); 
+                else if (item.logic === "PY_10") item.qty = Math.ceil(size / 10);
                 else if (item.logic === "PY_K32") item.qty = parseFloat((size / 32).toFixed(2));
                 else if (item.logic === "FLOOR_07") item.qty = Math.ceil(size * 0.7); 
                 else if (item.logic === "FLOOR_08") item.qty = Math.ceil(size * 0.8); 
