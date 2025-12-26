@@ -245,7 +245,7 @@
                price: parseInt(cols[4].replace(/[^0-9]/g, '')) || 0, // E열 (기본단가)
                logic: cols[5] || "MANUAL", 
                lTxt: cols[6] || "수량입력",
-               pyPrice: parseInt(cols[7]?.replace(/[^0-9]/g, '')) || 0 // [추가] H열 (평단가)
+               pyPrice: parseInt(cols[7].replace(/[^0-9]/g, '')) || 0 // [추가] H열 (평단가)
             });
                         
                 if (newDB.length > 0) { MASTER_DB = newDB; document.getElementById('sync-status')?.classList.remove('hidden'); renderTabs(); renderDB(); } 
