@@ -413,6 +413,7 @@ function addItem(id) {
         else if (item.logic === "W_SILK_LABOR") qty = Math.ceil((size * 3.5) / 15); 
         else if (item.logic === "W_HAP_LABOR") qty = Math.ceil((size * 3.5) / 30); 
         else if (item.logic === "W_PREM_LABOR") qty = Math.ceil((size * 3.5) / 14); 
+        else if (item.logic === "W_HAP_RM_LABOR") qty = Math.ceil((size * 2.5) / 30); 
         else if (item.logic === "PY_1X") qty = size; 
         else if (item.logic === "PY_10") qty = Math.ceil(size / 10); 
         else if (item.logic === "PY_K32") qty = parseFloat((size / 32).toFixed(2));
@@ -548,6 +549,7 @@ function syncAutoCalculations() {
         else if (item.logic === "W_SILK_LABOR") item.qty = Math.ceil((size * 3.5) / 15);
         else if (item.logic === "W_HAP_LABOR") item.qty = Math.ceil((size * 3.5) / 30);
         else if (item.logic === "W_PREM_LABOR") item.qty = Math.ceil((size * 3.5) / 14);
+        else if (item.logic === "W_HAP_RM_LABOR") item.qty = Math.ceil((size * 2.5) / 30);
         else if (item.logic === "PY_1X") item.qty = size;
         else if (item.logic === "PY_10") item.qty = Math.ceil(size / 10);
         else if (item.logic === "PY_K32") item.qty = parseFloat((size / 32).toFixed(2));
