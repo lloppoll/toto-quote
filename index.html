@@ -236,18 +236,18 @@
                 const newDB = []; 
                 rows.slice(1).forEach((cols, idx) => { 
                     if (cols.length >= 5 && cols[0] !== "") { 
-                        newDB.push({ 
-                            id: "CLOUD_" + idx, 
-                            cat: cols[0].replace(/\*/g, '').trim(), 
-                            name: cols[1] || "미지정", 
-                            spec: cols[2] || "", 
-                            unit: cols[3] || "식", 
-                            price: parseInt(cols[4].replace(/[^0-9]/g, '')) || 0, 
-                            logic: cols[5] || "MANUAL", 
-                            lTxt: cols[6] || "수량입력" 
-                        }); 
-                    } 
-                }); 
+                newDB.push({ 
+               id: "CLOUD_" + idx, 
+               cat: cols[0].replace(/\*/g, '').trim(), 
+               name: cols[1] || "미지정", 
+               spec: cols[2] || "", 
+               unit: cols[3] || "식", 
+               price: parseInt(cols[4].replace(/[^0-9]/g, '')) || 0, // E열 (기본단가)
+               logic: cols[5] || "MANUAL", 
+               lTxt: cols[6] || "수량입력",
+               pyPrice: parseInt(cols[7]?.replace(/[^0-9]/g, '')) || 0 // [추가] H열 (평단가)
+            });
+                        
                 if (newDB.length > 0) { MASTER_DB = newDB; document.getElementById('sync-status')?.classList.remove('hidden'); renderTabs(); renderDB(); } 
             } catch (error) { console.error("Sheet Sync Error:", error); } 
             finally { btn.classList.remove('animate-pulse'); } 
@@ -293,14 +293,14 @@ function addItem(id) {
     
     if (!existing) { 
         let qty = 1; 
-        let currentPrice = item.price; // 구글 시트에서 가져온 기본 단가(E열)
+        let currentPrice = item.price; 
 
-        // 1. 단가 변동 로직 (_FIXED로 끝나는 모든 로직 공통 적용)
-        // 공식: (시트 단가 / 30) * 입력 평수
+        // 1. 단가 변동 로직 (_FIXED 공통)
+        // 공식: H열 평단가(pyPrice) * 입력 평수
         if (item.logic.endsWith("_FIXED")) {
             qty = 1;
-            currentPrice = Math.round((item.price / 30) * size);
-        } 
+            currentPrice = Math.round(item.pyPrice * size); // item.price/30 대신 pyPrice 사용
+        }
         
         // 2. 수량 변동 로직 (단가는 시트 값 고정)
         else if (item.logic === "WALL_35") qty = Math.ceil(size * 3.5); 
@@ -335,15 +335,14 @@ function addItem(id) {
 function syncAutoCalculations() { 
     const size = parseFloat(document.getElementById('site-size').value) || 0; 
     selectedItems.forEach(item => {
-        // 원본 단가를 찾기 위해 MASTER_DB에서 해당 아이템 참조
         const baseItem = MASTER_DB.find(m => m.id === item.id);
-        const basePrice = baseItem ? baseItem.price : item.price;
+        const pyPrice = baseItem ? baseItem.pyPrice : 0; // H열 단가 참조
 
         // 1. 단가 재계산 로직 (_FIXED 공통)
         if (item.logic.endsWith("_FIXED")) {
             item.qty = 1;
-            item.price = Math.round((basePrice / 30) * size);
-        } 
+            item.price = Math.round(pyPrice * size); // 평단가 * 평수
+        }
         
         // 2. 수량 재계산 로직
         else if (item.logic === "WALL_35") item.qty = Math.ceil(size * 3.5);
