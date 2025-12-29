@@ -407,6 +407,8 @@
             calculatePrice(logic, basePrice, actualSize) {
                 if (logic.endsWith("_FIXED")) {
                     return Math.round(basePrice * actualSize);
+                     if (logic.endsWith("PY_07_FIXED")) {
+                    return Math.round(basePrice * (actualSize * 0.7));
                 }
                 return basePrice;
             }
