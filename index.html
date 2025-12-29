@@ -279,11 +279,43 @@
             debounceTimers: {},
             areaType: 'normal',
             areaMultipliers: {
-                normal: 1.0,
+                normal: 1,
                 extended: 1.1,
                 high: 1.2
             },
-            orderCriteria: ["공통 가설", "철거 공사", "설비 공사", "방수 공사", "단열 공사", "창호 공사", "도어 공사", "목공사", "전기 공사", "에어컨 공사", "타일 공사", "도배 공사", "마루 공사", "욕실 공사", "도장 공사", "필름 공사", "가구 공사", "마감 공사", "기타 공사"]
+            orderCriteria: ["공통 가설", "철거 공사", "설비 공사", "방수 공사", "단열 공사", "창호 공사", "도어 공사", "목공사", "전기 공사", "에어컨 공사", "타일 공사", "도배 공사", "마루 공사", "욕실 공사", "도장 공사", "필름 공사", "가구 공사", "마감 공사", "기타 공사"],
+            
+            // 대표 품목 키워드 정의
+            representativeKeywords: {
+                '도배 공사': {
+                    keywords: ['합지', '실크', '부자재', '인건비', '벽지 제거'],
+                    exclude: ['포티스', '베스티', '스케치', '부분']
+                },
+                '마루 공사': {
+                    keywords: ['강마루', '동화', '나투스진', '장판', '마루 부자재'],
+                    exclude: ['원목마루', '헤링본', '디앤메종', '구정마루']
+                },
+                '철거 공사': {
+                    keywords: ['폐기물', '천장 철거', '바닥 철거', '인건비'],
+                    exclude: ['부분', '확장부']
+                },
+                '전기 공사': {
+                    keywords: ['배선작업', '인건비', '분전함', '전선 전체 교체'],
+                    exclude: []
+                }
+            },
+            
+            // 공종별 필수 품목 그룹
+            essentialItemGroups: {
+                '도배 공사': {
+                    basic: ['합지', '합지벽지', '부자재'],
+                    premium: ['실크', '실크벽지', '부자재']
+                },
+                '마루 공사': {
+                    basic: ['강마루', '마루 부자재'],
+                    premium: ['원목마루', '마루 부자재']
+                }
+            }
         };
 
         // ==================== 유틸리티 함수 ====================
@@ -365,64 +397,64 @@
             }
         };
 
-// ==================== 계산 로직 모듈 ====================
-const calculationLogic = {
-    calculateQuantity(logic, actualSize) {
-        if (actualSize <= 0) return 1;
+        // ==================== 계산 로직 모듈 ====================
+        const calculationLogic = {
+            calculateQuantity(logic, actualSize) {
+                if (actualSize <= 0) return 1;
 
-        const logicMap = {
-            "WALL_10": () => Math.ceil(actualSize * 1.0),
-            "WALL_11": () => Math.ceil(actualSize * 1.1),
-            "WALL_12": () => Math.ceil(actualSize * 1.2),
-            "WALL_15": () => Math.ceil(actualSize * 1.5),
-            "WALL_17": () => Math.ceil(actualSize * 1.7),
-            "WALL_20": () => Math.ceil(actualSize * 2.0),
-            "WALL_25": () => Math.ceil(actualSize * 2.5),
-            "WALL_27": () => Math.ceil(actualSize * 2.7),
-            "WALL_30": () => Math.ceil(actualSize * 3.0),
-            "WALL_35": () => Math.ceil(actualSize * 3.5),
-            "WALL_40": () => Math.ceil(actualSize * 4.0),
-            "WALL_45": () => Math.ceil(actualSize * 4.5),
-            "W_SILK_LABOR1": () => Math.ceil((actualSize * 2.5) / 15),
-            "W_SILK_LABOR2": () => Math.ceil((actualSize * 1.5) / 15),
-            "W_SILK_LABOR3": () => Math.ceil((actualSize * 1.2) / 15),
-            "W_HAP_LABOR1": () => Math.ceil((actualSize * 3.5) / 30),
-            "W_HAP_LABOR2": () => Math.ceil((actualSize * 2.5) / 30),
-            "W_HAP_LABOR3": () => Math.ceil((actualSize * 1.2) / 30),
-            "W_PREM_LABOR1": () => Math.ceil((actualSize * 3.5) / 14),
-            "W_PREM_LABOR2": () => Math.ceil((actualSize * 2.5) / 14),
-            "W_PREM_LABOR3": () => Math.ceil((actualSize * 1.2) / 14),
-            "W_HAP_RM_LABOR": () => Math.ceil((actualSize * 2.5) / 30),
-            "PY_1X": () => actualSize,
-            "PY_10": () => Math.ceil(actualSize / 10),
-            "PY_K32": () => parseFloat((actualSize / 32).toFixed(2)),
-            "FLOOR_07": () => Math.ceil(actualSize * 0.7),
-            "FLOOR_08": () => Math.ceil(actualSize * 0.8),
-            "FLOOR_11": () => Math.ceil(actualSize * 1.1)
+                const logicMap = {
+                    "WALL_10": () => Math.ceil(actualSize * 1.0),
+                    "WALL_11": () => Math.ceil(actualSize * 1.1),
+                    "WALL_12": () => Math.ceil(actualSize * 1.2),
+                    "WALL_15": () => Math.ceil(actualSize * 1.5),
+                    "WALL_17": () => Math.ceil(actualSize * 1.7),
+                    "WALL_20": () => Math.ceil(actualSize * 2.0),
+                    "WALL_25": () => Math.ceil(actualSize * 2.5),
+                    "WALL_27": () => Math.ceil(actualSize * 2.7),
+                    "WALL_30": () => Math.ceil(actualSize * 3.0),
+                    "WALL_35": () => Math.ceil(actualSize * 3.5),
+                    "WALL_40": () => Math.ceil(actualSize * 4.0),
+                    "WALL_45": () => Math.ceil(actualSize * 4.5),
+                    "W_SILK_LABOR1": () => Math.ceil((actualSize * 2.5) / 15),
+                    "W_SILK_LABOR2": () => Math.ceil((actualSize * 1.5) / 15),
+                    "W_SILK_LABOR3": () => Math.ceil((actualSize * 1.2) / 15),
+                    "W_HAP_LABOR1": () => Math.ceil((actualSize * 3.5) / 30),
+                    "W_HAP_LABOR2": () => Math.ceil((actualSize * 2.5) / 30),
+                    "W_HAP_LABOR3": () => Math.ceil((actualSize * 1.2) / 30),
+                    "W_PREM_LABOR1": () => Math.ceil((actualSize * 3.5) / 14),
+                    "W_PREM_LABOR2": () => Math.ceil((actualSize * 2.5) / 14),
+                    "W_PREM_LABOR3": () => Math.ceil((actualSize * 1.2) / 14),
+                    "W_HAP_RM_LABOR": () => Math.ceil((actualSize * 2.5) / 30),
+                    "PY_1X": () => actualSize,
+                    "PY_10": () => Math.ceil(actualSize / 10),
+                    "PY_K32": () => parseFloat((actualSize / 32).toFixed(2)),
+                    "FLOOR_07": () => Math.ceil(actualSize * 0.7),
+                    "FLOOR_08": () => Math.ceil(actualSize * 0.8),
+                    "FLOOR_11": () => Math.ceil(actualSize * 1.1)
+                };
+
+                return logicMap[logic] ? logicMap[logic]() : 1;
+            },
+
+            calculatePrice(logic, basePrice, actualSize) {
+                // 특수 계수 로직들 (더 구체적인 조건을 먼저)
+                if (logic.endsWith("PY_07_FIXED")) {
+                    return Math.round(basePrice * (actualSize * 0.7));
+                }
+                if (logic.endsWith("PY_08_FIXED")) {
+                    return Math.round(basePrice * (actualSize * 0.8));
+                }
+                if (logic.endsWith("PY_11_FIXED")) {
+                    return Math.round(basePrice * (actualSize * 1.1));
+                }
+                // 일반 FIXED 로직
+                if (logic.endsWith("_FIXED")) {
+                    return Math.round(basePrice * actualSize);
+                }
+                return basePrice;
+            }
         };
 
-        return logicMap[logic] ? logicMap[logic]() : 1;
-    },
-
-    calculatePrice(logic, basePrice, actualSize) {
-        // 특수 계수 로직들 (더 구체적인 조건을 먼저)
-        if (logic.endsWith("PY_07_FIXED")) {
-            return Math.round(basePrice * (actualSize * 0.7));
-        }
-        if (logic.endsWith("PY_08_FIXED")) {
-            return Math.round(basePrice * (actualSize * 0.8));
-        }
-        if (logic.endsWith("PY_11_FIXED")) {
-            return Math.round(basePrice * (actualSize * 1.1));
-        }
-        // 일반 FIXED 로직
-        if (logic.endsWith("_FIXED")) {
-            return Math.round(basePrice * actualSize);
-        }
-        return basePrice;
-    }
-};
-       
         // ==================== 면적 타입 관리 ====================
         app.setAreaType = function(type) {
             app.areaType = type;
@@ -466,6 +498,34 @@ const calculationLogic = {
             }
         };
 
+        // ==================== 공종별 필수 품목 추가 ====================
+        app.addEssentialItems = function(category, type = 'basic') {
+            const group = app.essentialItemGroups[category];
+            if (!group || !group[type]) {
+                app.showNotification('해당 공종의 필수 품목 세트가 없습니다.', 'info');
+                return;
+            }
+
+            const keywords = group[type];
+            let addedCount = 0;
+
+            keywords.forEach(keyword => {
+                const items = app.MASTER_DB.filter(item => 
+                    item.cat === category && 
+                    (item.name.includes(keyword) || item.spec.includes(keyword))
+                );
+                
+                // 가장 적합한 항목 1개만 추가
+                const bestMatch = items[0];
+                if (bestMatch && !app.selectedItems.find(s => s.id === bestMatch.id)) {
+                    app.addItem(bestMatch.id);
+                    addedCount++;
+                }
+            });
+
+            app.showNotification(`${category} ${type} 세트: ${addedCount}개 항목 추가됨`, 'success');
+        };
+
         // ==================== 스마트 추천 기능 ====================
         app.smartRecommend = function() {
             const actualSize = app.getActualSize();
@@ -474,38 +534,60 @@ const calculationLogic = {
                 return;
             }
 
-            const recommendedItems = [
-                { cat: '공통 가설', keywords: ['가설', '보호', '폐기물', '안전'] },
-                { cat: '철거 공사', keywords: ['철거', '해체', '제거'] },
-                { cat: '설비 공사', keywords: ['배관', '급수', '배수'] },
-                { cat: '전기 공사', keywords: ['전기', '배선', '콘센트'] },
-                { cat: '방수 공사', keywords: ['방수', '방수재'] },
-                { cat: '단열 공사', keywords: ['단열', '보온'] },
-                { cat: '창호 공사', keywords: ['창호', '창문'] },
-                { cat: '도어 공사', keywords: ['도어', '문'] },
-                { cat: '목공사', keywords: ['목공', '목재'] },
-                { cat: '타일 공사', keywords: ['타일', '벽타일'] },
-                { cat: '도배 공사', keywords: ['도배', '벽지'] },
-                { cat: '마루 공사', keywords: ['마루', '바닥'] },
-                { cat: '욕실 공사', keywords: ['욕실', '샤워'] },
-                { cat: '도장 공사', keywords: ['도장', '페인트'] }
+            const recommendedCategories = [
+                '공통 가설', '철거 공사', '설비 공사', '전기 공사', 
+                '방수 공사', '단열 공사', '창호 공사', '도어 공사',
+                '목공사', '타일 공사', '도배 공사', '마루 공사',
+                '욕실 공사', '도장 공사'
             ];
 
             let addedCount = 0;
-            recommendedItems.forEach(rec => {
-                const items = app.MASTER_DB.filter(item => 
-                    item.cat === rec.cat && 
-                    rec.keywords.some(kw => 
-                        item.name.includes(kw) || item.spec.includes(kw)
-                    )
-                );
-                
-                items.slice(0, 2).forEach(item => {
-                    if (!app.selectedItems.find(s => s.id === item.id)) {
-                        app.addItem(item.id);
-                        addedCount++;
+            recommendedCategories.forEach(cat => {
+                // 필수 품목 그룹이 있으면 사용
+                if (app.essentialItemGroups[cat]) {
+                    const group = app.essentialItemGroups[cat];
+                    const keywords = group.basic || [];
+                    keywords.forEach(keyword => {
+                        const items = app.MASTER_DB.filter(item => 
+                            item.cat === cat && 
+                            (item.name.includes(keyword) || item.spec.includes(keyword))
+                        );
+                        const bestMatch = items[0];
+                        if (bestMatch && !app.selectedItems.find(s => s.id === bestMatch.id)) {
+                            app.addItem(bestMatch.id);
+                            addedCount++;
+                        }
+                    });
+                } else {
+                    // 기존 방식 (키워드 기반)
+                    const config = app.representativeKeywords[cat];
+                    if (config) {
+                        const items = app.MASTER_DB.filter(item => 
+                            item.cat === cat && 
+                            config.keywords.some(kw => 
+                                item.name.includes(kw) || item.spec.includes(kw)
+                            ) &&
+                            !config.exclude.some(ekw => 
+                                item.name.includes(ekw) || item.spec.includes(ekw)
+                            )
+                        );
+                        
+                        items.slice(0, 1).forEach(item => {
+                            if (!app.selectedItems.find(s => s.id === item.id)) {
+                                app.addItem(item.id);
+                                addedCount++;
+                            }
+                        });
+                    } else {
+                        // 기본 추천 (카테고리별 첫 번째 항목)
+                        const items = app.MASTER_DB.filter(item => item.cat === cat);
+                        const firstItem = items[0];
+                        if (firstItem && !app.selectedItems.find(s => s.id === firstItem.id)) {
+                            app.addItem(firstItem.id);
+                            addedCount++;
+                        }
                     }
-                });
+                }
             });
 
             app.showNotification(`${addedCount}개 필수 항목이 자동 추가되었습니다.`, 'success');
@@ -672,6 +754,9 @@ const calculationLogic = {
 
             container.innerHTML = '';
             cats.forEach(c => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'flex items-center gap-1';
+                
                 const btn = document.createElement('button');
                 btn.className = `category-tab px-4 py-2 rounded-2xl text-[11px] font-black border-2 border-slate-100 transition-all shrink-0 ${app.activeCategory === c ? 'active' : 'bg-white text-slate-500 hover:bg-slate-100'}`;
                 btn.textContent = c;
@@ -680,7 +765,22 @@ const calculationLogic = {
                     app.renderTabs();
                     app.renderDB();
                 };
-                container.appendChild(btn);
+                
+                // 빠른 추가 버튼 (필수 품목 그룹이 있는 공종에만)
+                if (app.essentialItemGroups[c]) {
+                    const quickBtn = document.createElement('button');
+                    quickBtn.className = 'text-[9px] bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded-lg font-bold transition-all';
+                    quickBtn.innerHTML = '⚡';
+                    quickBtn.title = '필수 품목 빠른 추가';
+                    quickBtn.onclick = (e) => {
+                        e.stopPropagation();
+                        app.addEssentialItems(c, 'basic');
+                    };
+                    wrapper.appendChild(quickBtn);
+                }
+                
+                wrapper.appendChild(btn);
+                container.appendChild(wrapper);
             });
         };
 
@@ -689,10 +789,46 @@ const calculationLogic = {
             if (!tbody) return;
 
             const search = (document.getElementById('db-search')?.value || "").toLowerCase();
-            const filtered = app.MASTER_DB.filter(i => 
+            
+            // 기본 필터링
+            let filtered = app.MASTER_DB.filter(i => 
                 i.cat === app.activeCategory && 
                 (i.name.toLowerCase().includes(search) || i.spec.toLowerCase().includes(search))
             );
+
+            // 검색 중이 아닐 때 대표 품목만 필터링
+            if (!search && app.representativeKeywords[app.activeCategory]) {
+                const config = app.representativeKeywords[app.activeCategory];
+                const keywords = config.keywords || [];
+                const exclude = config.exclude || [];
+                
+                filtered = filtered.filter(item => {
+                    const nameLower = item.name.toLowerCase();
+                    const specLower = item.spec.toLowerCase();
+                    
+                    // 제외 키워드 체크
+                    if (exclude.some(kw => nameLower.includes(kw.toLowerCase()) || specLower.includes(kw.toLowerCase()))) {
+                        return false;
+                    }
+                    
+                    // 포함 키워드 체크
+                    return keywords.some(keyword => 
+                        nameLower.includes(keyword.toLowerCase()) || 
+                        specLower.includes(keyword.toLowerCase())
+                    );
+                });
+                
+                // 우선순위 정렬 (대표 품목 먼저)
+                filtered.sort((a, b) => {
+                    const aIsRep = keywords.some(kw => 
+                        a.name.includes(kw) || a.spec.includes(kw)
+                    );
+                    const bIsRep = keywords.some(kw => 
+                        b.name.includes(kw) || b.spec.includes(kw)
+                    );
+                    return bIsRep - aIsRep;
+                });
+            }
 
             tbody.innerHTML = '';
 
@@ -701,9 +837,19 @@ const calculationLogic = {
                 tr.className = 'hover:bg-blue-50 transition cursor-pointer group fade-in';
                 tr.onclick = () => app.addItem(item.id);
 
+                // 대표 품목 표시
+                const isRep = app.representativeKeywords[app.activeCategory]?.keywords.some(kw => 
+                    item.name.includes(kw) || item.spec.includes(kw)
+                ) && !app.representativeKeywords[app.activeCategory]?.exclude.some(ekw =>
+                    item.name.includes(ekw) || item.spec.includes(ekw)
+                );
+
                 tr.innerHTML = `
                     <td class="p-6">
-                        <div class="text-[9px] font-black text-blue-600 uppercase mb-1 tracking-tighter text-nowrap">${item.cat}</div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <div class="text-[9px] font-black text-blue-600 uppercase tracking-tighter text-nowrap">${item.cat}</div>
+                            ${isRep ? '<span class="text-[8px] bg-orange-500 text-white px-1.5 py-0.5 rounded font-bold">대표</span>' : ''}
+                        </div>
                         <div class="font-bold text-slate-800 text-sm wrap-text">${item.name}</div>
                         <div class="text-[12pt] text-slate-700 wrap-text leading-tight">${item.spec}</div>
                     </td>
