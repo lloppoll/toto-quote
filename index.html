@@ -296,10 +296,10 @@ function addItem(id) {
         let currentPrice = item.price; // 기본 단가 저장
 
         // 1. 단가 변동 로직 (수량은 1식 고정)
-        if (item.logic === "PY_K_FIXED") {
+        if (item.logic === "_FIXED") {
             qty = 1;
-            currentPrice = Math.round((450000 / 30) * size);
-        } 
+            currentPrice = Math.round(parseInt * size); // item.price/30 대신 parseInt 사용
+        }
         if (item.logic === "PY_MOLD_FIXED") {
             qty = 1;
             currentPrice = Math.round((80000 / 30) * size);
@@ -432,9 +432,9 @@ function syncAutoCalculations() {
     const size = parseFloat(document.getElementById('site-size').value) || 0; 
     selectedItems.forEach(item => {
         // 1. 단가 재계산 로직 (수량 1식 고정형)
-        if (item.logic === "PY_K_FIXED") {
+        if (item.logic === "_FIXED") {
             item.qty = 1;
-            item.price = Math.round((450000 / 30) * size);
+            item.price = Math.round(parseInt * size);
         } 
         if (item.logic === "PY_MOLD_FIXED") {
             item.qty = 1;
