@@ -404,23 +404,24 @@
                 return logicMap[logic] ? logicMap[logic]() : 1;
             },
 
-            calculatePrice(logic, basePrice, actualSize) {
-    // 특수 계수 추출
-    if (logic.includes("PY_07_FIXED")) {
+   calculatePrice(logic, basePrice, actualSize) {
+    // 특수 계수 로직들 (더 구체적인 조건을 먼저)
+    if (logic.endsWith("PY_07_FIXED")) {
         return Math.round(basePrice * (actualSize * 0.7));
     }
-    if (logic.includes("PY_08_FIXED")) {
+    if (logic.endsWith("PY_08_FIXED")) {
         return Math.round(basePrice * (actualSize * 0.8));
     }
-    if (logic.includes("PY_11_FIXED")) {
+    if (logic.endsWith("PY_11_FIXED")) {
         return Math.round(basePrice * (actualSize * 1.1));
     }
-    // 일반 FIXED
+    // 일반 FIXED 로직
     if (logic.endsWith("_FIXED")) {
         return Math.round(basePrice * actualSize);
     }
     return basePrice;
 }
+       
         // ==================== 면적 타입 관리 ====================
         app.setAreaType = function(type) {
             app.areaType = type;
