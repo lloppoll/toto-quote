@@ -312,7 +312,7 @@ function addItem(id) {
         else if (item.logic === "WALL_20") qty = Math.ceil(size * 2.0); 
         else if (item.logic === "WALL_25") qty = Math.ceil(size * 2.5);
         else if (item.logic === "WALL_27") qty = Math.ceil(size * 2.7);
-        else if (item.logic === "WALL_30") qty = Math.ceil(size * 3.0);
+        else if (item.logic === "WALL_30") qty = Math.ceil(item.price * size);
         else if (item.logic === "WALL_40") qty = Math.ceil(size * 4.0); 
         else if (item.logic === "W_SILK_LABOR") qty = Math.ceil((size * 3.5) / 15); 
         else if (item.logic === "W_HAP_LABOR") qty = Math.ceil((size * 3.5) / 30); 
@@ -352,7 +352,7 @@ function syncAutoCalculations() {
         else if (item.logic === "WALL_20") item.qty = Math.ceil(size * 2.0);
         else if (item.logic === "WALL_25") item.qty = Math.ceil(size * 2.5);
         else if (item.logic === "WALL_27") item.qty = Math.ceil(size * 2.7);
-        else if (item.logic === "WALL_30") item.qty = Math.ceil(size * 3.0);
+        else if (item.logic === "WALL_30") item.qty = Math.ceil(item.price * size);
         else if (item.logic === "WALL_40") item.qty = Math.ceil(size * 4.0);
         else if (item.logic === "W_SILK_LABOR") item.qty = Math.ceil((size * 3.5) / 15);
         else if (item.logic === "W_HAP_LABOR") item.qty = Math.ceil((size * 3.5) / 30);
