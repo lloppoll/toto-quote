@@ -56,16 +56,17 @@
                     <div class="h-6 w-px bg-slate-700 hidden sm:block"></div>
                     <span class="text-xs font-bold text-slate-400 uppercase tracking-widest hidden lg:inline">v12.0 Master Final</span>
                 </div>
-                <div class="flex items-center space-x-6">
-                    <div id="sync-status" class="hidden text-[10px] bg-green-500/20 text-green-400 px-3 py-1 rounded-full border border-green-500/30 font-bold shrink-0">● CLOUD CONNECTED</div>
-                    <button onclick="app.saveToLocal()" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-xl font-bold text-xs transition-all shadow-lg shrink-0">저장</button>
-                    <button onclick="app.loadFromLocal()" class="bg-slate-600 hover:bg-slate-500 text-white px-4 py-2 rounded-xl font-bold text-xs transition-all shadow-lg shrink-0">불러오기</button>
-                    <div class="text-right hidden md:block shrink-0">
-                        <div class="text-[10px] font-bold text-slate-500 uppercase">Estimated Total</div>
-                        <div id="nav-total" class="text-xl lg:text-2xl font-black text-white">0원</div>
-                    </div>
-                    <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2.5 rounded-xl font-bold text-sm transition-all shadow-lg shrink-0">공식 견적서 발행</button>
-                </div>
+              <div class="flex items-center space-x-6">
+    <div id="sync-status" class="hidden text-[10px] bg-green-500/20 text-green-400 px-3 py-1 rounded-full border border-green-500/30 font-bold shrink-0">● CLOUD CONNECTED</div>
+    <button onclick="app.saveToLocal()" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-xl font-bold text-xs transition-all shadow-lg shrink-0">저장</button>
+    <button onclick="app.loadFromLocal()" class="bg-slate-600 hover:bg-slate-500 text-white px-4 py-2 rounded-xl font-bold text-xs transition-all shadow-lg shrink-0">불러오기</button>
+    <button onclick="app.clearAll()" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-xl font-bold text-xs transition-all shadow-lg shrink-0">전체지우기</button>
+    <div class="text-right hidden md:block shrink-0">
+        <div class="text-[10px] font-bold text-slate-500 uppercase">Estimated Total</div>
+        <div id="nav-total" class="text-xl lg:text-2xl font-black text-white">0원</div>
+    </div>
+    <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2.5 rounded-xl font-bold text-sm transition-all shadow-lg shrink-0">공식 견적서 발행</button>
+</div>
             </div>
         </nav>
         <main class="max-w-[1800px] mx-auto p-4 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 w-full">
@@ -1184,68 +1185,102 @@
             }
         };
 
-        // ==================== 로컬 스토리지 ====================
-        app.saveToLocal = function() {
-            try {
-                const data = {
-                    siteName: document.getElementById('site-name').value,
-                    siteSize: document.getElementById('site-size').value,
-                    areaType: app.areaType,
-                    areaMultipliers: app.areaMultipliers,
-                    rateExp: document.getElementById('rate-exp').value,
-                    rateProfit: document.getElementById('rate-profit').value,
-                    valAdjust: document.getElementById('val-adjust').value,
-                    selectedItems: app.selectedItems,
-                    timestamp: new Date().toISOString()
-                };
-                localStorage.setItem('totoEstimate', JSON.stringify(data));
-                app.showNotification('저장 완료', 'success');
-            } catch (e) {
-                app.showNotification('저장 실패: ' + e.message, 'error');
-            }
+       // ==================== 로컬 스토리지 ====================
+app.saveToLocal = function() {
+    try {
+        const data = {
+            siteName: document.getElementById('site-name').value,
+            siteSize: document.getElementById('site-size').value,
+            areaType: app.areaType,
+            areaMultipliers: app.areaMultipliers,
+            rateExp: document.getElementById('rate-exp').value,
+            rateProfit: document.getElementById('rate-profit').value,
+            valAdjust: document.getElementById('val-adjust').value,
+            selectedItems: app.selectedItems,
+            timestamp: new Date().toISOString()
         };
+        localStorage.setItem('totoEstimate', JSON.stringify(data));
+        app.showNotification('저장 완료', 'success');
+    } catch (e) {
+        app.showNotification('저장 실패: ' + e.message, 'error');
+    }
+};
 
-        app.loadFromLocal = function() {
-            try {
-                const saved = localStorage.getItem('totoEstimate');
-                if (!saved) {
-                    app.showNotification('저장된 데이터가 없습니다.', 'info');
-                    return;
+app.loadFromLocal = function() {
+    try {
+        const saved = localStorage.getItem('totoEstimate');
+        if (!saved) {
+            app.showNotification('저장된 데이터가 없습니다.', 'info');
+            return;
+        }
+
+        const data = JSON.parse(saved);
+        document.getElementById('site-name').value = data.siteName || '';
+        document.getElementById('site-size').value = data.siteSize || '';
+        
+        if (data.areaType) {
+            app.areaType = data.areaType;
+            app.setAreaType(data.areaType);
+        }
+        if (data.areaMultipliers) {
+            app.areaMultipliers = { ...app.areaMultipliers, ...data.areaMultipliers };
+            document.getElementById('area-multiplier').value = app.areaMultipliers[app.areaType] || 1.0;
+        }
+        
+        document.getElementById('rate-exp').value = data.rateExp || '5';
+        document.getElementById('rate-profit').value = data.rateProfit || '10';
+        document.getElementById('val-adjust').value = data.valAdjust || '0';
+
+        if (data.selectedItems && Array.isArray(data.selectedItems)) {
+            app.selectedItems = data.selectedItems;
+            app.selectedItems.forEach(item => {
+                if (!item.basePrice) {
+                    item.basePrice = app.basePrices.get(item.id) || item.price;
                 }
+            });
+        }
 
-                const data = JSON.parse(saved);
-                document.getElementById('site-name').value = data.siteName || '';
-                document.getElementById('site-size').value = data.siteSize || '';
-                
-                if (data.areaType) {
-                    app.areaType = data.areaType;
-                    app.setAreaType(data.areaType);
-                }
-                if (data.areaMultipliers) {
-                    app.areaMultipliers = { ...app.areaMultipliers, ...data.areaMultipliers };
-                    document.getElementById('area-multiplier').value = app.areaMultipliers[app.areaType] || 1.0;
-                }
-                
-                document.getElementById('rate-exp').value = data.rateExp || '5';
-                document.getElementById('rate-profit').value = data.rateProfit || '10';
-                document.getElementById('val-adjust').value = data.valAdjust || '0';
+        app.syncAutoCalculations();
+        app.showNotification('불러오기 완료', 'success');
+    } catch (e) {
+        app.showNotification('불러오기 실패: ' + e.message, 'error');
+    }
+};
 
-                if (data.selectedItems && Array.isArray(data.selectedItems)) {
-                    app.selectedItems = data.selectedItems;
-                    app.selectedItems.forEach(item => {
-                        if (!item.basePrice) {
-                            item.basePrice = app.basePrices.get(item.id) || item.price;
-                        }
-                    });
-                }
+// ==================== 전체지우기 ====================
+app.clearAll = function() {
+    if (app.selectedItems.length > 0 || document.getElementById('site-name').value || document.getElementById('site-size').value) {
+        if (!confirm('모든 데이터를 지우시겠습니까?\n(저장된 데이터는 유지됩니다)')) {
+            return;
+        }
+    }
 
-                app.syncAutoCalculations();
-                app.showNotification('불러오기 완료', 'success');
-            } catch (e) {
-                app.showNotification('불러오기 실패: ' + e.message, 'error');
-            }
-        };
-
+    // 선택된 항목 모두 제거
+    app.selectedItems = [];
+    
+    // 입력 필드 초기화
+    document.getElementById('site-name').value = '';
+    document.getElementById('site-size').value = '';
+    
+    // 면적 타입 초기화
+    app.setAreaType('normal');
+    document.getElementById('area-multiplier').value = 1.0;
+    
+    // 경비/이윤/단수조정 초기화
+    document.getElementById('rate-exp').value = '5';
+    document.getElementById('rate-profit').value = '10';
+    document.getElementById('val-adjust').value = '0';
+    
+    // 검색어 초기화
+    document.getElementById('db-search').value = '';
+    
+    // 모든 업데이트
+    app.updateAll();
+    app.renderDB();
+    app.updateActualSizeDisplay();
+    
+    app.showNotification('전체 데이터가 초기화되었습니다.', 'success');
+};
         // ==================== 알림 시스템 ====================
         app.showNotification = function(message, type = 'info') {
             const colors = {
