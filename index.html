@@ -405,15 +405,22 @@
             },
 
             calculatePrice(logic, basePrice, actualSize) {
-                if (logic.endsWith("_FIXED")) {
-                    return Math.round(basePrice * actualSize);
-                     if (logic.endsWith("PY_07_FIXED")) {
-                    return Math.round(basePrice * (actualSize * 0.7));
-                }
-                return basePrice;
-            }
-        };
-
+    // 특수 계수 추출
+    if (logic.includes("PY_07_FIXED")) {
+        return Math.round(basePrice * (actualSize * 0.7));
+    }
+    if (logic.includes("PY_08_FIXED")) {
+        return Math.round(basePrice * (actualSize * 0.8));
+    }
+    if (logic.includes("PY_11_FIXED")) {
+        return Math.round(basePrice * (actualSize * 1.1));
+    }
+    // 일반 FIXED
+    if (logic.endsWith("_FIXED")) {
+        return Math.round(basePrice * actualSize);
+    }
+    return basePrice;
+}
         // ==================== 면적 타입 관리 ====================
         app.setAreaType = function(type) {
             app.areaType = type;
