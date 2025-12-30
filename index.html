@@ -447,7 +447,7 @@
                     // 바닥면적
                     "FLOOR_07": () => Math.ceil(adjustedSize * 0.7),
                     "FLOOR_08": () => Math.ceil(adjustedSize * 0.8),
-                    "FLOOR_11": () => Math.ceil(adjustedSize * 1.1)
+                    "FLOOR_11": () => Math.ceil((adjustedSize * 0.7) * 1.1)
                 };
 
                 return logicMap[logic] ? logicMap[logic]() : 1;
