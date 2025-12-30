@@ -81,7 +81,7 @@
                             <div class="col-span-1">
                                 <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">공사 평수</label>
                                 <div class="relative">
-                                    <input type="number" id="site-size" value="" onchange="app.syncAutoCalculations()" oninput="app.updateActualSizeDisplay()" class="w-full mt-1 bg-slate-50 border-none rounded-xl p-4 font-bold text-slate-800 focus:ring-2 focus:ring-blue-500 outline-none">
+                                    <input type="number" id="site-size" value="" onchange="app.syncAutoCalculations()" oninput="app.updateActualSizeDisplay(); app.updateEstimateQuantities()" class="w-full mt-1 bg-slate-50 border-none rounded-xl p-4 font-bold text-slate-800 focus:ring-2 focus:ring-blue-500 outline-none">
                                     <span class="absolute right-4 top-5 text-xs font-bold text-slate-400">평</span>
                                 </div>
                             </div>
@@ -172,8 +172,23 @@
                     
                     <!-- 미팅지 모드 컨텐츠 -->
                     <div id="meeting-mode-content" class="hidden">
-                        <div class="h-[550px] overflow-y-auto custom-scroll p-6">
+                        <div class="h-[500px] overflow-y-auto custom-scroll p-6">
                             <div id="meeting-form" class="space-y-6"></div>
+                        </div>
+                        <!-- 추정 시공물량 카드 -->
+                        <div id="estimate-quantity-card" class="bg-slate-900 rounded-2xl p-6 text-white shadow-xl border border-slate-700 mx-6 mb-6">
+                            <h3 class="text-sm font-black mb-4 uppercase tracking-widest text-slate-300">추정 시공물량 (NET ESTIMATE)</h3>
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-center pb-3 border-b border-slate-700">
+                                    <span class="text-xs font-bold text-slate-400">바닥(마루) 추정</span>
+                                    <span id="floor-estimate" class="text-2xl font-black">0.0평</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs font-bold text-slate-400">도배(벽지) 추정</span>
+                                    <span id="wall-estimate" class="text-2xl font-black">0.0평</span>
+                                </div>
+                            </div>
+                            <p class="text-[9px] text-slate-500 mt-4 italic">* 현장 실측 시 오차가 발생할 수 있습니다.</p>
                         </div>
                     </div>
                 </div>
@@ -447,7 +462,7 @@
                     // 바닥면적
                     "FLOOR_07": () => Math.ceil(adjustedSize * 0.7),
                     "FLOOR_08": () => Math.ceil(adjustedSize * 0.8),
-                    "FLOOR_11": () => Math.ceil((adjustedSize * 0.7) * 1.1)
+                    "FLOOR_11": () => Math.ceil(adjustedSize * 1.1)
                 };
 
                 return logicMap[logic] ? logicMap[logic]() : 1;
@@ -646,15 +661,19 @@
             const meetingContent = document.getElementById('meeting-mode-content');
             const searchTabs = document.getElementById('search-mode-tabs');
             
+            const quantityCard = document.getElementById('estimate-quantity-card');
+            
             if (mode === 'search') {
                 searchContent.classList.remove('hidden');
                 meetingContent.classList.add('hidden');
                 if (searchTabs) searchTabs.style.display = 'flex';
+                if (quantityCard) quantityCard.classList.add('hidden');
             } else {
                 searchContent.classList.add('hidden');
                 meetingContent.classList.remove('hidden');
                 if (searchTabs) searchTabs.style.display = 'none';
                 app.renderMeetingForm();
+                app.updateEstimateQuantities();
             }
         };
 
@@ -717,114 +736,119 @@
                 </div>
                 
                 <!-- 창호 -->
-                <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200">
-                    <h3 class="text-sm font-black text-slate-800 mb-4 uppercase tracking-widest">창호</h3>
-                    <div class="space-y-2">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="radio" name="window" value="LX하우시스" ${data.window === 'LX하우시스' ? 'checked' : ''} onchange="app.updateMeetingData('window', this.value); app.handleMeetingCheck('window', this.value)" class="w-4 h-4">
-                            <span class="text-sm font-bold">LX하우시스</span>
-                            <span class="text-[10px] text-slate-500">(가격20%△, 단열성능△)</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="radio" name="window" value="이건창호" ${data.window === '이건창호' ? 'checked' : ''} onchange="app.updateMeetingData('window', this.value); app.handleMeetingCheck('window', this.value)" class="w-4 h-4">
-                            <span class="text-sm font-bold">이건창호</span>
-                            <span class="text-[10px] text-slate-500">(가격10%△, 단열성능 중간)</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="radio" name="window" value="KCC" ${data.window === 'KCC' ? 'checked' : ''} onchange="app.updateMeetingData('window', this.value); app.handleMeetingCheck('window', this.value)" class="w-4 h-4">
-                            <span class="text-sm font-bold">KCC</span>
-                            <span class="text-[10px] text-slate-500">(가격 0%, 단열성능 ▽)</span>
-                        </label>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-4 h-4 bg-blue-500 rounded"></div>
+                        <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest">창호 (WINDOW)</h3>
                     </div>
-                </div>
-                
-                <!-- 확장공사 -->
-                <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200">
-                    <h3 class="text-sm font-black text-slate-800 mb-4 uppercase tracking-widest">확장공사</h3>
-                    <div class="space-y-2">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" ${data.extension.living ? 'checked' : ''} onchange="app.handleExtensionChange('living', this.checked)" class="w-4 h-4">
-                            <span class="text-sm font-bold">거실</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" ${data.extension.kitchen ? 'checked' : ''} onchange="app.handleExtensionChange('kitchen', this.checked)" class="w-4 h-4">
-                            <span class="text-sm font-bold">주방</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" ${data.extension.room ? 'checked' : ''} onchange="app.handleExtensionChange('room', this.checked)" class="w-4 h-4">
-                            <span class="text-sm font-bold">방</span>
-                        </label>
+                    <div class="grid grid-cols-1 gap-3">
+                        <button onclick="app.selectMeetingOption('window', 'LX하우시스')" class="meeting-btn ${data.window === 'LX하우시스' ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.window === 'LX하우시스' ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-blue-300'} rounded-xl transition-all text-left">
+                            <div>
+                                <div class="text-sm font-black text-slate-800">LX 수퍼세이브</div>
+                                <div class="text-[10px] text-slate-500 mt-1">하이엔드</div>
+                            </div>
+                            ${data.window === 'LX하우시스' ? '<span class="text-blue-600 font-black">✓</span>' : ''}
+                        </button>
+                        <button onclick="app.selectMeetingOption('window', 'KCC')" class="meeting-btn ${data.window === 'KCC' ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.window === 'KCC' ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-blue-300'} rounded-xl transition-all text-left">
+                            <div>
+                                <div class="text-sm font-black text-slate-800">KCC 뉴프라임</div>
+                                <div class="text-[10px] text-slate-500 mt-1">표준</div>
+                            </div>
+                            ${data.window === 'KCC' ? '<span class="text-blue-600 font-black">✓</span>' : ''}
+                        </button>
+                        <button onclick="app.selectMeetingOption('window', '기존재사용')" class="meeting-btn ${data.window === '기존재사용' ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.window === '기존재사용' ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-blue-300'} rounded-xl transition-all text-left">
+                            <div>
+                                <div class="text-sm font-black text-slate-800">기존 재사용</div>
+                                <div class="text-[10px] text-slate-500 mt-1">교체 안함</div>
+                            </div>
+                            ${data.window === '기존재사용' ? '<span class="text-blue-600 font-black">✓</span>' : ''}
+                        </button>
                     </div>
                 </div>
                 
                 <!-- 에어컨 -->
-                <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200">
-                    <h3 class="text-sm font-black text-slate-800 mb-4 uppercase tracking-widest">에어컨</h3>
-                    <div class="space-y-3">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" ${data.aircon.system ? 'checked' : ''} onchange="app.updateMeetingData('aircon', {...app.meetingData.aircon, system: this.checked}); app.handleMeetingCheck('aircon', 'system', this.checked)" class="w-4 h-4">
-                            <span class="text-sm font-bold">시스템에어컨</span>
-                            <span class="text-[10px] text-slate-500">(천정공사와 전기공사가 필수로 진행, 총고가 나오지 않는 집에는 목공사도 필수)</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" ${data.aircon.stand ? 'checked' : ''} onchange="app.updateMeetingData('aircon', {...app.meetingData.aircon, stand: this.checked}); app.handleMeetingCheck('aircon', 'stand', this.checked)" class="w-4 h-4">
-                            <span class="text-sm font-bold">스탠드, 백걸이</span>
-                            <span class="text-[10px] text-slate-500">(배관 매립시 바닥공사와 목공사가 추가 필수)</span>
-                        </label>
-                        <div>
-                            <label class="text-[10px] font-bold text-slate-500 uppercase">설치 위치</label>
-                            <input type="text" value="${data.aircon.location}" onchange="app.updateMeetingData('aircon', {...app.meetingData.aircon, location: this.value})" class="w-full mt-1 bg-white border border-slate-200 rounded-lg p-2 text-sm font-bold outline-none">
-                        </div>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-4 h-4 bg-green-500 rounded"></div>
+                        <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest">에어컨 (AC)</h3>
+                    </div>
+                    <div class="grid grid-cols-1 gap-3">
+                        <button onclick="app.selectMeetingOption('aircon', 'system')" class="meeting-btn ${data.aircon.system ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.aircon.system ? 'border-green-500 bg-green-50' : 'border-slate-200 hover:border-green-300'} rounded-xl transition-all text-left">
+                            <div>
+                                <div class="text-sm font-black text-slate-800">시스템 에어컨(4실)</div>
+                                <div class="text-[10px] text-slate-500 mt-1">목공/전기 번들</div>
+                            </div>
+                            ${data.aircon.system ? '<span class="text-green-600 font-black">✓</span>' : ''}
+                        </button>
+                        <button onclick="app.selectMeetingOption('aircon', 'stand')" class="meeting-btn ${data.aircon.stand ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.aircon.stand ? 'border-green-500 bg-green-50' : 'border-slate-200 hover:border-green-300'} rounded-xl transition-all text-left">
+                            <div>
+                                <div class="text-sm font-black text-slate-800">스탠드/벽걸이</div>
+                                <div class="text-[10px] text-slate-500 mt-1">배관 매립형</div>
+                            </div>
+                            ${data.aircon.stand ? '<span class="text-green-600 font-black">✓</span>' : ''}
+                        </button>
                     </div>
                 </div>
                 
-                <!-- 바닥 -->
-                <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200">
-                    <h3 class="text-sm font-black text-slate-800 mb-4 uppercase tracking-widest">바닥</h3>
-                    <div class="space-y-2">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="radio" name="floor" value="장판" ${data.floor.type === '장판' ? 'checked' : ''} onchange="app.updateMeetingData('floor', {...app.meetingData.floor, type: this.value}); app.handleMeetingCheck('floor', this.value)" class="w-4 h-4">
-                            <span class="text-sm font-bold">장판</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="radio" name="floor" value="강마루" ${data.floor.type === '강마루' ? 'checked' : ''} onchange="app.updateMeetingData('floor', {...app.meetingData.floor, type: this.value}); app.handleMeetingCheck('floor', this.value)" class="w-4 h-4">
-                            <span class="text-sm font-bold">강마루</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="radio" name="floor" value="원목마루" ${data.floor.type === '원목마루' ? 'checked' : ''} onchange="app.updateMeetingData('floor', {...app.meetingData.floor, type: this.value}); app.handleMeetingCheck('floor', this.value)" class="w-4 h-4">
-                            <span class="text-sm font-bold">원목마루</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="radio" name="floor" value="타일" ${data.floor.type === '타일' ? 'checked' : ''} onchange="app.updateMeetingData('floor', {...app.meetingData.floor, type: this.value}); app.handleMeetingCheck('floor', this.value)" class="w-4 h-4">
-                            <span class="text-sm font-bold">타일</span>
-                        </label>
+                <!-- 바닥재 -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-4 h-4 bg-orange-500 rounded"></div>
+                        <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest">바닥재 (FLOOR)</h3>
+                    </div>
+                    <div class="grid grid-cols-1 gap-3">
+                        <button onclick="app.selectMeetingOption('floor', '원목마루')" class="meeting-btn ${data.floor.type === '원목마루' ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.floor.type === '원목마루' ? 'border-orange-500 bg-orange-50' : 'border-slate-200 hover:border-orange-300'} rounded-xl transition-all text-left">
+                            <div>
+                                <div class="text-sm font-black text-slate-800">프리미엄 원목 마루</div>
+                                <div class="text-[10px] text-slate-500 mt-1">고금/광폭</div>
+                            </div>
+                            ${data.floor.type === '원목마루' ? '<span class="text-orange-600 font-black">✓</span>' : ''}
+                        </button>
+                        <button onclick="app.selectMeetingOption('floor', '강마루')" class="meeting-btn ${data.floor.type === '강마루' ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.floor.type === '강마루' ? 'border-orange-500 bg-orange-50' : 'border-slate-200 hover:border-orange-300'} rounded-xl transition-all text-left">
+                            <div>
+                                <div class="text-sm font-black text-slate-800">친환경 강마루</div>
+                                <div class="text-[10px] text-slate-500 mt-1">표준/동화/구정</div>
+                            </div>
+                            ${data.floor.type === '강마루' ? '<span class="text-orange-600 font-black">✓</span>' : ''}
+                        </button>
+                        <button onclick="app.selectMeetingOption('floor', '장판')" class="meeting-btn ${data.floor.type === '장판' ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.floor.type === '장판' ? 'border-orange-500 bg-orange-50' : 'border-slate-200 hover:border-orange-300'} rounded-xl transition-all text-left">
+                            <div>
+                                <div class="text-sm font-black text-slate-800">장판</div>
+                                <div class="text-[10px] text-slate-500 mt-1">가격▼</div>
+                            </div>
+                            ${data.floor.type === '장판' ? '<span class="text-orange-600 font-black">✓</span>' : ''}
+                        </button>
                     </div>
                 </div>
                 
-                <!-- 벽 -->
-                <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200">
-                    <h3 class="text-sm font-black text-slate-800 mb-4 uppercase tracking-widest">벽</h3>
-                    <div class="space-y-2">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="radio" name="wall" value="실크" ${data.wall.type === '실크' ? 'checked' : ''} onchange="app.updateMeetingData('wall', {...app.meetingData.wall, type: this.value}); app.handleMeetingCheck('wall', this.value)" class="w-4 h-4">
-                            <span class="text-sm font-bold">실크</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="radio" name="wall" value="합지" ${data.wall.type === '합지' ? 'checked' : ''} onchange="app.updateMeetingData('wall', {...app.meetingData.wall, type: this.value}); app.handleMeetingCheck('wall', this.value)" class="w-4 h-4">
-                            <span class="text-sm font-bold">합지</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="radio" name="wall" value="도장" ${data.wall.type === '도장' ? 'checked' : ''} onchange="app.updateMeetingData('wall', {...app.meetingData.wall, type: this.value}); app.handleMeetingCheck('wall', this.value)" class="w-4 h-4">
-                            <span class="text-sm font-bold">도장(페인트)</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="radio" name="wall" value="타일" ${data.wall.type === '타일' ? 'checked' : ''} onchange="app.updateMeetingData('wall', {...app.meetingData.wall, type: this.value}); app.handleMeetingCheck('wall', this.value)" class="w-4 h-4">
-                            <span class="text-sm font-bold">타일</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="radio" name="wall" value="필름" ${data.wall.type === '필름' ? 'checked' : ''} onchange="app.updateMeetingData('wall', {...app.meetingData.wall, type: this.value}); app.handleMeetingCheck('wall', this.value)" class="w-4 h-4">
-                            <span class="text-sm font-bold">필름</span>
-                        </label>
+                <!-- 벽지 -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-4 h-4 bg-purple-500 rounded"></div>
+                        <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest">벽지 (WALL)</h3>
+                    </div>
+                    <div class="grid grid-cols-1 gap-3">
+                        <button onclick="app.selectMeetingOption('wall', 'LX디아망')" class="meeting-btn ${data.wall.type === 'LX디아망' ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.wall.type === 'LX디아망' ? 'border-purple-500 bg-purple-50' : 'border-slate-200 hover:border-purple-300'} rounded-xl transition-all text-left">
+                            <div>
+                                <div class="text-sm font-black text-slate-800">LX 디아망</div>
+                                <div class="text-[10px] text-slate-500 mt-1">프리미엄</div>
+                            </div>
+                            ${data.wall.type === 'LX디아망' ? '<span class="text-purple-600 font-black">✓</span>' : ''}
+                        </button>
+                        <button onclick="app.selectMeetingOption('wall', '실크')" class="meeting-btn ${data.wall.type === '실크' ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.wall.type === '실크' ? 'border-purple-500 bg-purple-50' : 'border-slate-200 hover:border-purple-300'} rounded-xl transition-all text-left">
+                            <div>
+                                <div class="text-sm font-black text-slate-800">실크벽지</div>
+                                <div class="text-[10px] text-slate-500 mt-1">베스띠/테라피</div>
+                            </div>
+                            ${data.wall.type === '실크' ? '<span class="text-purple-600 font-black">✓</span>' : ''}
+                        </button>
+                        <button onclick="app.selectMeetingOption('wall', '합지')" class="meeting-btn ${data.wall.type === '합지' ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.wall.type === '합지' ? 'border-purple-500 bg-purple-50' : 'border-slate-200 hover:border-purple-300'} rounded-xl transition-all text-left">
+                            <div>
+                                <div class="text-sm font-black text-slate-800">친환경 합지</div>
+                                <div class="text-[10px] text-slate-500 mt-1">광폭합지</div>
+                            </div>
+                            ${data.wall.type === '합지' ? '<span class="text-purple-600 font-black">✓</span>' : ''}
+                        </button>
                     </div>
                 </div>
                 
@@ -901,6 +925,29 @@
             } else {
                 app.meetingData[key] = value;
             }
+        };
+
+        // ==================== 미팅지 옵션 선택 ====================
+        app.selectMeetingOption = function(category, value) {
+            if (category === 'window') {
+                app.updateMeetingData('window', value);
+                app.handleMeetingCheck('window', value);
+                app.renderMeetingForm();
+            } else if (category === 'aircon') {
+                const newValue = !app.meetingData.aircon[value];
+                app.updateMeetingData('aircon', {...app.meetingData.aircon, [value]: newValue});
+                app.handleMeetingCheck('aircon', value, newValue);
+                app.renderMeetingForm();
+            } else if (category === 'floor') {
+                app.updateMeetingData('floor', {...app.meetingData.floor, type: value});
+                app.handleMeetingCheck('floor', value);
+                app.renderMeetingForm();
+            } else if (category === 'wall') {
+                app.updateMeetingData('wall', {...app.meetingData.wall, type: value});
+                app.handleMeetingCheck('wall', value);
+                app.renderMeetingForm();
+            }
+            app.updateEstimateQuantities();
         };
 
         // ==================== 미팅지 체크박스 처리 및 DB 연동 ====================
@@ -1003,6 +1050,9 @@
             } else {
                 app.setAreaType('normal');
             }
+            
+            app.renderMeetingForm();
+            app.updateEstimateQuantities();
         };
 
         // ==================== 미팅지와 견적 연동 ====================
@@ -1035,7 +1085,7 @@
             container.innerHTML = '';
             cats.forEach(c => {
                 const btn = document.createElement('button');
-                btn.className = `category-tab px-4 py-2 rounded-2xl text-[11px] font-black border-2 border-slate-100 transition-all shrink-0 ${app.activeCategory === c ? 'active' : 'bg-white text-slate-500 hover:bg-slate-100'}`;
+                btn.className = `category-tab px-5 py-2.5 rounded-xl text-[11px] font-black border-2 transition-all shrink-0 ${app.activeCategory === c ? 'active bg-blue-600 text-white border-blue-600 shadow-lg' : 'bg-white text-slate-600 border-slate-200 hover:bg-blue-50 hover:border-blue-300'}`;
                 btn.textContent = c;
                 btn.onclick = () => {
                     app.activeCategory = c;
@@ -1389,11 +1439,75 @@
             document.getElementById('p2-sum').textContent = directTotal.toLocaleString();
         };
 
+        // ==================== 추정 시공물량 계산 ====================
+        app.updateEstimateQuantities = function() {
+            const size = utils.safeParseFloat(document.getElementById('site-size').value, 0);
+            const areaType = app.areaType || 'normal';
+            
+            // 바닥(마루) 평수 계산
+            let floorEstimate = 0;
+            const floorItems = app.selectedItems.filter(item => 
+                item.cat.includes('마루') || 
+                item.cat.includes('바닥') ||
+                item.name.includes('마루') ||
+                item.name.includes('바닥') ||
+                item.logic.includes('FLOOR')
+            );
+            floorItems.forEach(item => {
+                if (item.logic.includes('FLOOR')) {
+                    const qty = calculationLogic.calculateQuantity(item.logic, size, areaType);
+                    floorEstimate += qty;
+                } else {
+                    floorEstimate += item.qty || 0;
+                }
+            });
+            // 기본 바닥면적 계산 (평수 × 0.7)
+            if (floorEstimate === 0 && size > 0) {
+                floorEstimate = Math.ceil(size * 0.7);
+            }
+            
+            // 도배(벽지) 평수 계산
+            let wallEstimate = 0;
+            const wallItems = app.selectedItems.filter(item => 
+                item.cat.includes('도배') || 
+                item.cat.includes('벽') ||
+                item.name.includes('도배') ||
+                item.name.includes('벽지') ||
+                item.logic.includes('WALL') ||
+                item.logic.includes('W_SILK') ||
+                item.logic.includes('W_HAP') ||
+                item.logic.includes('W_PREM')
+            );
+            wallItems.forEach(item => {
+                if (item.logic.includes('WALL') || item.logic.includes('W_')) {
+                    const qty = calculationLogic.calculateQuantity(item.logic, size, areaType);
+                    wallEstimate += qty;
+                } else {
+                    wallEstimate += item.qty || 0;
+                }
+            });
+            // 기본 벽면적 계산 (평수 × 3.5)
+            if (wallEstimate === 0 && size > 0) {
+                wallEstimate = Math.ceil(size * 3.5);
+            }
+            
+            // UI 업데이트
+            const floorDisplay = document.getElementById('floor-estimate');
+            const wallDisplay = document.getElementById('wall-estimate');
+            const quantityCard = document.getElementById('estimate-quantity-card');
+            
+            if (floorDisplay) floorDisplay.textContent = floorEstimate.toFixed(1) + '평';
+            if (wallDisplay) wallDisplay.textContent = wallEstimate.toFixed(1) + '평';
+            
+            // 카드는 항상 표시 (미팅지 모드일 때만 보임)
+        };
+
         // ==================== 통합 업데이트 ====================
         app.updateAll = function() {
             app.updateDashboard();
             app.updateChart();
             app.updatePrintView();
+            app.updateEstimateQuantities();
         };
 
         // ==================== 디바운스 래퍼 ====================
