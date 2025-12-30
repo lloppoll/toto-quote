@@ -1024,70 +1024,106 @@
                 </div>
                 ` : ''}
                 
-                <!-- 주방 상세 -->
+                <!-- 주방 (테이블 형식으로 통합) -->
                 <div class="space-y-4">
                     <div class="flex items-center gap-3 mb-3">
                         <div class="w-4 h-4 bg-pink-500 rounded"></div>
                         <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest">주방 (KITCHEN)</h3>
                     </div>
-                    <div class="grid grid-cols-2 gap-3">
-                        <button onclick="app.toggleMeetingOption('kitchen', 'induction')" class="meeting-btn ${data.kitchen.induction ? 'active' : ''} flex items-center justify-between p-3 bg-white border-2 ${data.kitchen.induction ? 'border-pink-500 bg-pink-50' : 'border-slate-200 hover:border-pink-300'} rounded-xl transition-all text-left">
-                            <span class="text-sm font-black text-slate-800">인덕션</span>
-                            ${data.kitchen.induction ? '<span class="text-pink-600 font-black">✓</span>' : ''}
-                        </button>
-                        <button onclick="app.toggleMeetingOption('kitchen', 'gas')" class="meeting-btn ${data.kitchen.gas ? 'active' : ''} flex items-center justify-between p-3 bg-white border-2 ${data.kitchen.gas ? 'border-pink-500 bg-pink-50' : 'border-slate-200 hover:border-pink-300'} rounded-xl transition-all text-left">
-                            <span class="text-sm font-black text-slate-800">가스레인지</span>
-                            ${data.kitchen.gas ? '<span class="text-pink-600 font-black">✓</span>' : ''}
-                        </button>
-                        <button onclick="app.toggleMeetingOption('kitchen', 'coffee')" class="meeting-btn ${data.kitchen.coffee ? 'active' : ''} flex items-center justify-between p-3 bg-white border-2 ${data.kitchen.coffee ? 'border-pink-500 bg-pink-50' : 'border-slate-200 hover:border-pink-300'} rounded-xl transition-all text-left">
-                            <span class="text-sm font-black text-slate-800">커피머신</span>
-                            ${data.kitchen.coffee ? '<span class="text-pink-600 font-black">✓</span>' : ''}
-                        </button>
-                        <button onclick="app.toggleMeetingOption('kitchen', 'dishwasher')" class="meeting-btn ${data.kitchen.dishwasher ? 'active' : ''} flex items-center justify-between p-3 bg-white border-2 ${data.kitchen.dishwasher ? 'border-pink-500 bg-pink-50' : 'border-slate-200 hover:border-pink-300'} rounded-xl transition-all text-left">
-                            <span class="text-sm font-black text-slate-800">식기세척기</span>
-                            ${data.kitchen.dishwasher ? '<span class="text-pink-600 font-black">✓</span>' : ''}
-                        </button>
-                    </div>
-                    <div class="grid grid-cols-2 gap-3 mt-3">
-                        <div>
-                            <label class="text-[10px] font-bold text-slate-500 uppercase">냉장고</label>
-                            <select onchange="app.updateMeetingData('kitchen', {...app.meetingData.kitchen, fridge: this.value})" class="w-full mt-1 bg-white border-2 border-slate-200 rounded-lg p-2 text-sm font-bold outline-none">
-                                <option value="">선택</option>
-                                <option value="키친핏" ${data.kitchen.fridge === '키친핏' ? 'selected' : ''}>키친핏 냉장고</option>
-                                <option value="일반" ${data.kitchen.fridge === '일반' ? 'selected' : ''}>일반 냉장고</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="text-[10px] font-bold text-slate-500 uppercase">김치냉장고</label>
-                            <select onchange="app.updateMeetingData('kitchen', {...app.meetingData.kitchen, kimchi: this.value})" class="w-full mt-1 bg-white border-2 border-slate-200 rounded-lg p-2 text-sm font-bold outline-none">
-                                <option value="">선택</option>
-                                <option value="키친핏" ${data.kitchen.kimchi === '키친핏' ? 'selected' : ''}>키친핏 김치냉장고</option>
-                                <option value="일반" ${data.kitchen.kimchi === '일반' ? 'selected' : ''}>일반 김치냉장고</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="text-[10px] font-bold text-slate-500 uppercase">정수기</label>
-                            <select onchange="app.updateMeetingData('kitchen', {...app.meetingData.kitchen, water: this.value})" class="w-full mt-1 bg-white border-2 border-slate-200 rounded-lg p-2 text-sm font-bold outline-none">
-                                <option value="">선택</option>
-                                <option value="일반" ${data.kitchen.water === '일반' ? 'selected' : ''}>일반정수기</option>
-                                <option value="퓨리케이" ${data.kitchen.water === '퓨리케이' ? 'selected' : ''}>퓨리케이 정수기</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="text-[10px] font-bold text-slate-500 uppercase">후드</label>
-                            <select onchange="app.updateMeetingData('kitchen', {...app.meetingData.kitchen, hood: this.value})" class="w-full mt-1 bg-white border-2 border-slate-200 rounded-lg p-2 text-sm font-bold outline-none">
-                                <option value="">선택</option>
-                                <option value="빌트인" ${data.kitchen.hood === '빌트인' ? 'selected' : ''}>빌트인후드</option>
-                                <option value="독립" ${data.kitchen.hood === '독립' ? 'selected' : ''}>독립후드</option>
-                            </select>
-                        </div>
-                        <div class="col-span-2">
-                            <label class="text-[10px] font-bold text-slate-500 uppercase">싱크대 구조</label>
-                            <div class="flex gap-3 mt-1">
-                                <button onclick="app.updateMeetingData('kitchen', {...app.meetingData.kitchen, sink: '일반'}); app.renderMeetingForm()" class="flex-1 p-3 bg-white border-2 ${data.kitchen.sink === '일반' ? 'border-pink-500 bg-pink-50' : 'border-slate-200'} rounded-lg text-sm font-bold">일반구조</button>
-                                <button onclick="app.updateMeetingData('kitchen', {...app.meetingData.kitchen, sink: '아일랜드'}); app.renderMeetingForm()" class="flex-1 p-3 bg-white border-2 ${data.kitchen.sink === '아일랜드' ? 'border-pink-500 bg-pink-50' : 'border-slate-200'} rounded-lg text-sm font-bold">아일랜드형</button>
-                            </div>
-                        </div>
+                    <div class="bg-white border-2 border-slate-200 rounded-xl overflow-hidden">
+                        <table class="w-full text-xs">
+                            <thead class="bg-slate-50">
+                                <tr>
+                                    <th class="p-3 text-left font-black text-slate-700 border-b border-slate-200">항목</th>
+                                    <th class="p-3 text-center font-black text-slate-700 border-b border-slate-200">선택</th>
+                                    <th class="p-3 text-center font-black text-slate-700 border-b border-slate-200">사양</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="hover:bg-pink-50/30">
+                                    <td class="p-3 border-b border-slate-100 font-bold">인덕션</td>
+                                    <td class="p-2 border-b border-slate-100 text-center">
+                                        <input type="checkbox" ${data.kitchen.induction ? 'checked' : ''} onchange="app.toggleMeetingOption('kitchen', 'induction')" class="w-4 h-4">
+                                    </td>
+                                    <td class="p-2 border-b border-slate-100">-</td>
+                                </tr>
+                                <tr class="hover:bg-pink-50/30">
+                                    <td class="p-3 border-b border-slate-100 font-bold">가스레인지</td>
+                                    <td class="p-2 border-b border-slate-100 text-center">
+                                        <input type="checkbox" ${data.kitchen.gas ? 'checked' : ''} onchange="app.toggleMeetingOption('kitchen', 'gas')" class="w-4 h-4">
+                                    </td>
+                                    <td class="p-2 border-b border-slate-100">-</td>
+                                </tr>
+                                <tr class="hover:bg-pink-50/30">
+                                    <td class="p-3 border-b border-slate-100 font-bold">커피머신</td>
+                                    <td class="p-2 border-b border-slate-100 text-center">
+                                        <input type="checkbox" ${data.kitchen.coffee ? 'checked' : ''} onchange="app.toggleMeetingOption('kitchen', 'coffee')" class="w-4 h-4">
+                                    </td>
+                                    <td class="p-2 border-b border-slate-100">-</td>
+                                </tr>
+                                <tr class="hover:bg-pink-50/30">
+                                    <td class="p-3 border-b border-slate-100 font-bold">식기세척기</td>
+                                    <td class="p-2 border-b border-slate-100 text-center">
+                                        <input type="checkbox" ${data.kitchen.dishwasher ? 'checked' : ''} onchange="app.toggleMeetingOption('kitchen', 'dishwasher')" class="w-4 h-4">
+                                    </td>
+                                    <td class="p-2 border-b border-slate-100">-</td>
+                                </tr>
+                                <tr class="hover:bg-pink-50/30">
+                                    <td class="p-3 border-b border-slate-100 font-bold">냉장고</td>
+                                    <td class="p-2 border-b border-slate-100 text-center">-</td>
+                                    <td class="p-2 border-b border-slate-100">
+                                        <select onchange="app.updateMeetingData('kitchen', {...app.meetingData.kitchen, fridge: this.value}); if(this.value) app.handleMeetingCheck('kitchen', 'fridge', this.value)" class="w-full bg-white border border-slate-200 rounded p-1.5 text-[10px] font-bold outline-none">
+                                            <option value="">선택</option>
+                                            <option value="키친핏" ${data.kitchen.fridge === '키친핏' ? 'selected' : ''}>키친핏</option>
+                                            <option value="일반" ${data.kitchen.fridge === '일반' ? 'selected' : ''}>일반</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-pink-50/30">
+                                    <td class="p-3 border-b border-slate-100 font-bold">김치냉장고</td>
+                                    <td class="p-2 border-b border-slate-100 text-center">-</td>
+                                    <td class="p-2 border-b border-slate-100">
+                                        <select onchange="app.updateMeetingData('kitchen', {...app.meetingData.kitchen, kimchi: this.value}); if(this.value) app.handleMeetingCheck('kitchen', 'kimchi', this.value)" class="w-full bg-white border border-slate-200 rounded p-1.5 text-[10px] font-bold outline-none">
+                                            <option value="">선택</option>
+                                            <option value="키친핏" ${data.kitchen.kimchi === '키친핏' ? 'selected' : ''}>키친핏</option>
+                                            <option value="일반" ${data.kitchen.kimchi === '일반' ? 'selected' : ''}>일반</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-pink-50/30">
+                                    <td class="p-3 border-b border-slate-100 font-bold">정수기</td>
+                                    <td class="p-2 border-b border-slate-100 text-center">-</td>
+                                    <td class="p-2 border-b border-slate-100">
+                                        <select onchange="app.updateMeetingData('kitchen', {...app.meetingData.kitchen, water: this.value}); if(this.value) app.handleMeetingCheck('kitchen', 'water', this.value)" class="w-full bg-white border border-slate-200 rounded p-1.5 text-[10px] font-bold outline-none">
+                                            <option value="">선택</option>
+                                            <option value="일반" ${data.kitchen.water === '일반' ? 'selected' : ''}>일반</option>
+                                            <option value="퓨리케이" ${data.kitchen.water === '퓨리케이' ? 'selected' : ''}>퓨리케이</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-pink-50/30">
+                                    <td class="p-3 border-b border-slate-100 font-bold">후드</td>
+                                    <td class="p-2 border-b border-slate-100 text-center">-</td>
+                                    <td class="p-2 border-b border-slate-100">
+                                        <select onchange="app.updateMeetingData('kitchen', {...app.meetingData.kitchen, hood: this.value}); if(this.value) app.handleMeetingCheck('kitchen', 'hood', this.value)" class="w-full bg-white border border-slate-200 rounded p-1.5 text-[10px] font-bold outline-none">
+                                            <option value="">선택</option>
+                                            <option value="빌트인" ${data.kitchen.hood === '빌트인' ? 'selected' : ''}>빌트인</option>
+                                            <option value="독립" ${data.kitchen.hood === '독립' ? 'selected' : ''}>독립</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-pink-50/30">
+                                    <td class="p-3 border-b border-slate-100 font-bold">싱크대 구조</td>
+                                    <td class="p-2 border-b border-slate-100 text-center">-</td>
+                                    <td class="p-2 border-b border-slate-100">
+                                        <div class="flex gap-2">
+                                            <button onclick="app.updateMeetingData('kitchen', {...app.meetingData.kitchen, sink: '일반'}); app.handleMeetingCheck('kitchen', 'sink', '일반'); app.renderMeetingForm()" class="flex-1 p-1.5 bg-white border-2 ${data.kitchen.sink === '일반' ? 'border-pink-500 bg-pink-50' : 'border-slate-200'} rounded text-[10px] font-bold">일반</button>
+                                            <button onclick="app.updateMeetingData('kitchen', {...app.meetingData.kitchen, sink: '아일랜드'}); app.handleMeetingCheck('kitchen', 'sink', '아일랜드'); app.renderMeetingForm()" class="flex-1 p-1.5 bg-white border-2 ${data.kitchen.sink === '아일랜드' ? 'border-pink-500 bg-pink-50' : 'border-slate-200'} rounded text-[10px] font-bold">아일랜드</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 
@@ -1156,151 +1192,142 @@
                     </div>
                 </div>
                 
-                <!-- 욕실 -->
+                <!-- 욕실 (테이블 형식으로 통합) -->
                 <div class="space-y-4">
                     <div class="flex items-center gap-3 mb-3">
                         <div class="w-4 h-4 bg-rose-500 rounded"></div>
                         <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest">욕실 (BATHROOM)</h3>
                     </div>
-                    <!-- 공용 욕실 -->
-                    <div class="bg-white border-2 border-slate-200 rounded-xl p-4">
-                        <div class="flex items-center gap-2 mb-3">
-                            <input type="checkbox" ${data.bathroom.common.enabled ? 'checked' : ''} onchange="app.updateMeetingData('bathroom', {...app.meetingData.bathroom, common: {...app.meetingData.bathroom.common, enabled: this.checked}}); app.renderMeetingForm()" class="w-4 h-4">
-                            <span class="text-sm font-black text-slate-800">공용 욕실</span>
-                        </div>
-                        ${data.bathroom.common.enabled ? `
-                        <div class="grid grid-cols-2 gap-3 mt-3">
-                            <div>
-                                <label class="text-[10px] font-bold text-slate-500 uppercase">욕조</label>
-                                <select onchange="app.updateMeetingData('bathroom', {...app.meetingData.bathroom, common: {...app.meetingData.bathroom.common, bathtub: this.value}})" class="w-full mt-1 bg-white border-2 border-slate-200 rounded-lg p-2 text-sm font-bold outline-none">
-                                    <option value="">선택</option>
-                                    <option value="일반욕조" ${data.bathroom.common.bathtub === '일반욕조' ? 'selected' : ''}>일반욕조</option>
-                                    <option value="조적욕조" ${data.bathroom.common.bathtub === '조적욕조' ? 'selected' : ''}>조적욕조</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="text-[10px] font-bold text-slate-500 uppercase">파티션</label>
-                                <select onchange="app.updateMeetingData('bathroom', {...app.meetingData.bathroom, common: {...app.meetingData.bathroom.common, partition: this.value}})" class="w-full mt-1 bg-white border-2 border-slate-200 rounded-lg p-2 text-sm font-bold outline-none">
-                                    <option value="">선택</option>
-                                    <option value="유리파티션" ${data.bathroom.common.partition === '유리파티션' ? 'selected' : ''}>유리 파티션</option>
-                                    <option value="조적파티션" ${data.bathroom.common.partition === '조적파티션' ? 'selected' : ''}>조적 파티션</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="text-[10px] font-bold text-slate-500 uppercase">슬라이딩장</label>
-                                <select onchange="app.updateMeetingData('bathroom', {...app.meetingData.bathroom, common: {...app.meetingData.bathroom.common, sliding: this.value}})" class="w-full mt-1 bg-white border-2 border-slate-200 rounded-lg p-2 text-sm font-bold outline-none">
-                                    <option value="">선택</option>
-                                    <option value="장거울통일" ${data.bathroom.common.sliding === '장거울통일' ? 'selected' : ''}>장거울통일</option>
-                                    <option value="장거울따로" ${data.bathroom.common.sliding === '장거울따로' ? 'selected' : ''}>장거울따로</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="text-[10px] font-bold text-slate-500 uppercase">거울장</label>
-                                <select onchange="app.updateMeetingData('bathroom', {...app.meetingData.bathroom, common: {...app.meetingData.bathroom.common, mirror: this.value}})" class="w-full mt-1 bg-white border-2 border-slate-200 rounded-lg p-2 text-sm font-bold outline-none">
-                                    <option value="">선택</option>
-                                    <option value="여닫이장" ${data.bathroom.common.mirror === '여닫이장' ? 'selected' : ''}>여닫이장</option>
-                                    <option value="플랩장" ${data.bathroom.common.mirror === '플랩장' ? 'selected' : ''}>플랩장</option>
-                                    <option value="플랩+여닫이장" ${data.bathroom.common.mirror === '플랩+여닫이장' ? 'selected' : ''}>플랩+여닫이장</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="text-[10px] font-bold text-slate-500 uppercase">타일</label>
-                                <select onchange="app.updateMeetingData('bathroom', {...app.meetingData.bathroom, common: {...app.meetingData.bathroom.common, tile: this.value}})" class="w-full mt-1 bg-white border-2 border-slate-200 rounded-lg p-2 text-sm font-bold outline-none">
-                                    <option value="">선택</option>
-                                    <option value="300*600" ${data.bathroom.common.tile === '300*600' ? 'selected' : ''}>타일 300*600</option>
-                                    <option value="600*600" ${data.bathroom.common.tile === '600*600' ? 'selected' : ''}>타일 600*600</option>
-                                    <option value="600*1200" ${data.bathroom.common.tile === '600*1200' ? 'selected' : ''}>타일 600*1200</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="text-[10px] font-bold text-slate-500 uppercase">수전</label>
-                                <select onchange="app.updateMeetingData('bathroom', {...app.meetingData.bathroom, common: {...app.meetingData.bathroom.common, faucet: this.value}})" class="w-full mt-1 bg-white border-2 border-slate-200 rounded-lg p-2 text-sm font-bold outline-none">
-                                    <option value="">선택</option>
-                                    <option value="일반수전" ${data.bathroom.common.faucet === '일반수전' ? 'selected' : ''}>일반수전</option>
-                                    <option value="젠다이" ${data.bathroom.common.faucet === '젠다이' ? 'selected' : ''}>젠다이</option>
-                                    <option value="대림바스" ${data.bathroom.common.faucet === '대림바스' ? 'selected' : ''}>대림바스</option>
-                                    <option value="아메리칸스탠다드" ${data.bathroom.common.faucet === '아메리칸스탠다드' ? 'selected' : ''}>아메리칸 스탠다드</option>
-                                </select>
-                            </div>
-                            <div class="col-span-2">
-                                <label class="text-[10px] font-bold text-slate-500 uppercase">욕가</label>
-                                <div class="flex gap-2 mt-1">
-                                    <button onclick="app.updateMeetingData('bathroom', {...app.meetingData.bathroom, common: {...app.meetingData.bathroom.common, faucet: '일반욕가'}}); app.renderMeetingForm()" class="flex-1 p-2 bg-white border-2 ${data.bathroom.common.faucet === '일반욕가' ? 'border-rose-500 bg-rose-50' : 'border-slate-200'} rounded-lg text-xs font-bold">일반욕가</button>
-                                    <button onclick="app.updateMeetingData('bathroom', {...app.meetingData.bathroom, common: {...app.meetingData.bathroom.common, faucet: '트렌치욕가'}}); app.renderMeetingForm()" class="flex-1 p-2 bg-white border-2 ${data.bathroom.common.faucet === '트렌치욕가' ? 'border-rose-500 bg-rose-50' : 'border-slate-200'} rounded-lg text-xs font-bold">트렌치욕가</button>
-                                </div>
-                            </div>
-                        </div>
-                        ` : ''}
-                    </div>
-                    <!-- 부부 욕실 -->
-                    <div class="bg-white border-2 border-slate-200 rounded-xl p-4">
-                        <div class="flex items-center gap-2 mb-3">
-                            <input type="checkbox" ${data.bathroom.couple.enabled ? 'checked' : ''} onchange="app.updateMeetingData('bathroom', {...app.meetingData.bathroom, couple: {...app.meetingData.bathroom.couple, enabled: this.checked}}); app.renderMeetingForm()" class="w-4 h-4">
-                            <span class="text-sm font-black text-slate-800">부부 욕실</span>
-                        </div>
-                        ${data.bathroom.couple.enabled ? `
-                        <div class="grid grid-cols-2 gap-3 mt-3">
-                            <div>
-                                <label class="text-[10px] font-bold text-slate-500 uppercase">욕조</label>
-                                <select onchange="app.updateMeetingData('bathroom', {...app.meetingData.bathroom, couple: {...app.meetingData.bathroom.couple, bathtub: this.value}})" class="w-full mt-1 bg-white border-2 border-slate-200 rounded-lg p-2 text-sm font-bold outline-none">
-                                    <option value="">선택</option>
-                                    <option value="일반욕조" ${data.bathroom.couple.bathtub === '일반욕조' ? 'selected' : ''}>일반욕조</option>
-                                    <option value="조적욕조" ${data.bathroom.couple.bathtub === '조적욕조' ? 'selected' : ''}>조적욕조</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="text-[10px] font-bold text-slate-500 uppercase">파티션</label>
-                                <select onchange="app.updateMeetingData('bathroom', {...app.meetingData.bathroom, couple: {...app.meetingData.bathroom.couple, partition: this.value}})" class="w-full mt-1 bg-white border-2 border-slate-200 rounded-lg p-2 text-sm font-bold outline-none">
-                                    <option value="">선택</option>
-                                    <option value="유리파티션" ${data.bathroom.couple.partition === '유리파티션' ? 'selected' : ''}>유리 파티션</option>
-                                    <option value="조적파티션" ${data.bathroom.couple.partition === '조적파티션' ? 'selected' : ''}>조적 파티션</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="text-[10px] font-bold text-slate-500 uppercase">슬라이딩장</label>
-                                <select onchange="app.updateMeetingData('bathroom', {...app.meetingData.bathroom, couple: {...app.meetingData.bathroom.couple, sliding: this.value}})" class="w-full mt-1 bg-white border-2 border-slate-200 rounded-lg p-2 text-sm font-bold outline-none">
-                                    <option value="">선택</option>
-                                    <option value="장거울통일" ${data.bathroom.couple.sliding === '장거울통일' ? 'selected' : ''}>장거울통일</option>
-                                    <option value="장거울따로" ${data.bathroom.couple.sliding === '장거울따로' ? 'selected' : ''}>장거울따로</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="text-[10px] font-bold text-slate-500 uppercase">거울장</label>
-                                <select onchange="app.updateMeetingData('bathroom', {...app.meetingData.bathroom, couple: {...app.meetingData.bathroom.couple, mirror: this.value}})" class="w-full mt-1 bg-white border-2 border-slate-200 rounded-lg p-2 text-sm font-bold outline-none">
-                                    <option value="">선택</option>
-                                    <option value="여닫이장" ${data.bathroom.couple.mirror === '여닫이장' ? 'selected' : ''}>여닫이장</option>
-                                    <option value="플랩장" ${data.bathroom.couple.mirror === '플랩장' ? 'selected' : ''}>플랩장</option>
-                                    <option value="플랩+여닫이장" ${data.bathroom.couple.mirror === '플랩+여닫이장' ? 'selected' : ''}>플랩+여닫이장</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="text-[10px] font-bold text-slate-500 uppercase">타일</label>
-                                <select onchange="app.updateMeetingData('bathroom', {...app.meetingData.bathroom, couple: {...app.meetingData.bathroom.couple, tile: this.value}})" class="w-full mt-1 bg-white border-2 border-slate-200 rounded-lg p-2 text-sm font-bold outline-none">
-                                    <option value="">선택</option>
-                                    <option value="300*600" ${data.bathroom.couple.tile === '300*600' ? 'selected' : ''}>타일 300*600</option>
-                                    <option value="600*600" ${data.bathroom.couple.tile === '600*600' ? 'selected' : ''}>타일 600*600</option>
-                                    <option value="600*1200" ${data.bathroom.couple.tile === '600*1200' ? 'selected' : ''}>타일 600*1200</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="text-[10px] font-bold text-slate-500 uppercase">수전</label>
-                                <select onchange="app.updateMeetingData('bathroom', {...app.meetingData.bathroom, couple: {...app.meetingData.bathroom.couple, faucet: this.value}})" class="w-full mt-1 bg-white border-2 border-slate-200 rounded-lg p-2 text-sm font-bold outline-none">
-                                    <option value="">선택</option>
-                                    <option value="일반수전" ${data.bathroom.couple.faucet === '일반수전' ? 'selected' : ''}>일반수전</option>
-                                    <option value="젠다이" ${data.bathroom.couple.faucet === '젠다이' ? 'selected' : ''}>젠다이</option>
-                                    <option value="대림바스" ${data.bathroom.couple.faucet === '대림바스' ? 'selected' : ''}>대림바스</option>
-                                    <option value="아메리칸스탠다드" ${data.bathroom.couple.faucet === '아메리칸스탠다드' ? 'selected' : ''}>아메리칸 스탠다드</option>
-                                </select>
-                            </div>
-                            <div class="col-span-2">
-                                <label class="text-[10px] font-bold text-slate-500 uppercase">욕가</label>
-                                <div class="flex gap-2 mt-1">
-                                    <button onclick="app.updateMeetingData('bathroom', {...app.meetingData.bathroom, couple: {...app.meetingData.bathroom.couple, faucet: '일반욕가'}}); app.renderMeetingForm()" class="flex-1 p-2 bg-white border-2 ${data.bathroom.couple.faucet === '일반욕가' ? 'border-rose-500 bg-rose-50' : 'border-slate-200'} rounded-lg text-xs font-bold">일반욕가</button>
-                                    <button onclick="app.updateMeetingData('bathroom', {...app.meetingData.bathroom, couple: {...app.meetingData.bathroom.couple, faucet: '트렌치욕가'}}); app.renderMeetingForm()" class="flex-1 p-2 bg-white border-2 ${data.bathroom.couple.faucet === '트렌치욕가' ? 'border-rose-500 bg-rose-50' : 'border-slate-200'} rounded-lg text-xs font-bold">트렌치욕가</button>
-                                </div>
-                            </div>
-                        </div>
-                        ` : ''}
+                    <div class="bg-white border-2 border-slate-200 rounded-xl overflow-hidden">
+                        <table class="w-full text-xs">
+                            <thead class="bg-slate-50">
+                                <tr>
+                                    <th class="p-3 text-left font-black text-slate-700 border-b border-slate-200">구분</th>
+                                    <th class="p-3 text-center font-black text-slate-700 border-b border-slate-200">욕조</th>
+                                    <th class="p-3 text-center font-black text-slate-700 border-b border-slate-200">파티션</th>
+                                    <th class="p-3 text-center font-black text-slate-700 border-b border-slate-200">슬라이딩장</th>
+                                    <th class="p-3 text-center font-black text-slate-700 border-b border-slate-200">거울장</th>
+                                    <th class="p-3 text-center font-black text-slate-700 border-b border-slate-200">타일</th>
+                                    <th class="p-3 text-center font-black text-slate-700 border-b border-slate-200">수전/욕가</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- 공용 욕실 -->
+                                <tr class="hover:bg-rose-50/30">
+                                    <td class="p-3 border-b border-slate-100">
+                                        <label class="flex items-center gap-2 cursor-pointer">
+                                            <input type="checkbox" ${data.bathroom.common.enabled ? 'checked' : ''} onchange="app.updateMeetingData('bathroom', {...app.meetingData.bathroom, common: {...app.meetingData.bathroom.common, enabled: this.checked}}); app.renderMeetingForm()" class="w-4 h-4">
+                                            <span class="text-sm font-bold text-slate-800">공용</span>
+                                        </label>
+                                    </td>
+                                    <td class="p-2 border-b border-slate-100">
+                                        <select onchange="app.updateMeetingData('bathroom', {...app.meetingData.bathroom, common: {...app.meetingData.bathroom.common, bathtub: this.value}}); app.handleBathroomOption('common', 'bathtub', this.value)" class="w-full bg-white border border-slate-200 rounded p-1.5 text-[10px] font-bold outline-none" ${!data.bathroom.common.enabled ? 'disabled' : ''}>
+                                            <option value="">-</option>
+                                            <option value="일반욕조" ${data.bathroom.common.bathtub === '일반욕조' ? 'selected' : ''}>일반</option>
+                                            <option value="조적욕조" ${data.bathroom.common.bathtub === '조적욕조' ? 'selected' : ''}>조적</option>
+                                        </select>
+                                    </td>
+                                    <td class="p-2 border-b border-slate-100">
+                                        <select onchange="app.updateMeetingData('bathroom', {...app.meetingData.bathroom, common: {...app.meetingData.bathroom.common, partition: this.value}}); app.handleBathroomOption('common', 'partition', this.value)" class="w-full bg-white border border-slate-200 rounded p-1.5 text-[10px] font-bold outline-none" ${!data.bathroom.common.enabled ? 'disabled' : ''}>
+                                            <option value="">-</option>
+                                            <option value="유리파티션" ${data.bathroom.common.partition === '유리파티션' ? 'selected' : ''}>유리</option>
+                                            <option value="조적파티션" ${data.bathroom.common.partition === '조적파티션' ? 'selected' : ''}>조적</option>
+                                        </select>
+                                    </td>
+                                    <td class="p-2 border-b border-slate-100">
+                                        <select onchange="app.updateMeetingData('bathroom', {...app.meetingData.bathroom, common: {...app.meetingData.bathroom.common, sliding: this.value}}); app.handleBathroomOption('common', 'sliding', this.value)" class="w-full bg-white border border-slate-200 rounded p-1.5 text-[10px] font-bold outline-none" ${!data.bathroom.common.enabled ? 'disabled' : ''}>
+                                            <option value="">-</option>
+                                            <option value="장거울통일" ${data.bathroom.common.sliding === '장거울통일' ? 'selected' : ''}>통일</option>
+                                            <option value="장거울따로" ${data.bathroom.common.sliding === '장거울따로' ? 'selected' : ''}>따로</option>
+                                        </select>
+                                    </td>
+                                    <td class="p-2 border-b border-slate-100">
+                                        <select onchange="app.updateMeetingData('bathroom', {...app.meetingData.bathroom, common: {...app.meetingData.bathroom.common, mirror: this.value}}); app.handleBathroomOption('common', 'mirror', this.value)" class="w-full bg-white border border-slate-200 rounded p-1.5 text-[10px] font-bold outline-none" ${!data.bathroom.common.enabled ? 'disabled' : ''}>
+                                            <option value="">-</option>
+                                            <option value="여닫이장" ${data.bathroom.common.mirror === '여닫이장' ? 'selected' : ''}>여닫이</option>
+                                            <option value="플랩장" ${data.bathroom.common.mirror === '플랩장' ? 'selected' : ''}>플랩</option>
+                                            <option value="플랩+여닫이장" ${data.bathroom.common.mirror === '플랩+여닫이장' ? 'selected' : ''}>플랩+여닫이</option>
+                                        </select>
+                                    </td>
+                                    <td class="p-2 border-b border-slate-100">
+                                        <select onchange="app.updateMeetingData('bathroom', {...app.meetingData.bathroom, common: {...app.meetingData.bathroom.common, tile: this.value}}); app.handleBathroomOption('common', 'tile', this.value)" class="w-full bg-white border border-slate-200 rounded p-1.5 text-[10px] font-bold outline-none" ${!data.bathroom.common.enabled ? 'disabled' : ''}>
+                                            <option value="">-</option>
+                                            <option value="300*600" ${data.bathroom.common.tile === '300*600' ? 'selected' : ''}>300×600</option>
+                                            <option value="600*600" ${data.bathroom.common.tile === '600*600' ? 'selected' : ''}>600×600</option>
+                                            <option value="600*1200" ${data.bathroom.common.tile === '600*1200' ? 'selected' : ''}>600×1200</option>
+                                        </select>
+                                    </td>
+                                    <td class="p-2 border-b border-slate-100">
+                                        <select onchange="app.updateMeetingData('bathroom', {...app.meetingData.bathroom, common: {...app.meetingData.bathroom.common, faucet: this.value}}); app.handleBathroomOption('common', 'faucet', this.value)" class="w-full bg-white border border-slate-200 rounded p-1.5 text-[10px] font-bold outline-none" ${!data.bathroom.common.enabled ? 'disabled' : ''}>
+                                            <option value="">-</option>
+                                            <option value="일반수전" ${data.bathroom.common.faucet === '일반수전' ? 'selected' : ''}>일반수전</option>
+                                            <option value="젠다이" ${data.bathroom.common.faucet === '젠다이' ? 'selected' : ''}>젠다이</option>
+                                            <option value="대림바스" ${data.bathroom.common.faucet === '대림바스' ? 'selected' : ''}>대림바스</option>
+                                            <option value="아메리칸스탠다드" ${data.bathroom.common.faucet === '아메리칸스탠다드' ? 'selected' : ''}>아메리칸</option>
+                                            <option value="일반욕가" ${data.bathroom.common.faucet === '일반욕가' ? 'selected' : ''}>일반욕가</option>
+                                            <option value="트렌치욕가" ${data.bathroom.common.faucet === '트렌치욕가' ? 'selected' : ''}>트렌치욕가</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <!-- 부부 욕실 -->
+                                <tr class="hover:bg-rose-50/30">
+                                    <td class="p-3 border-b border-slate-100">
+                                        <label class="flex items-center gap-2 cursor-pointer">
+                                            <input type="checkbox" ${data.bathroom.couple.enabled ? 'checked' : ''} onchange="app.updateMeetingData('bathroom', {...app.meetingData.bathroom, couple: {...app.meetingData.bathroom.couple, enabled: this.checked}}); app.renderMeetingForm()" class="w-4 h-4">
+                                            <span class="text-sm font-bold text-slate-800">부부</span>
+                                        </label>
+                                    </td>
+                                    <td class="p-2 border-b border-slate-100">
+                                        <select onchange="app.updateMeetingData('bathroom', {...app.meetingData.bathroom, couple: {...app.meetingData.bathroom.couple, bathtub: this.value}}); app.handleBathroomOption('couple', 'bathtub', this.value)" class="w-full bg-white border border-slate-200 rounded p-1.5 text-[10px] font-bold outline-none" ${!data.bathroom.couple.enabled ? 'disabled' : ''}>
+                                            <option value="">-</option>
+                                            <option value="일반욕조" ${data.bathroom.couple.bathtub === '일반욕조' ? 'selected' : ''}>일반</option>
+                                            <option value="조적욕조" ${data.bathroom.couple.bathtub === '조적욕조' ? 'selected' : ''}>조적</option>
+                                        </select>
+                                    </td>
+                                    <td class="p-2 border-b border-slate-100">
+                                        <select onchange="app.updateMeetingData('bathroom', {...app.meetingData.bathroom, couple: {...app.meetingData.bathroom.couple, partition: this.value}}); app.handleBathroomOption('couple', 'partition', this.value)" class="w-full bg-white border border-slate-200 rounded p-1.5 text-[10px] font-bold outline-none" ${!data.bathroom.couple.enabled ? 'disabled' : ''}>
+                                            <option value="">-</option>
+                                            <option value="유리파티션" ${data.bathroom.couple.partition === '유리파티션' ? 'selected' : ''}>유리</option>
+                                            <option value="조적파티션" ${data.bathroom.couple.partition === '조적파티션' ? 'selected' : ''}>조적</option>
+                                        </select>
+                                    </td>
+                                    <td class="p-2 border-b border-slate-100">
+                                        <select onchange="app.updateMeetingData('bathroom', {...app.meetingData.bathroom, couple: {...app.meetingData.bathroom.couple, sliding: this.value}}); app.handleBathroomOption('couple', 'sliding', this.value)" class="w-full bg-white border border-slate-200 rounded p-1.5 text-[10px] font-bold outline-none" ${!data.bathroom.couple.enabled ? 'disabled' : ''}>
+                                            <option value="">-</option>
+                                            <option value="장거울통일" ${data.bathroom.couple.sliding === '장거울통일' ? 'selected' : ''}>통일</option>
+                                            <option value="장거울따로" ${data.bathroom.couple.sliding === '장거울따로' ? 'selected' : ''}>따로</option>
+                                        </select>
+                                    </td>
+                                    <td class="p-2 border-b border-slate-100">
+                                        <select onchange="app.updateMeetingData('bathroom', {...app.meetingData.bathroom, couple: {...app.meetingData.bathroom.couple, mirror: this.value}}); app.handleBathroomOption('couple', 'mirror', this.value)" class="w-full bg-white border border-slate-200 rounded p-1.5 text-[10px] font-bold outline-none" ${!data.bathroom.couple.enabled ? 'disabled' : ''}>
+                                            <option value="">-</option>
+                                            <option value="여닫이장" ${data.bathroom.couple.mirror === '여닫이장' ? 'selected' : ''}>여닫이</option>
+                                            <option value="플랩장" ${data.bathroom.couple.mirror === '플랩장' ? 'selected' : ''}>플랩</option>
+                                            <option value="플랩+여닫이장" ${data.bathroom.couple.mirror === '플랩+여닫이장' ? 'selected' : ''}>플랩+여닫이</option>
+                                        </select>
+                                    </td>
+                                    <td class="p-2 border-b border-slate-100">
+                                        <select onchange="app.updateMeetingData('bathroom', {...app.meetingData.bathroom, couple: {...app.meetingData.bathroom.couple, tile: this.value}}); app.handleBathroomOption('couple', 'tile', this.value)" class="w-full bg-white border border-slate-200 rounded p-1.5 text-[10px] font-bold outline-none" ${!data.bathroom.couple.enabled ? 'disabled' : ''}>
+                                            <option value="">-</option>
+                                            <option value="300*600" ${data.bathroom.couple.tile === '300*600' ? 'selected' : ''}>300×600</option>
+                                            <option value="600*600" ${data.bathroom.couple.tile === '600*600' ? 'selected' : ''}>600×600</option>
+                                            <option value="600*1200" ${data.bathroom.couple.tile === '600*1200' ? 'selected' : ''}>600×1200</option>
+                                        </select>
+                                    </td>
+                                    <td class="p-2 border-b border-slate-100">
+                                        <select onchange="app.updateMeetingData('bathroom', {...app.meetingData.bathroom, couple: {...app.meetingData.bathroom.couple, faucet: this.value}}); app.handleBathroomOption('couple', 'faucet', this.value)" class="w-full bg-white border border-slate-200 rounded p-1.5 text-[10px] font-bold outline-none" ${!data.bathroom.couple.enabled ? 'disabled' : ''}>
+                                            <option value="">-</option>
+                                            <option value="일반수전" ${data.bathroom.couple.faucet === '일반수전' ? 'selected' : ''}>일반수전</option>
+                                            <option value="젠다이" ${data.bathroom.couple.faucet === '젠다이' ? 'selected' : ''}>젠다이</option>
+                                            <option value="대림바스" ${data.bathroom.couple.faucet === '대림바스' ? 'selected' : ''}>대림바스</option>
+                                            <option value="아메리칸스탠다드" ${data.bathroom.couple.faucet === '아메리칸스탠다드' ? 'selected' : ''}>아메리칸</option>
+                                            <option value="일반욕가" ${data.bathroom.couple.faucet === '일반욕가' ? 'selected' : ''}>일반욕가</option>
+                                            <option value="트렌치욕가" ${data.bathroom.couple.faucet === '트렌치욕가' ? 'selected' : ''}>트렌치욕가</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 
@@ -1446,107 +1473,186 @@
             app.updateEstimateQuantities();
         };
 
-        // ==================== 미팅지 체크박스 처리 및 DB 연동 ====================
-        app.handleMeetingCheck = function(category, key, value) {
-            const searchKeywords = {
-                'window': {
-                    'LX하우시스': ['LX', '하우시스', '창호'],
-                    '이건창호': ['이건', '창호'],
-                    'KCC': ['KCC', '창호']
+        // ==================== 마스터 DB 자동 연동 키워드 매핑 ====================
+        app.meetingKeywordMap = {
+            // 창호
+            'window': {
+                'LX하우시스': { keywords: ['LX', '하우시스', '수퍼세이브'], category: '창호 공사', priority: 1 },
+                '이건창호': { keywords: ['이건', '창호'], category: '창호 공사', priority: 1 },
+                'KCC': { keywords: ['KCC', '뉴프라임'], category: '창호 공사', priority: 1 }
+            },
+            // 에어컨
+            'aircon': {
+                'system': { 
+                    keywords: ['시스템', '에어컨'], 
+                    category: '에어컨 공사', 
+                    priority: 1,
+                    bundles: [
+                        { keywords: ['천장', '단내림'], category: '목공사', priority: 2 },
+                        { keywords: ['에어컨', '배선'], category: '전기 공사', priority: 2 },
+                        { keywords: ['천정', '공사'], category: '목공사', priority: 2 }
+                    ]
                 },
-                'extension': {
-                    'living': ['확장', '거실'],
-                    'kitchen': ['확장', '주방'],
-                    'room': ['확장', '방']
-                },
-                'aircon': {
-                    'system': ['시스템', '에어컨', '천장', '단내림', '전기'],
-                    'stand': ['스탠드', '에어컨', '배관']
-                },
-                'floor': {
-                    '장판': ['장판'],
-                    '강마루': ['강마루', '마루'],
-                    '원목마루': ['원목', '마루'],
-                    '타일': ['바닥', '타일']
-                },
-                'wall': {
-                    '실크': ['실크', '도배'],
-                    '합지': ['합지', '도배'],
-                    '도장': ['도장', '페인트'],
-                    '타일': ['벽', '타일'],
-                    '필름': ['필름']
-                },
-                'kitchen': {
-                    'induction': ['인덕션'],
-                    'gas': ['가스', '레인지'],
-                    'coffee': ['커피', '머신'],
-                    'dishwasher': ['식기', '세척기']
-                },
-                'electric': {
-                    'embedded': ['매립', '등'],
-                    'main': ['메인', '등'],
-                    'indirect': ['간접', '조명'],
-                    'line': ['라인', '조명'],
-                    'aircon': ['에어컨', '배선'],
-                    'induction': ['인덕션', '배선'],
-                    'panel': ['분전함'],
-                    'water': ['온수', '정수기'],
-                    'purifier': ['퓨리케이', '정수기'],
-                    'internet': ['인터넷', '배선']
-                },
-                'door': {
-                    '원도어슬라이드': ['원도어', '슬라이드', '중문'],
-                    '투도어슬라이드': ['투도어', '슬라이드', '중문'],
-                    '원도어스윙': ['원도어', '스윙', '중문'],
-                    '원도어여닫이': ['원도어', '여닫이', '중문'],
-                    '투도어여닫이': ['투도어', '여닫이', '중문']
-                },
-                'carpentry': {
-                    'ceiling': ['천정', '공사'],
-                    'furniture': ['가구'],
-                    'hidden': ['히든', '도어']
-                },
-                'furniture': {
-                    'outdoor': ['실외기', '장고'],
-                    'aircon': ['에어컨', '단내림']
-                }
-            };
+                'stand': { keywords: ['스탠드', '벽걸이', '에어컨'], category: '에어컨 공사', priority: 1 }
+            },
+            // 바닥재
+            'floor': {
+                '장판': { keywords: ['장판'], category: '마루 공사', priority: 1 },
+                '강마루': { keywords: ['강마루', '마루'], category: '마루 공사', priority: 1 },
+                '원목마루': { keywords: ['원목', '마루'], category: '마루 공사', priority: 1 },
+                '타일': { keywords: ['바닥', '타일'], category: '타일 공사', priority: 1 }
+            },
+            // 벽지
+            'wall': {
+                '실크': { keywords: ['실크', '도배'], category: '도배 공사', priority: 1 },
+                '합지': { keywords: ['합지', '도배'], category: '도배 공사', priority: 1 },
+                '도장': { keywords: ['도장', '페인트'], category: '도장 공사', priority: 1 },
+                '타일': { keywords: ['벽', '타일'], category: '타일 공사', priority: 1 },
+                '필름': { keywords: ['필름'], category: '필름 공사', priority: 1 },
+                'LX디아망': { keywords: ['LX', '디아망', '도배'], category: '도배 공사', priority: 1 }
+            },
+            // 주방
+            'kitchen': {
+                'induction': { keywords: ['인덕션'], category: '설비 공사', priority: 1 },
+                'gas': { keywords: ['가스', '레인지'], category: '설비 공사', priority: 1 },
+                'coffee': { keywords: ['커피', '머신'], category: '설비 공사', priority: 1 },
+                'dishwasher': { keywords: ['식기', '세척기'], category: '설비 공사', priority: 1 },
+                'fridge': { keywords: ['냉장고'], category: '설비 공사', priority: 1 },
+                'kimchi': { keywords: ['김치', '냉장고'], category: '설비 공사', priority: 1 },
+                'water': { keywords: ['정수기'], category: '설비 공사', priority: 1 },
+                'hood': { keywords: ['후드'], category: '설비 공사', priority: 1 },
+                'sink': { keywords: ['싱크', '대'], category: '설비 공사', priority: 1 }
+            },
+            // 전기
+            'electric': {
+                'embedded': { keywords: ['매립', '등'], category: '전기 공사', priority: 1 },
+                'main': { keywords: ['메인', '등'], category: '전기 공사', priority: 1 },
+                'indirect': { keywords: ['간접', '조명'], category: '전기 공사', priority: 1 },
+                'line': { keywords: ['라인', '조명'], category: '전기 공사', priority: 1 },
+                'aircon': { keywords: ['에어컨', '배선'], category: '전기 공사', priority: 1 },
+                'induction': { keywords: ['인덕션', '배선'], category: '전기 공사', priority: 1 },
+                'panel': { keywords: ['분전함'], category: '전기 공사', priority: 1 },
+                'water': { keywords: ['온수', '정수기'], category: '전기 공사', priority: 1 },
+                'purifier': { keywords: ['퓨리케이', '정수기'], category: '전기 공사', priority: 1 },
+                'internet': { keywords: ['인터넷', '배선'], category: '전기 공사', priority: 1 }
+            },
+            // 중문
+            'door': {
+                '원도어슬라이드': { keywords: ['원도어', '슬라이드', '중문'], category: '도어 공사', priority: 1 },
+                '투도어슬라이드': { keywords: ['투도어', '슬라이드', '중문'], category: '도어 공사', priority: 1 },
+                '원도어스윙': { keywords: ['원도어', '스윙', '중문'], category: '도어 공사', priority: 1 },
+                '원도어여닫이': { keywords: ['원도어', '여닫이', '중문'], category: '도어 공사', priority: 1 },
+                '투도어여닫이': { keywords: ['투도어', '여닫이', '중문'], category: '도어 공사', priority: 1 }
+            },
+            // 목공사
+            'carpentry': {
+                'ceiling': { keywords: ['천정', '공사'], category: '목공사', priority: 1 },
+                'furniture': { keywords: ['가구'], category: '가구 공사', priority: 1 },
+                'hidden': { keywords: ['히든', '도어'], category: '도어 공사', priority: 1 },
+                'door': { keywords: ['문선'], category: '목공사', priority: 1 }
+            },
+            // 가구
+            'furniture': {
+                'outdoor': { keywords: ['실외기', '장고'], category: '가구 공사', priority: 1 },
+                'aircon': { keywords: ['에어컨', '단내림'], category: '목공사', priority: 1 }
+            },
+            // 욕실
+            'bathroom': {
+                '일반욕조': { keywords: ['일반', '욕조'], category: '욕실 공사', priority: 1 },
+                '조적욕조': { keywords: ['조적', '욕조'], category: '욕실 공사', priority: 1 },
+                '유리파티션': { keywords: ['유리', '파티션'], category: '욕실 공사', priority: 1 },
+                '조적파티션': { keywords: ['조적', '파티션'], category: '욕실 공사', priority: 1 },
+                '장거울통일': { keywords: ['장거울', '통일'], category: '욕실 공사', priority: 1 },
+                '장거울따로': { keywords: ['장거울', '따로'], category: '욕실 공사', priority: 1 },
+                '여닫이장': { keywords: ['여닫이', '장'], category: '욕실 공사', priority: 1 },
+                '플랩장': { keywords: ['플랩', '장'], category: '욕실 공사', priority: 1 },
+                '300*600': { keywords: ['300', '600', '타일'], category: '타일 공사', priority: 1 },
+                '600*600': { keywords: ['600', '600', '타일'], category: '타일 공사', priority: 1 },
+                '600*1200': { keywords: ['600', '1200', '타일'], category: '타일 공사', priority: 1 },
+                '일반수전': { keywords: ['일반', '수전'], category: '욕실 공사', priority: 1 },
+                '젠다이': { keywords: ['젠다이'], category: '욕실 공사', priority: 1 },
+                '대림바스': { keywords: ['대림', '바스'], category: '욕실 공사', priority: 1 },
+                '아메리칸스탠다드': { keywords: ['아메리칸', '스탠다드'], category: '욕실 공사', priority: 1 },
+                '일반욕가': { keywords: ['일반', '욕가'], category: '욕실 공사', priority: 1 },
+                '트렌치욕가': { keywords: ['트렌치', '욕가'], category: '욕실 공사', priority: 1 }
+            }
+        };
+
+        // ==================== 마스터 DB에서 항목 검색 및 추가 ====================
+        app.searchAndAddItems = function(keywords, category = null, priority = 1, maxResults = 3) {
+            if (!keywords || keywords.length === 0) return;
             
-            if (value === true || (typeof value === 'string' && value)) {
-                let keywords = [];
-                if (searchKeywords[category] && searchKeywords[category][key]) {
-                    keywords = searchKeywords[category][key];
-                } else if (typeof value === 'string') {
-                    keywords = [value];
-                }
-                
-                // MASTER_DB에서 키워드 검색하여 항목 추가
-                keywords.forEach(keyword => {
-                    const found = app.MASTER_DB.find(item => 
-                        item.name.includes(keyword) || 
-                        item.spec.includes(keyword) ||
-                        item.cat.includes(keyword)
-                    );
-                    if (found) {
-                        const existing = app.selectedItems.find(s => s.id === found.id);
-                        if (!existing) {
-                            app.addItem(found.id);
-                        }
-                    }
+            const foundItems = [];
+            
+            // 키워드로 검색
+            keywords.forEach(keyword => {
+                const matches = app.MASTER_DB.filter(item => {
+                    // 카테고리 필터
+                    if (category && !item.cat.includes(category)) return false;
+                    
+                    // 키워드 매칭 (정규화)
+                    const normalize = (str) => str.replace(/\s+/g, '').toLowerCase();
+                    const itemText = normalize(item.name + ' ' + item.spec + ' ' + item.cat);
+                    const keywordNorm = normalize(keyword);
+                    
+                    return itemText.includes(keywordNorm);
                 });
                 
-                // 번들(Bundle) 처리
-                if (category === 'aircon' && key === 'system' && value === true) {
-                    // 시스템 에어컨 선택 시: 천장 단내림, 목공사, 전기 배선 자동 추가
-                    const bundleKeywords = ['천장', '단내림', '목공', '전기', '배선'];
-                    bundleKeywords.forEach(bundleKeyword => {
-                        const bundleItems = app.MASTER_DB.filter(item => 
-                            (item.name.includes(bundleKeyword) || item.spec.includes(bundleKeyword)) &&
-                            !app.selectedItems.find(s => s.id === item.id)
-                        );
-                        bundleItems.slice(0, 2).forEach(item => app.addItem(item.id));
-                    });
+                matches.forEach(item => {
+                    if (!foundItems.find(f => f.id === item.id) && 
+                        !app.selectedItems.find(s => s.id === item.id)) {
+                        foundItems.push({ ...item, matchPriority: priority });
+                    }
+                });
+            });
+            
+            // 우선순위별 정렬 후 추가
+            foundItems
+                .sort((a, b) => a.matchPriority - b.matchPriority)
+                .slice(0, maxResults)
+                .forEach(item => {
+                    app.addItem(item.id);
+                });
+        };
+
+        // ==================== 미팅지 체크박스 처리 및 DB 연동 ====================
+        app.handleMeetingCheck = function(category, key, value) {
+            if (!value || (typeof value === 'string' && !value)) return;
+            
+            const mapping = app.meetingKeywordMap[category];
+            if (!mapping || !mapping[key]) {
+                // 매핑이 없으면 직접 키워드로 검색
+                if (typeof value === 'string') {
+                    app.searchAndAddItems([value]);
                 }
+                return;
+            }
+            
+            const config = mapping[key];
+            
+            // 메인 항목 검색
+            app.searchAndAddItems(config.keywords, config.category, config.priority, 2);
+            
+            // 번들 항목 처리
+            if (config.bundles) {
+                config.bundles.forEach(bundle => {
+                    app.searchAndAddItems(bundle.keywords, bundle.category, bundle.priority, 1);
+                });
+            }
+        };
+
+        // ==================== 욕실 옵션 처리 ====================
+        app.handleBathroomOption = function(type, option, value) {
+            if (!value) return;
+            
+            // 욕실 옵션별 키워드 매핑
+            const bathroomMap = app.meetingKeywordMap.bathroom;
+            if (bathroomMap && bathroomMap[value]) {
+                const config = bathroomMap[value];
+                app.searchAndAddItems(config.keywords, config.category, config.priority, 1);
+            } else {
+                // 직접 키워드 검색
+                app.searchAndAddItems([value], '욕실 공사', 1, 1);
             }
         };
 
