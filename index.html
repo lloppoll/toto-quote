@@ -54,19 +54,18 @@
                 <div class="flex items-center space-x-4">
                     <h1 class="text-2xl font-black italic tracking-tighter shrink-0">TOTO <span class="text-blue-500 font-bold uppercase">Pro</span></h1>
                     <div class="h-6 w-px bg-slate-700 hidden sm:block"></div>
-                    <span class="text-xs font-bold text-slate-400 uppercase tracking-widest hidden lg:inline">v12.0 Master Final</span>
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-widest hidden lg:inline">v11.0 Master Final</span>
                 </div>
-              <div class="flex items-center space-x-6">
-    <div id="sync-status" class="hidden text-[10px] bg-green-500/20 text-green-400 px-3 py-1 rounded-full border border-green-500/30 font-bold shrink-0">● CLOUD CONNECTED</div>
-    <button onclick="app.saveToLocal()" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-xl font-bold text-xs transition-all shadow-lg shrink-0">저장</button>
-    <button onclick="app.loadFromLocal()" class="bg-slate-600 hover:bg-slate-500 text-white px-4 py-2 rounded-xl font-bold text-xs transition-all shadow-lg shrink-0">불러오기</button>
-    <button onclick="app.clearAll()" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-xl font-bold text-xs transition-all shadow-lg shrink-0">전체지우기</button>
-    <div class="text-right hidden md:block shrink-0">
-        <div class="text-[10px] font-bold text-slate-500 uppercase">Estimated Total</div>
-        <div id="nav-total" class="text-xl lg:text-2xl font-black text-white">0원</div>
-    </div>
-    <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2.5 rounded-xl font-bold text-sm transition-all shadow-lg shrink-0">공식 견적서 발행</button>
-</div>
+                <div class="flex items-center space-x-6">
+                    <div id="sync-status" class="hidden text-[10px] bg-green-500/20 text-green-400 px-3 py-1 rounded-full border border-green-500/30 font-bold shrink-0">● CLOUD CONNECTED</div>
+                    <button onclick="app.saveToLocal()" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-xl font-bold text-xs transition-all shadow-lg shrink-0">저장</button>
+                    <button onclick="app.loadFromLocal()" class="bg-slate-600 hover:bg-slate-500 text-white px-4 py-2 rounded-xl font-bold text-xs transition-all shadow-lg shrink-0">불러오기</button>
+                    <div class="text-right hidden md:block shrink-0">
+                        <div class="text-[10px] font-bold text-slate-500 uppercase">Estimated Total</div>
+                        <div id="nav-total" class="text-xl lg:text-2xl font-black text-white">0원</div>
+                    </div>
+                    <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2.5 rounded-xl font-bold text-sm transition-all shadow-lg shrink-0">공식 견적서 발행</button>
+                </div>
             </div>
         </nav>
         <main class="max-w-[1800px] mx-auto p-4 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 w-full">
@@ -105,24 +104,6 @@
                                     <input type="number" id="area-multiplier" value="1.0" step="0.1" min="0.5" max="2.0" onchange="app.updateAreaMultiplier()" class="flex-1 bg-white border border-slate-200 rounded-lg p-1.5 text-center font-bold text-xs outline-none">
                                     <span class="text-[9px] font-bold text-slate-400">실제: <span id="actual-size-display" class="text-blue-600 font-black">0</span>평</span>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">빠른 작업</label>
-                            <button onclick="app.smartRecommend()" class="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white rounded-xl p-3.5 font-black text-xs transition-all shadow-lg flex items-center justify-center space-x-2">
-                                <span>✨</span>
-                                <span>스마트 추천 (평수 기반 필수 항목)</span>
-                            </button>
-                            <div class="flex gap-2">
-                                <button onclick="app.loadTemplate('basic')" class="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-700 border-2 border-blue-200 rounded-xl p-2.5 font-bold text-[10px] transition-all">
-                                    ⚡ 기본 세트
-                                </button>
-                                <button onclick="app.loadTemplate('full')" class="flex-1 bg-purple-50 hover:bg-purple-100 text-purple-700 border-2 border-purple-200 rounded-xl p-2.5 font-bold text-[10px] transition-all">
-                                    🏠 전체 세트
-                                </button>
-                                <button onclick="app.showRecentEstimates()" class="flex-1 bg-slate-50 hover:bg-slate-100 text-slate-700 border-2 border-slate-200 rounded-xl p-2.5 font-bold text-[10px] transition-all">
-                                    📋 복사
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -256,17 +237,6 @@
         </section>
     </div>
 
-    <!-- 최근 견적서 모달 -->
-    <div id="recent-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl p-6 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-black">최근 견적서에서 항목 복사</h3>
-                <button onclick="app.closeRecentModal()" class="text-slate-400 hover:text-slate-600 text-2xl">&times;</button>
-            </div>
-            <div id="recent-list" class="space-y-2"></div>
-        </div>
-    </div>
-
     <script>
         // ==================== 앱 상태 관리 ====================
         const app = {
@@ -276,51 +246,20 @@
             budgetChart: null,
             activeCategory: "공통 가설",
             apiKey: "",
-            basePrices: new Map(),
+            basePrices: new Map(), // 원본 단가 저장용
             debounceTimers: {},
-            areaType: 'normal',
+            areaType: 'normal', // 면적 타입: normal, extended, high
             areaMultipliers: {
-                normal: 1,
+                normal: 1.0,
                 extended: 1.1,
                 high: 1.2
             },
-            orderCriteria: ["공통 가설", "철거 공사", "설비 공사", "방수 공사", "단열 공사", "창호 공사", "도어 공사", "목공사", "전기 공사", "에어컨 공사", "타일 공사", "도배 공사", "마루 공사", "욕실 공사", "도장 공사", "필름 공사", "가구 공사", "마감 공사", "기타 공사"],
-            
-            // 대표 품목 키워드 정의
-            representativeKeywords: {
-                '도배 공사': {
-                    keywords: ['합지', '실크', '부자재', '인건비', '벽지 제거'],
-                    exclude: ['포티스', '베스티', '스케치', '부분']
-                },
-                '마루 공사': {
-                    keywords: ['강마루', '동화', '나투스진', '장판', '마루 부자재'],
-                    exclude: ['원목마루', '헤링본', '디앤메종', '구정마루']
-                },
-                '철거 공사': {
-                    keywords: ['폐기물', '천장 철거', '바닥 철거', '인건비'],
-                    exclude: ['부분', '확장부']
-                },
-                '전기 공사': {
-                    keywords: ['배선작업', '인건비', '분전함', '전선 전체 교체'],
-                    exclude: []
-                }
-            },
-            
-            // 공종별 필수 품목 그룹
-            essentialItemGroups: {
-                '도배 공사': {
-                    basic: ['합지', '합지벽지', '부자재'],
-                    premium: ['실크', '실크벽지', '부자재']
-                },
-                '마루 공사': {
-                    basic: ['강마루', '마루 부자재'],
-                    premium: ['원목마루', '마루 부자재']
-                }
-            }
+            orderCriteria: ["공통 가설", "철거 공사", "설비 공사", "방수 공사", "단열 공사", "창호 공사", "도어 공사", "목공사", "전기 공사", "에어컨 공사", "타일 공사", "도배 공사", "마루 공사", "욕실 공사", "도장 공사", "필름 공사", "가구 공사", "마감 공사", "기타 공사"]
         };
 
         // ==================== 유틸리티 함수 ====================
         const utils = {
+            // 디바운스 함수
             debounce(func, wait = 300) {
                 return (...args) => {
                     clearTimeout(app.debounceTimers[func.name]);
@@ -328,6 +267,7 @@
                 };
             },
 
+            // 숫자를 한글로 변환
             numToKorean(num) {
                 if (num === 0) return '영';
                 const units = ['', '만', '억', '조'];
@@ -348,6 +288,7 @@
                 return '일금 ' + res.trim() + '원정';
             },
 
+            // CSV 파싱 (개선된 버전)
             parseCSV(text) {
                 const rows = [];
                 let currentRow = [];
@@ -387,11 +328,13 @@
                 return rows;
             },
 
+            // 안전한 숫자 변환
             safeParseInt(str, defaultValue = 0) {
                 const num = parseInt(String(str).replace(/[^0-9]/g, '')) || defaultValue;
                 return isNaN(num) ? defaultValue : num;
             },
 
+            // 안전한 실수 변환
             safeParseFloat(str, defaultValue = 0) {
                 const num = parseFloat(String(str)) || defaultValue;
                 return isNaN(num) ? defaultValue : num;
@@ -400,58 +343,107 @@
 
         // ==================== 계산 로직 모듈 ====================
         const calculationLogic = {
-            calculateQuantity(logic, actualSize) {
-                if (actualSize <= 0) return 1;
+            // 수량 계산 (면적 타입 적용)
+            calculateQuantity(logic, size, areaType = 'normal') {
+                const sizeNum = utils.safeParseFloat(size, 0);
+                if (sizeNum <= 0) return 1;
+
+                // 면적 타입별 계수 적용
+                const areaMultipliers = {
+                    normal: 1.0,
+                    extended: 1.1,
+                    high: 1.2
+                };
+                const areaMultiplier = areaMultipliers[areaType] || 1.0;
+                const adjustedSize = sizeNum * areaMultiplier;
 
                 const logicMap = {
-                    "WALL_10": () => Math.ceil(actualSize * 1.0),
-                    "WALL_11": () => Math.ceil(actualSize * 1.1),
-                    "WALL_12": () => Math.ceil(actualSize * 1.2),
-                    "WALL_15": () => Math.ceil(actualSize * 1.5),
-                    "WALL_17": () => Math.ceil(actualSize * 1.7),
-                    "WALL_20": () => Math.ceil(actualSize * 2.0),
-                    "WALL_25": () => Math.ceil(actualSize * 2.5),
-                    "WALL_27": () => Math.ceil(actualSize * 2.7),
-                    "WALL_30": () => Math.ceil(actualSize * 3.0),
-                    "WALL_35": () => Math.ceil(actualSize * 3.5),
-                    "WALL_40": () => Math.ceil(actualSize * 4.0),
-                    "WALL_45": () => Math.ceil(actualSize * 4.5),
-                    "W_SILK_LABOR1": () => Math.ceil((actualSize * 2.5) / 15),
-                    "W_SILK_LABOR2": () => Math.ceil((actualSize * 1.5) / 15),
-                    "W_SILK_LABOR3": () => Math.ceil((actualSize * 1.2) / 15),
-                    "W_HAP_LABOR1": () => Math.ceil((actualSize * 3.5) / 30),
-                    "W_HAP_LABOR2": () => Math.ceil((actualSize * 2.5) / 30),
-                    "W_HAP_LABOR3": () => Math.ceil((actualSize * 1.2) / 30),
-                    "W_PREM_LABOR1": () => Math.ceil((actualSize * 3.5) / 14),
-                    "W_PREM_LABOR2": () => Math.ceil((actualSize * 2.5) / 14),
-                    "W_PREM_LABOR3": () => Math.ceil((actualSize * 1.2) / 14),
-                    "W_HAP_RM_LABOR": () => Math.ceil((actualSize * 2.5) / 30),
-                    "PY_1X": () => actualSize,
-                    "PY_10": () => Math.ceil(actualSize / 10),
-                    "PY_K32": () => parseFloat((actualSize / 32).toFixed(2)),
-                    "FLOOR_07": () => Math.ceil(actualSize * 0.7),
-                    "FLOOR_08": () => Math.ceil(actualSize * 0.8),
-                    "FLOOR_11": () => Math.ceil(actualSize * 1.1)
+                    // 벽면적 계산
+                    "WALL_10": () => Math.ceil(adjustedSize * 1.0),
+                    "WALL_11": () => Math.ceil(adjustedSize * 1.1),
+                    "WALL_12": () => Math.ceil(adjustedSize * 1.2),
+                    "WALL_15": () => Math.ceil(adjustedSize * 1.5),
+                    "WALL_17": () => Math.ceil(adjustedSize * 1.7),
+                    "WALL_20": () => Math.ceil(adjustedSize * 2.0),
+                    "WALL_25": () => Math.ceil(adjustedSize * 2.5),
+                    "WALL_27": () => Math.ceil(adjustedSize * 2.7),
+                    "WALL_30": () => Math.ceil(adjustedSize * 3.0),
+                    "WALL_35": () => Math.ceil(adjustedSize * 3.5),
+                    "WALL_40": () => Math.ceil(adjustedSize * 4.0),
+                    "WALL_45": () => Math.ceil(adjustedSize * 4.5),
+                    
+                    // 도배 인건비 (실크지)
+                    "W_SILK_LABOR": () => Math.ceil((adjustedSize * 3.5) / 15),
+                    "W_SILK_LABOR1": () => Math.ceil((adjustedSize * 3.5) / 15),  // All
+                    "W_SILK_LABOR2": () => Math.ceil((adjustedSize * 2.5) / 15),  // 벽만
+                    "W_SILK_LABOR3": () => Math.ceil((adjustedSize * 1.2) / 15),  // 천장만
+                    
+                    // 도배 인건비 (합지)
+                    "W_HAP_LABOR": () => Math.ceil((adjustedSize * 3.5) / 30),
+                    "W_HAP_LABOR1": () => Math.ceil((adjustedSize * 3.5) / 30),  // All
+                    "W_HAP_LABOR2": () => Math.ceil((adjustedSize * 2.5) / 30),  // 벽만
+                    "W_HAP_LABOR3": () => Math.ceil((adjustedSize * 1.2) / 30),  // 천장만
+                    "W_HAP_RM_LABOR": () => Math.ceil((adjustedSize * 2.5) / 30),
+                    
+                    // 도배 인건비 (고급지)
+                    "W_PREM_LABOR": () => Math.ceil((adjustedSize * 3.5) / 14),
+                    "W_PREM_LABOR1": () => Math.ceil((adjustedSize * 3.5) / 14),  // All
+                    "W_PREM_LABOR2": () => Math.ceil((adjustedSize * 2.5) / 14),  // 벽만
+                    "W_PREM_LABOR3": () => Math.ceil((adjustedSize * 1.2) / 14),  // 천장만
+                    
+                    // 평수 기반
+                    "PY_1X": () => adjustedSize,
+                    "PY_10": () => Math.ceil(adjustedSize / 10),
+                    "PY_K32": () => parseFloat((adjustedSize / 32).toFixed(2)),
+                    
+                    // 바닥면적
+                    "FLOOR_07": () => Math.ceil(adjustedSize * 0.7),
+                    "FLOOR_08": () => Math.ceil(adjustedSize * 0.8),
+                    "FLOOR_11": () => Math.ceil(adjustedSize * 1.1)
                 };
 
                 return logicMap[logic] ? logicMap[logic]() : 1;
             },
 
-            calculatePrice(logic, basePrice, actualSize) {
-                // 특수 계수 로직들 (더 구체적인 조건을 먼저)
-                if (logic.endsWith("PY_07_FIXED")) {
-                    return Math.round(basePrice * (actualSize * 0.7));
-                }
-                if (logic.endsWith("PY_08_FIXED")) {
-                    return Math.round(basePrice * (actualSize * 0.8));
-                }
-                if (logic.endsWith("PY_11_FIXED")) {
-                    return Math.round(basePrice * (actualSize * 1.1));
-                }
-                // 일반 FIXED 로직
+            // 단가 계산 (FIXED 로직 - 면적 타입 적용)
+            calculatePrice(logic, basePrice, size, areaType = 'normal') {
+                const sizeNum = utils.safeParseFloat(size, 0);
+                if (sizeNum <= 0) return basePrice;
+
+                // 면적 타입별 계수
+                const areaMultipliers = {
+                    normal: 1.0,
+                    extended: 1.1,
+                    high: 1.2
+                };
+                const areaMultiplier = areaMultipliers[areaType] || 1.0;
+                const adjustedSize = sizeNum * areaMultiplier;
+
+                // FIXED 로직 처리
                 if (logic.endsWith("_FIXED")) {
-                    return Math.round(basePrice * actualSize);
+                    // 특수 계수 로직들
+                    if (logic.includes("PY_07_FIXED") || logic.includes("FLOOR_07")) {
+                        return Math.round(basePrice * adjustedSize * 0.7);
+                    }
+                    if (logic.includes("PY_08_FIXED") || logic.includes("FLOOR_08")) {
+                        return Math.round(basePrice * adjustedSize * 0.8);
+                    }
+                    if (logic.includes("PY_11_FIXED") || logic.includes("FLOOR_11")) {
+                        return Math.round(basePrice * adjustedSize * 1.1);
+                    }
+                    if (logic.includes("WALL_25") || logic.includes("PY_WL_WALL25")) {
+                        return Math.round(basePrice * adjustedSize * 2.5);
+                    }
+                    if (logic.includes("WALL_35") || logic.includes("PY_WL_WALL35")) {
+                        return Math.round(basePrice * adjustedSize * 3.5);
+                    }
+                    if (logic.includes("PY_MOLD") || logic.includes("PY_FN") || logic.includes("PY_K")) {
+                        return Math.round(basePrice * adjustedSize * 1.0);
+                    }
+                    // 기본 FIXED: 평수 × 단가
+                    return Math.round(basePrice * adjustedSize);
                 }
+                
                 return basePrice;
             }
         };
@@ -460,6 +452,7 @@
         app.setAreaType = function(type) {
             app.areaType = type;
             
+            // 버튼 스타일 업데이트
             document.querySelectorAll('.area-type-btn').forEach(btn => {
                 btn.classList.remove('active', 'bg-blue-500', 'text-white', 'border-blue-500');
                 btn.classList.add('bg-white', 'text-slate-600', 'border-slate-200');
@@ -471,6 +464,7 @@
                 activeBtn.classList.remove('bg-white', 'text-slate-600', 'border-slate-200');
             }
             
+            // 면적 계수 업데이트
             const multiplier = app.areaMultipliers[type];
             document.getElementById('area-multiplier').value = multiplier;
             
@@ -499,188 +493,6 @@
             }
         };
 
-        // ==================== 공종별 필수 품목 추가 ====================
-        app.addEssentialItems = function(category, type = 'basic') {
-            const group = app.essentialItemGroups[category];
-            if (!group || !group[type]) {
-                app.showNotification('해당 공종의 필수 품목 세트가 없습니다.', 'info');
-                return;
-            }
-
-            const keywords = group[type];
-            let addedCount = 0;
-
-            keywords.forEach(keyword => {
-                const items = app.MASTER_DB.filter(item => 
-                    item.cat === category && 
-                    (item.name.includes(keyword) || item.spec.includes(keyword))
-                );
-                
-                // 가장 적합한 항목 1개만 추가
-                const bestMatch = items[0];
-                if (bestMatch && !app.selectedItems.find(s => s.id === bestMatch.id)) {
-                    app.addItem(bestMatch.id);
-                    addedCount++;
-                }
-            });
-
-            app.showNotification(`${category} ${type} 세트: ${addedCount}개 항목 추가됨`, 'success');
-        };
-
-        // ==================== 스마트 추천 기능 ====================
-        app.smartRecommend = function() {
-            const actualSize = app.getActualSize();
-            if (actualSize <= 0) {
-                app.showNotification('평수를 먼저 입력해주세요.', 'info');
-                return;
-            }
-
-            const recommendedCategories = [
-                '공통 가설', '철거 공사', '설비 공사', '전기 공사', 
-                '방수 공사', '단열 공사', '창호 공사', '도어 공사',
-                '목공사', '타일 공사', '도배 공사', '마루 공사',
-                '욕실 공사', '도장 공사'
-            ];
-
-            let addedCount = 0;
-            recommendedCategories.forEach(cat => {
-                // 필수 품목 그룹이 있으면 사용
-                if (app.essentialItemGroups[cat]) {
-                    const group = app.essentialItemGroups[cat];
-                    const keywords = group.basic || [];
-                    keywords.forEach(keyword => {
-                        const items = app.MASTER_DB.filter(item => 
-                            item.cat === cat && 
-                            (item.name.includes(keyword) || item.spec.includes(keyword))
-                        );
-                        const bestMatch = items[0];
-                        if (bestMatch && !app.selectedItems.find(s => s.id === bestMatch.id)) {
-                            app.addItem(bestMatch.id);
-                            addedCount++;
-                        }
-                    });
-                } else {
-                    // 기존 방식 (키워드 기반)
-                    const config = app.representativeKeywords[cat];
-                    if (config) {
-                        const items = app.MASTER_DB.filter(item => 
-                            item.cat === cat && 
-                            config.keywords.some(kw => 
-                                item.name.includes(kw) || item.spec.includes(kw)
-                            ) &&
-                            !config.exclude.some(ekw => 
-                                item.name.includes(ekw) || item.spec.includes(ekw)
-                            )
-                        );
-                        
-                        items.slice(0, 1).forEach(item => {
-                            if (!app.selectedItems.find(s => s.id === item.id)) {
-                                app.addItem(item.id);
-                                addedCount++;
-                            }
-                        });
-                    } else {
-                        // 기본 추천 (카테고리별 첫 번째 항목)
-                        const items = app.MASTER_DB.filter(item => item.cat === cat);
-                        const firstItem = items[0];
-                        if (firstItem && !app.selectedItems.find(s => s.id === firstItem.id)) {
-                            app.addItem(firstItem.id);
-                            addedCount++;
-                        }
-                    }
-                }
-            });
-
-            app.showNotification(`${addedCount}개 필수 항목이 자동 추가되었습니다.`, 'success');
-        };
-
-        // ==================== 빠른 템플릿 기능 ====================
-        app.loadTemplate = function(type) {
-            const templates = {
-                basic: ['공통 가설', '철거 공사', '설비 공사', '전기 공사', '도배 공사', '마루 공사'],
-                full: app.orderCriteria
-            };
-
-            const categories = templates[type] || [];
-            if (categories.length === 0) {
-                app.showNotification('템플릿을 찾을 수 없습니다.', 'info');
-                return;
-            }
-
-            let addedCount = 0;
-            categories.forEach(cat => {
-                const items = app.MASTER_DB.filter(item => item.cat === cat);
-                items.slice(0, 3).forEach(item => {
-                    if (!app.selectedItems.find(s => s.id === item.id)) {
-                        app.addItem(item.id);
-                        addedCount++;
-                    }
-                });
-            });
-
-            app.showNotification(`${type} 템플릿: ${addedCount}개 항목 추가됨`, 'success');
-        };
-
-        // ==================== 최근 견적서 복사 ====================
-        app.showRecentEstimates = function() {
-            const modal = document.getElementById('recent-modal');
-            const list = document.getElementById('recent-list');
-            
-            const saved = localStorage.getItem('totoEstimate');
-            if (!saved) {
-                app.showNotification('저장된 견적서가 없습니다.', 'info');
-                return;
-            }
-
-            try {
-                const data = JSON.parse(saved);
-                list.innerHTML = `
-                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                        <div class="flex justify-between items-start mb-2">
-                            <div>
-                                <div class="font-black text-sm">${data.siteName || '무제목'}</div>
-                                <div class="text-xs text-slate-500">${data.timestamp ? new Date(data.timestamp).toLocaleString('ko-KR') : ''}</div>
-                                <div class="text-xs text-slate-500 mt-1">항목 ${data.selectedItems?.length || 0}개</div>
-                            </div>
-                            <button onclick="app.copyFromRecent()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg font-bold text-xs">
-                                복사하기
-                            </button>
-                        </div>
-                    </div>
-                `;
-                modal.classList.remove('hidden');
-            } catch (e) {
-                app.showNotification('데이터를 불러올 수 없습니다.', 'error');
-            }
-        };
-
-        app.closeRecentModal = function() {
-            document.getElementById('recent-modal').classList.add('hidden');
-        };
-
-        app.copyFromRecent = function() {
-            const saved = localStorage.getItem('totoEstimate');
-            if (!saved) return;
-
-            try {
-                const data = JSON.parse(saved);
-                if (data.selectedItems && Array.isArray(data.selectedItems)) {
-                    data.selectedItems.forEach(item => {
-                        if (!app.selectedItems.find(s => s.id === item.id)) {
-                            const masterItem = app.MASTER_DB.find(m => m.id === item.id);
-                            if (masterItem) {
-                                app.addItem(item.id);
-                            }
-                        }
-                    });
-                    app.closeRecentModal();
-                    app.showNotification('항목이 복사되었습니다.', 'success');
-                }
-            } catch (e) {
-                app.showNotification('복사 실패: ' + e.message, 'error');
-            }
-        };
-
         // ==================== 데이터 관리 ====================
         app.fetchExternalData = async function() {
             const btn = document.getElementById('sync-btn');
@@ -701,26 +513,50 @@
                 if (rows.length < 2) throw new Error('데이터가 없습니다.');
 
                 const newDB = [];
+                const errors = [];
+                
                 rows.slice(1).forEach((cols, idx) => {
                     if (cols.length >= 5 && cols[0] !== "") {
-                        const basePrice = utils.safeParseInt(cols[4], 0);
-                        const itemId = "CLOUD_" + idx;
-                        
-                        const item = {
-                            id: itemId,
-                            cat: cols[0].replace(/\*/g, '').trim(),
-                            name: cols[1] || "미지정",
-                            spec: cols[2] || "",
-                            unit: cols[3] || "식",
-                            price: basePrice,
-                            logic: cols[5] || "MANUAL",
-                            lTxt: cols[6] || "수량입력"
-                        };
+                        try {
+                            const basePrice = utils.safeParseInt(cols[4], 0);
+                            const itemId = "CLOUD_" + idx;
+                            
+                            const item = {
+                                id: itemId,
+                                cat: cols[0].replace(/\*/g, '').trim(),
+                                name: cols[1] || "미지정",
+                                spec: cols[2] || "",
+                                unit: cols[3] || "식",
+                                price: basePrice,
+                                logic: (cols[5] || "MANUAL").trim(),
+                                lTxt: cols[6] || "수량입력",
+                                // 추가 컬럼 저장
+                                refPrice30: cols[7] ? utils.safeParseInt(cols[7], 0) : null,
+                                pyPrice: cols[8] ? utils.safeParseFloat(cols[8], 0) : null,
+                                note: cols[11] || ""
+                            };
 
-                        newDB.push(item);
-                        app.basePrices.set(itemId, basePrice);
+                            // 로직 유효성 검사
+                            if (item.logic !== "MANUAL" && item.logic !== "FIXED" && 
+                                !calculationLogic.calculateQuantity(item.logic, 30, 'normal') &&
+                                !calculationLogic.calculatePrice(item.logic, basePrice, 30, 'normal')) {
+                                errors.push(`행 ${idx + 2}: 로직 "${item.logic}" 처리 불가`);
+                            }
+
+                            newDB.push(item);
+                            // 원본 단가 저장
+                            app.basePrices.set(itemId, basePrice);
+                        } catch (e) {
+                            errors.push(`행 ${idx + 2}: 파싱 오류 - ${e.message}`);
+                        }
                     }
                 });
+                
+                // 경고 메시지 표시
+                if (errors.length > 0) {
+                    console.warn('데이터 파싱 경고:', errors);
+                    app.showNotification(`${errors.length}개 항목에 경고가 있습니다.`, 'info');
+                }
 
                 if (newDB.length > 0) {
                     app.MASTER_DB = newDB;
@@ -755,9 +591,6 @@
 
             container.innerHTML = '';
             cats.forEach(c => {
-                const wrapper = document.createElement('div');
-                wrapper.className = 'flex items-center gap-1';
-                
                 const btn = document.createElement('button');
                 btn.className = `category-tab px-4 py-2 rounded-2xl text-[11px] font-black border-2 border-slate-100 transition-all shrink-0 ${app.activeCategory === c ? 'active' : 'bg-white text-slate-500 hover:bg-slate-100'}`;
                 btn.textContent = c;
@@ -766,22 +599,7 @@
                     app.renderTabs();
                     app.renderDB();
                 };
-                
-                // 빠른 추가 버튼 (필수 품목 그룹이 있는 공종에만)
-                if (app.essentialItemGroups[c]) {
-                    const quickBtn = document.createElement('button');
-                    quickBtn.className = 'text-[9px] bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded-lg font-bold transition-all';
-                    quickBtn.innerHTML = '⚡';
-                    quickBtn.title = '필수 품목 빠른 추가';
-                    quickBtn.onclick = (e) => {
-                        e.stopPropagation();
-                        app.addEssentialItems(c, 'basic');
-                    };
-                    wrapper.appendChild(quickBtn);
-                }
-                
-                wrapper.appendChild(btn);
-                container.appendChild(wrapper);
+                container.appendChild(btn);
             });
         };
 
@@ -789,74 +607,68 @@
             const tbody = document.getElementById('db-tbody');
             if (!tbody) return;
 
-            const search = (document.getElementById('db-search')?.value || "").toLowerCase();
+            const search = (document.getElementById('db-search')?.value || "").toLowerCase().trim();
             
-            // 기본 필터링
-            let filtered = app.MASTER_DB.filter(i => 
-                i.cat === app.activeCategory && 
-                (i.name.toLowerCase().includes(search) || i.spec.toLowerCase().includes(search))
-            );
-
-            // 검색 중이 아닐 때 대표 품목만 필터링
-            if (!search && app.representativeKeywords[app.activeCategory]) {
-                const config = app.representativeKeywords[app.activeCategory];
-                const keywords = config.keywords || [];
-                const exclude = config.exclude || [];
+            // 검색어 정규화 (띄어쓰기, 특수문자 제거)
+            const normalizeSearch = (text) => {
+                return text.replace(/\s+/g, '').replace(/[^\w가-힣]/g, '').toLowerCase();
+            };
+            const normalizedSearch = normalizeSearch(search);
+            
+            const filtered = app.MASTER_DB.filter(i => {
+                if (i.cat !== app.activeCategory) return false;
                 
-                filtered = filtered.filter(item => {
-                    const nameLower = item.name.toLowerCase();
-                    const specLower = item.spec.toLowerCase();
-                    
-                    // 제외 키워드 체크
-                    if (exclude.some(kw => nameLower.includes(kw.toLowerCase()) || specLower.includes(kw.toLowerCase()))) {
-                        return false;
-                    }
-                    
-                    // 포함 키워드 체크
-                    return keywords.some(keyword => 
-                        nameLower.includes(keyword.toLowerCase()) || 
-                        specLower.includes(keyword.toLowerCase())
-                    );
-                });
+                if (!search) return true;
                 
-                // 우선순위 정렬 (대표 품목 먼저)
-                filtered.sort((a, b) => {
-                    const aIsRep = keywords.some(kw => 
-                        a.name.includes(kw) || a.spec.includes(kw)
-                    );
-                    const bIsRep = keywords.some(kw => 
-                        b.name.includes(kw) || b.spec.includes(kw)
-                    );
-                    return bIsRep - aIsRep;
-                });
-            }
+                // 대소문자 무시, 띄어쓰기 무시 검색
+                const nameNorm = normalizeSearch(i.name);
+                const specNorm = normalizeSearch(i.spec);
+                const catNorm = normalizeSearch(i.cat);
+                
+                return nameNorm.includes(normalizedSearch) || 
+                       specNorm.includes(normalizedSearch) ||
+                       catNorm.includes(normalizedSearch);
+            });
 
+            // 기존 행 제거 후 새로 생성 (성능 최적화)
             tbody.innerHTML = '';
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="p-8 text-center text-slate-400 italic">
+                            검색 결과가 없습니다.
+                        </td>
+                    </tr>`;
+                return;
+            }
 
             filtered.forEach(item => {
                 const tr = document.createElement('tr');
                 tr.className = 'hover:bg-blue-50 transition cursor-pointer group fade-in';
                 tr.onclick = () => app.addItem(item.id);
 
-                // 대표 품목 표시
-                const isRep = app.representativeKeywords[app.activeCategory]?.keywords.some(kw => 
-                    item.name.includes(kw) || item.spec.includes(kw)
-                ) && !app.representativeKeywords[app.activeCategory]?.exclude.some(ekw =>
-                    item.name.includes(ekw) || item.spec.includes(ekw)
-                );
+                // 로직 유효성 표시
+                const isValidLogic = item.logic === "MANUAL" || 
+                                    item.logic === "FIXED" ||
+                                    item.logic.endsWith("_FIXED") ||
+                                    calculationLogic.calculateQuantity(item.logic, 30, 'normal') > 0;
 
                 tr.innerHTML = `
                     <td class="p-6">
                         <div class="flex items-center gap-2 mb-1">
                             <div class="text-[9px] font-black text-blue-600 uppercase tracking-tighter text-nowrap">${item.cat}</div>
-                            ${isRep ? '<span class="text-[8px] bg-orange-500 text-white px-1.5 py-0.5 rounded font-bold">대표</span>' : ''}
+                            ${!isValidLogic ? '<span class="text-[8px] bg-red-500 text-white px-1.5 py-0.5 rounded font-bold">⚠</span>' : ''}
+                            ${item.note ? '<span class="text-[8px] bg-yellow-500 text-white px-1.5 py-0.5 rounded font-bold" title="' + item.note + '">📌</span>' : ''}
                         </div>
                         <div class="font-bold text-slate-800 text-sm wrap-text">${item.name}</div>
                         <div class="text-[12pt] text-slate-700 wrap-text leading-tight">${item.spec}</div>
                     </td>
                     <td class="p-6 text-center font-bold text-slate-500 uppercase text-nowrap">${item.unit}</td>
                     <td class="p-6 text-right font-black text-blue-900 text-nowrap">${item.price.toLocaleString()}</td>
-                    <td class="p-6 text-center text-nowrap"><span class="formula-badge font-bold">${item.lTxt}</span></td>
+                    <td class="p-6 text-center text-nowrap">
+                        <span class="formula-badge font-bold ${!isValidLogic ? 'text-red-600' : ''}" title="${item.logic}">${item.lTxt}</span>
+                    </td>
                     <td class="p-6 text-center text-nowrap">
                         <button class="bg-blue-600 text-white w-8 h-8 rounded-xl font-bold shadow-md group-hover:bg-orange-500 transition-colors">＋</button>
                     </td>`;
@@ -867,7 +679,10 @@
         // ==================== 항목 관리 ====================
         app.addItem = function(id) {
             const item = app.MASTER_DB.find(i => i.id === id);
-            if (!item) return;
+            if (!item) {
+                app.showNotification('항목을 찾을 수 없습니다.', 'error');
+                return;
+            }
 
             const existing = app.selectedItems.find(s => s.id === id);
             if (existing) {
@@ -875,43 +690,57 @@
                 return;
             }
 
-            const actualSize = app.getActualSize();
+            const size = utils.safeParseFloat(document.getElementById('site-size').value, 0);
+            const areaType = app.areaType || 'normal';
             const basePrice = app.basePrices.get(id) || item.price;
 
-            let currentPrice = calculationLogic.calculatePrice(item.logic, basePrice, actualSize);
+            // 단가 계산 (면적 타입 적용)
+            let currentPrice = calculationLogic.calculatePrice(item.logic, basePrice, size, areaType);
             
+            // 수량 계산 (FIXED가 아닌 경우)
             let qty = 1;
-            if (!item.logic.endsWith("_FIXED")) {
-                qty = calculationLogic.calculateQuantity(item.logic, actualSize);
+            if (!item.logic.endsWith("_FIXED") && item.logic !== "FIXED" && item.logic !== "MANUAL") {
+                qty = calculationLogic.calculateQuantity(item.logic, size, areaType);
+            }
+
+            // 로직 처리 실패 시 경고
+            if (qty <= 0 || currentPrice <= 0) {
+                console.warn(`항목 "${item.name}" 계산 실패: 로직="${item.logic}", 수량=${qty}, 단가=${currentPrice}`);
             }
 
             app.selectedItems.push({
                 ...item,
-                qty,
-                price: currentPrice,
-                basePrice: basePrice
+                qty: Math.max(1, qty),
+                price: Math.max(0, currentPrice),
+                basePrice: basePrice // 원본 단가 저장
             });
 
             app.updateAll();
+            app.showNotification(`${item.name} 추가됨`, 'success');
         };
 
         app.syncAutoCalculations = function() {
-            const actualSize = app.getActualSize();
+            const size = utils.safeParseFloat(document.getElementById('site-size').value, 0);
+            const areaType = app.areaType || 'normal';
 
             app.selectedItems.forEach(item => {
                 const basePrice = item.basePrice || app.basePrices.get(item.id) || item.price;
 
-                if (item.logic.endsWith("_FIXED")) {
+                // 단가 재계산 (FIXED 로직)
+                if (item.logic.endsWith("_FIXED") || item.logic === "FIXED") {
                     item.qty = 1;
-                    item.price = calculationLogic.calculatePrice(item.logic, basePrice, actualSize);
-                } else {
-                    item.qty = calculationLogic.calculateQuantity(item.logic, actualSize);
+                    item.price = calculationLogic.calculatePrice(item.logic, basePrice, size, areaType);
+                } else if (item.logic === "MANUAL") {
+                    // 수동 입력 항목은 변경하지 않음
                     item.price = basePrice;
+                } else {
+                    // 수량 재계산 (면적 타입 적용)
+                    item.qty = calculationLogic.calculateQuantity(item.logic, size, areaType);
+                    item.price = basePrice; // 원본 단가 유지
                 }
             });
 
             app.updateAll();
-            app.updateActualSizeDisplay();
         };
 
         app.updateQty = function(id, val) {
@@ -1028,7 +857,7 @@
                 l.length > 10 ? l.substring(0, 10) + '...' : l
             );
             app.budgetChart.data.datasets[0].data = Object.values(cats);
-            app.budgetChart.update('none');
+            app.budgetChart.update('none'); // 애니메이션 없이 업데이트
         };
 
         // ==================== 인쇄 뷰 업데이트 ====================
@@ -1124,6 +953,7 @@
             app.updatePrintView();
         };
 
+        // ==================== 디바운스 래퍼 ====================
         app.debounceUpdate = utils.debounce(app.updateAll, 300);
         app.debounceRenderDB = utils.debounce(app.renderDB, 300);
 
@@ -1185,102 +1015,71 @@
             }
         };
 
-       // ==================== 로컬 스토리지 ====================
-app.saveToLocal = function() {
-    try {
-        const data = {
-            siteName: document.getElementById('site-name').value,
-            siteSize: document.getElementById('site-size').value,
-            areaType: app.areaType,
-            areaMultipliers: app.areaMultipliers,
-            rateExp: document.getElementById('rate-exp').value,
-            rateProfit: document.getElementById('rate-profit').value,
-            valAdjust: document.getElementById('val-adjust').value,
-            selectedItems: app.selectedItems,
-            timestamp: new Date().toISOString()
+        // ==================== 로컬 스토리지 ====================
+        app.saveToLocal = function() {
+            try {
+                const data = {
+                    siteName: document.getElementById('site-name').value,
+                    siteSize: document.getElementById('site-size').value,
+                    areaType: app.areaType,
+                    areaMultipliers: app.areaMultipliers,
+                    rateExp: document.getElementById('rate-exp').value,
+                    rateProfit: document.getElementById('rate-profit').value,
+                    valAdjust: document.getElementById('val-adjust').value,
+                    selectedItems: app.selectedItems,
+                    timestamp: new Date().toISOString()
+                };
+                localStorage.setItem('totoEstimate', JSON.stringify(data));
+                app.showNotification('저장 완료', 'success');
+            } catch (e) {
+                app.showNotification('저장 실패: ' + e.message, 'error');
+            }
         };
-        localStorage.setItem('totoEstimate', JSON.stringify(data));
-        app.showNotification('저장 완료', 'success');
-    } catch (e) {
-        app.showNotification('저장 실패: ' + e.message, 'error');
-    }
-};
 
-app.loadFromLocal = function() {
-    try {
-        const saved = localStorage.getItem('totoEstimate');
-        if (!saved) {
-            app.showNotification('저장된 데이터가 없습니다.', 'info');
-            return;
-        }
-
-        const data = JSON.parse(saved);
-        document.getElementById('site-name').value = data.siteName || '';
-        document.getElementById('site-size').value = data.siteSize || '';
-        
-        if (data.areaType) {
-            app.areaType = data.areaType;
-            app.setAreaType(data.areaType);
-        }
-        if (data.areaMultipliers) {
-            app.areaMultipliers = { ...app.areaMultipliers, ...data.areaMultipliers };
-            document.getElementById('area-multiplier').value = app.areaMultipliers[app.areaType] || 1.0;
-        }
-        
-        document.getElementById('rate-exp').value = data.rateExp || '5';
-        document.getElementById('rate-profit').value = data.rateProfit || '10';
-        document.getElementById('val-adjust').value = data.valAdjust || '0';
-
-        if (data.selectedItems && Array.isArray(data.selectedItems)) {
-            app.selectedItems = data.selectedItems;
-            app.selectedItems.forEach(item => {
-                if (!item.basePrice) {
-                    item.basePrice = app.basePrices.get(item.id) || item.price;
+        app.loadFromLocal = function() {
+            try {
+                const saved = localStorage.getItem('totoEstimate');
+                if (!saved) {
+                    app.showNotification('저장된 데이터가 없습니다.', 'info');
+                    return;
                 }
-            });
-        }
 
-        app.syncAutoCalculations();
-        app.showNotification('불러오기 완료', 'success');
-    } catch (e) {
-        app.showNotification('불러오기 실패: ' + e.message, 'error');
-    }
-};
+                const data = JSON.parse(saved);
+                document.getElementById('site-name').value = data.siteName || '';
+                document.getElementById('site-size').value = data.siteSize || '';
+                
+                // 면적 타입 복원
+                if (data.areaType) {
+                    app.areaType = data.areaType;
+                    app.setAreaType(data.areaType);
+                }
+                if (data.areaMultipliers) {
+                    app.areaMultipliers = { ...app.areaMultipliers, ...data.areaMultipliers };
+                    document.getElementById('area-multiplier').value = app.areaMultipliers[app.areaType] || 1.0;
+                }
+                
+                document.getElementById('rate-exp').value = data.rateExp || '5';
+                document.getElementById('rate-profit').value = data.rateProfit || '10';
+                document.getElementById('val-adjust').value = data.valAdjust || '0';
 
-// ==================== 전체지우기 ====================
-app.clearAll = function() {
-    if (app.selectedItems.length > 0 || document.getElementById('site-name').value || document.getElementById('site-size').value) {
-        if (!confirm('모든 데이터를 지우시겠습니까?\n(저장된 데이터는 유지됩니다)')) {
-            return;
-        }
-    }
+                if (data.selectedItems && Array.isArray(data.selectedItems)) {
+                    app.selectedItems = data.selectedItems;
+                    // basePrice 복원
+                    app.selectedItems.forEach(item => {
+                        if (!item.basePrice) {
+                            item.basePrice = app.basePrices.get(item.id) || item.price;
+                        }
+                    });
+                }
 
-    // 선택된 항목 모두 제거
-    app.selectedItems = [];
-    
-    // 입력 필드 초기화
-    document.getElementById('site-name').value = '';
-    document.getElementById('site-size').value = '';
-    
-    // 면적 타입 초기화
-    app.setAreaType('normal');
-    document.getElementById('area-multiplier').value = 1.0;
-    
-    // 경비/이윤/단수조정 초기화
-    document.getElementById('rate-exp').value = '5';
-    document.getElementById('rate-profit').value = '10';
-    document.getElementById('val-adjust').value = '0';
-    
-    // 검색어 초기화
-    document.getElementById('db-search').value = '';
-    
-    // 모든 업데이트
-    app.updateAll();
-    app.renderDB();
-    app.updateActualSizeDisplay();
-    
-    app.showNotification('전체 데이터가 초기화되었습니다.', 'success');
-};
+                app.syncAutoCalculations();
+                app.updateActualSizeDisplay();
+                app.showNotification('불러오기 완료', 'success');
+            } catch (e) {
+                app.showNotification('불러오기 실패: ' + e.message, 'error');
+            }
+        };
+
         // ==================== 알림 시스템 ====================
         app.showNotification = function(message, type = 'info') {
             const colors = {
@@ -1306,9 +1105,10 @@ app.clearAll = function() {
         app.init = function() {
             app.initChart();
             app.initSortable();
-            app.setAreaType('normal');
+            app.setAreaType('normal'); // 면적 타입 초기화
             app.fetchExternalData();
             
+            // 자동 저장된 데이터 불러오기
             const autoLoad = localStorage.getItem('totoEstimateAutoLoad');
             if (autoLoad === 'true') {
                 app.loadFromLocal();
@@ -1331,13 +1131,16 @@ app.clearAll = function() {
             });
         };
 
+        // ==================== 페이지 로드 ====================
         window.onload = app.init;
 
+        // ==================== 자동 저장 (선택사항) ====================
         setInterval(() => {
             if (app.selectedItems.length > 0) {
                 app.saveToLocal();
             }
-        }, 60000);
+        }, 60000); // 1분마다 자동 저장
     </script>
 </body>
 </html>
+
