@@ -137,7 +137,7 @@
                             </button>
                         </div>
                         <!-- 검색 모드: 카테고리 탭 -->
-                        <div id="search-mode-tabs" class="flex flex-wrap gap-2 overflow-x-auto pb-1" id="category-tabs"></div>
+                        <div id="search-mode-tabs" class="flex flex-wrap gap-2 overflow-x-auto pb-1"></div>
                     </div>
                     
                     <!-- 검색 모드 컨텐츠 -->
@@ -1072,7 +1072,7 @@
 
         // ==================== 렌더링 함수 ====================
         app.renderTabs = function() {
-            const container = document.getElementById('category-tabs');
+            const container = document.getElementById('search-mode-tabs');
             if (!container) return;
 
             const cats = [...new Set(app.MASTER_DB.map(i => i.cat))];
