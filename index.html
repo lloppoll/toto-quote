@@ -108,7 +108,26 @@
                             </div>
                         </div>
                     </div>
-                           <div class="space-y-2">
+                    <div class="bg-slate-50 rounded-2xl p-6 space-y-3 border border-slate-100 shrink-0">
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-[10px] font-bold text-slate-500">경비(%)</label>
+                                <input type="number" id="rate-exp" value="5" oninput="app.debounceUpdate()" class="w-full mt-1 bg-white border border-slate-200 rounded-lg p-2 text-center font-bold text-sm outline-none">
+                            </div>
+                            <div>
+                                <label class="text-[10px] font-bold text-slate-500">이윤(%)</label>
+                                <input type="number" id="rate-profit" value="10" oninput="app.debounceUpdate()" class="w-full mt-1 bg-white border border-slate-200 rounded-lg p-2 text-center font-bold text-sm outline-none">
+                            </div>
+                        </div>
+                        <div>
+                            
+                            <label class="text-[10px] font-bold text-slate-500">단수 조정/할인(원)</label>
+                            <input type="number" id="val-adjust" value="0" oninput="app.debounceUpdate()" class="w-full mt-1 bg-white border border-slate-200 rounded-lg p-2 text-right font-bold text-sm outline-none">
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-200 overflow-hidden flex flex-col w-full">
+                     <div class="space-y-2">
                             <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">빠른 작업</label>
                             <button onclick="app.smartRecommend()" class="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white rounded-xl p-3.5 font-black text-xs transition-all shadow-lg flex items-center justify-center space-x-2">
                                 <span>✨</span>
@@ -127,24 +146,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="bg-slate-50 rounded-2xl p-6 space-y-3 border border-slate-100 shrink-0">
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <label class="text-[10px] font-bold text-slate-500">경비(%)</label>
-                                <input type="number" id="rate-exp" value="5" oninput="app.debounceUpdate()" class="w-full mt-1 bg-white border border-slate-200 rounded-lg p-2 text-center font-bold text-sm outline-none">
-                            </div>
-                            <div>
-                                <label class="text-[10px] font-bold text-slate-500">이윤(%)</label>
-                                <input type="number" id="rate-profit" value="10" oninput="app.debounceUpdate()" class="w-full mt-1 bg-white border border-slate-200 rounded-lg p-2 text-center font-bold text-sm outline-none">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="text-[10px] font-bold text-slate-500">단수 조정/할인(원)</label>
-                            <input type="number" id="val-adjust" value="0" oninput="app.debounceUpdate()" class="w-full mt-1 bg-white border border-slate-200 rounded-lg p-2 text-right font-bold text-sm outline-none">
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-200 overflow-hidden flex flex-col w-full">
                     <!-- 듀얼 모드 탭 -->
                     <div class="bg-slate-50 p-4 border-b">
                         <div class="flex gap-3 mb-4">
