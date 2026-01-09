@@ -1118,6 +1118,37 @@
                                 </button>
                             </div>
                         </div>
+
+                                                <!-- 방문 -->
+                        <div class="bg-white rounded-2xl p-6 border-2 border-slate-200 shadow-sm">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-4 h-4 bg-cyan-500 rounded"></div>
+                                <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest">방문</h3>
+                                ${data.door.type ? '<span class="ml-auto text-xs bg-cyan-500 text-white px-2 py-0.5 rounded font-bold">선택됨</span>' : ''}
+                            </div>
+                            <div class="grid grid-cols-1 gap-2">
+                                <button onclick="app.selectMeetingOption('door', 'ABS도어')" class="meeting-btn ${data.door.type === 'ABS도어' ? 'active' : ''} flex items-center justify-between p-3 bg-slate-50 border-2 ${data.door.type === 'ABS도어' ? 'border-cyan-500 bg-cyan-50' : 'border-slate-200 hover:border-cyan-300'} rounded-xl transition-all text-left">
+                                    <span class="text-sm font-black text-slate-800">ABS 도어</span>
+                                    ${data.door.type === 'ABS도어' ? '<span class="text-cyan-600 font-black">✓</span>' : ''}
+                                </button>
+                                <button onclick="app.selectMeetingOption('door', '히든도어')" class="meeting-btn ${data.door.type === '히든도어' ? 'active' : ''} flex items-center justify-between p-3 bg-slate-50 border-2 ${data.door.type === '히든도어' ? 'border-cyan-500 bg-cyan-50' : 'border-slate-200 hover:border-cyan-300'} rounded-xl transition-all text-left">
+                                    <span class="text-sm font-black text-slate-800">히든 도어</span>
+                                    ${data.door.type === '히든도어' ? '<span class="text-cyan-600 font-black">✓</span>' : ''}
+                                </button>
+                                <button onclick="app.selectMeetingOption('door', '스텝도어')" class="meeting-btn ${data.door.type === '스텝도어' ? 'active' : ''} flex items-center justify-between p-3 bg-slate-50 border-2 ${data.door.type === '스텝도어' ? 'border-cyan-500 bg-cyan-50' : 'border-slate-200 hover:border-cyan-300'} rounded-xl transition-all text-left">
+                                    <span class="text-sm font-black text-slate-800">스텝 도어</span>
+                                    ${data.door.type === '스텝도어' ? '<span class="text-cyan-600 font-black">✓</span>' : ''}
+                                </button>
+                                <button onclick="app.selectMeetingOption('door', '슬리이딩도어')" class="meeting-btn ${data.door.type === '슬리이딩도어' ? 'active' : ''} flex items-center justify-between p-3 bg-slate-50 border-2 ${data.door.type === '슬리이딩도어' ? 'border-cyan-500 bg-cyan-50' : 'border-slate-200 hover:border-cyan-300'} rounded-xl transition-all text-left">
+                                    <span class="text-sm font-black text-slate-800">슬리이딩 도어</span>
+                                    ${data.door.type === '슬리이딩도어' ? '<span class="text-cyan-600 font-black">✓</span>' : ''}
+                                </button>
+                                <button onclick="app.selectMeetingOption('door', '타공도어')" class="meeting-btn ${data.door.type === '타공도어' ? 'active' : ''} flex items-center justify-between p-3 bg-slate-50 border-2 ${data.door.type === '타공도어' ? 'border-cyan-500 bg-cyan-50' : 'border-slate-200 hover:border-cyan-300'} rounded-xl transition-all text-left">
+                                    <span class="text-sm font-black text-slate-800">타공 도어</span>
+                                    ${data.door.type === '타공도어' ? '<span class="text-cyan-600 font-black">✓</span>' : ''}
+                                </button>
+                            </div>
+                        </div>
                         
                         <!-- 목공사 -->
                         <div class="bg-white rounded-2xl p-6 border-2 border-slate-200 shadow-sm">
