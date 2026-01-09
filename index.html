@@ -61,6 +61,7 @@
                     <div id="sync-status" class="hidden text-[10px] bg-green-500/20 text-green-400 px-3 py-1 rounded-full border border-green-500/30 font-bold shrink-0">● CLOUD CONNECTED</div>
                     <button onclick="app.saveToLocal()" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-xl font-bold text-xs transition-all shadow-lg shrink-0">저장</button>
                     <button onclick="app.loadFromLocal()" class="bg-slate-600 hover:bg-slate-500 text-white px-4 py-2 rounded-xl font-bold text-xs transition-all shadow-lg shrink-0">불러오기</button>
+                    <button onclick="app.clearAll()" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-xl font-bold text-xs transition-all shadow-lg shrink-0">전체 지우기</button>
                     <div class="text-right hidden md:block shrink-0">
                         <div class="text-[10px] font-bold text-slate-500 uppercase">Estimated Total</div>
                         <div id="nav-total" class="text-xl lg:text-2xl font-black text-white">0원</div>
@@ -107,6 +108,24 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">빠른 작업</label>
+                            <button onclick="app.smartRecommend()" class="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white rounded-xl p-3.5 font-black text-xs transition-all shadow-lg flex items-center justify-center space-x-2">
+                                <span>✨</span>
+                                <span>스마트 추천 (평수 기반 필수 항목)</span>
+                            </button>
+                            <div class="flex gap-2">
+                                <button onclick="app.loadTemplate('basic')" class="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-700 border-2 border-blue-200 rounded-xl p-2.5 font-bold text-[10px] transition-all">
+                                    ⚡ 기본 세트
+                                </button>
+                                <button onclick="app.loadTemplate('full')" class="flex-1 bg-purple-50 hover:bg-purple-100 text-purple-700 border-2 border-purple-200 rounded-xl p-2.5 font-bold text-[10px] transition-all">
+                                    🏠 전체 세트
+                                </button>
+                                <button onclick="app.showRecentEstimates()" class="flex-1 bg-slate-50 hover:bg-slate-100 text-slate-700 border-2 border-slate-200 rounded-xl p-2.5 font-bold text-[10px] transition-all">
+                                    📋 복사
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <div class="bg-slate-50 rounded-2xl p-6 space-y-3 border border-slate-100 shrink-0">
                         <div class="grid grid-cols-2 gap-3">
@@ -126,77 +145,38 @@
                     </div>
                 </div>
                 <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-200 overflow-hidden flex flex-col w-full">
-                    <!-- 듀얼 모드 탭 -->
+                    <!-- 카테고리 탭 -->
                     <div class="bg-slate-50 p-4 border-b">
-                        <div class="flex gap-3 mb-4">
-                            <button onclick="app.switchMode('meeting')" id="mode-meeting" class="mode-tab flex-1 px-6 py-4 rounded-2xl text-sm font-black transition-all border-2 bg-white text-slate-600 border-slate-200 hover:bg-slate-50">
-                                <div class="text-left">
-                                    <div class="text-xs font-bold opacity-80 mb-1">01.</div>
-                                    <div>DIGITAL MEETING SHEET</div>
-                                    <div class="text-[10px] font-normal opacity-70 mt-0.5">(1차 상담용)</div>
-                                </div>
-                            </button>
-                            <button onclick="app.switchMode('search')" id="mode-search" class="mode-tab flex-1 px-6 py-4 rounded-2xl text-sm font-black transition-all border-2 bg-blue-600 text-white border-blue-600 shadow-lg">
-                                <div class="text-left">
-                                    <div class="text-xs font-bold opacity-80 mb-1">02.</div>
-                                    <div>ITEM MASTER DATABASE</div>
-                                    <div class="text-[10px] font-normal opacity-70 mt-0.5">(세부 항목)</div>
-                                </div>
-                            </button>
-                        </div>
-                        <!-- 검색 모드: 카테고리 탭 -->
                         <div id="search-mode-tabs" class="flex flex-wrap gap-2 overflow-x-auto pb-1"></div>
                     </div>
                     
-                    <!-- 검색 모드 컨텐츠 -->
+                    <!-- 아이템 마스터 데이터베이스 컨텐츠 -->
                     <div id="search-mode-content">
-                        <div class="p-6 bg-white border-b flex flex-col md:flex-row justify-between items-center gap-4">
-                            <h2 class="font-black text-slate-800 text-sm flex items-center uppercase tracking-widest shrink-0 text-nowrap">
-                                <span class="w-2 h-5 bg-blue-600 rounded-full mr-3"></span>
-                                ITEM MASTER DATABASE
-                            </h2>
-                            <div class="flex space-x-2 w-full md:w-auto">
-                                <input type="text" id="db-search" onkeyup="app.debounceRenderDB()" placeholder="항목 검색..." class="flex-1 text-xs border border-slate-200 rounded-full px-6 py-3 outline-none focus:border-blue-500 shadow-sm min-w-0">
-                                <button onclick="app.fetchExternalData()" id="sync-btn" class="bg-blue-50 text-blue-700 hover:bg-blue-100 px-5 py-3 rounded-full text-xs font-black transition-all border border-blue-100 flex items-center shrink-0">
-                                    <span id="sync-icon">🔄</span> <span class="ml-2">동기화</span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="h-[550px] overflow-y-auto custom-scroll w-full">
-                            <table class="w-full text-left text-xs border-collapse table-fixed">
-                                <thead class="bg-slate-50 sticky top-0 z-10 shadow-sm">
-                                    <tr class="text-slate-400 font-bold uppercase tracking-tighter">
-                                        <th class="p-6 border-b w-auto">품명 및 제품 스펙</th>
-                                        <th class="p-6 border-b text-center w-20">단위</th>
-                                        <th class="p-6 border-b text-right w-32">단가(원)</th>
-                                        <th class="p-6 border-b text-center w-24">로직</th>
-                                        <th class="p-6 border-b text-center w-20">추가</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="db-tbody" class="divide-y divide-slate-100"></tbody>
-                            </table>
+                    <div class="p-6 bg-white border-b flex flex-col md:flex-row justify-between items-center gap-4">
+                        <h2 class="font-black text-slate-800 text-sm flex items-center uppercase tracking-widest shrink-0 text-nowrap">
+                            <span class="w-2 h-5 bg-blue-600 rounded-full mr-3"></span>
+                            ITEM MASTER DATABASE
+                        </h2>
+                        <div class="flex space-x-2 w-full md:w-auto">
+                            <input type="text" id="db-search" onkeyup="app.debounceRenderDB()" placeholder="항목 검색..." class="flex-1 text-xs border border-slate-200 rounded-full px-6 py-3 outline-none focus:border-blue-500 shadow-sm min-w-0">
+                            <button onclick="app.fetchExternalData()" id="sync-btn" class="bg-blue-50 text-blue-700 hover:bg-blue-100 px-5 py-3 rounded-full text-xs font-black transition-all border border-blue-100 flex items-center shrink-0">
+                                <span id="sync-icon">🔄</span> <span class="ml-2">동기화</span>
+                            </button>
                         </div>
                     </div>
-                    
-                    <!-- 미팅지 모드 컨텐츠 -->
-                    <div id="meeting-mode-content" class="hidden">
-                        <div class="h-[500px] overflow-y-auto custom-scroll p-6">
-                            <div id="meeting-form" class="space-y-5"></div>
-                        </div>
-                        <!-- 추정 시공물량 카드 -->
-                        <div id="estimate-quantity-card" class="bg-slate-900 rounded-2xl p-6 text-white shadow-xl border border-slate-700 mx-6 mb-6">
-                            <h3 class="text-sm font-black mb-4 uppercase tracking-widest text-slate-300">추정 시공물량 (NET ESTIMATE)</h3>
-                            <div class="space-y-4">
-                                <div class="flex justify-between items-center pb-3 border-b border-slate-700">
-                                    <span class="text-xs font-bold text-slate-400">바닥(마루) 추정</span>
-                                    <span id="floor-estimate" class="text-2xl font-black">0.0평</span>
-                                </div>
-                                <div class="flex justify-between items-center">
-                                    <span class="text-xs font-bold text-slate-400">도배(벽지) 추정</span>
-                                    <span id="wall-estimate" class="text-2xl font-black">0.0평</span>
-                                </div>
-                            </div>
-                            <p class="text-[9px] text-slate-500 mt-4 italic">* 현장 실측 시 오차가 발생할 수 있습니다.</p>
+                    <div class="h-[550px] overflow-y-auto custom-scroll w-full">
+                        <table class="w-full text-left text-xs border-collapse table-fixed">
+                            <thead class="bg-slate-50 sticky top-0 z-10 shadow-sm">
+                                <tr class="text-slate-400 font-bold uppercase tracking-tighter">
+                                    <th class="p-6 border-b w-auto">품명 및 제품 스펙</th>
+                                    <th class="p-6 border-b text-center w-20">단위</th>
+                                    <th class="p-6 border-b text-right w-32">단가(원)</th>
+                                    <th class="p-6 border-b text-center w-24">로직</th>
+                                    <th class="p-6 border-b text-center w-20">추가</th>
+                                </tr>
+                            </thead>
+                            <tbody id="db-tbody" class="divide-y divide-slate-100"></tbody>
+                        </table>
                         </div>
                     </div>
                 </div>
@@ -206,7 +186,11 @@
                     <div class="absolute -top-4 -right-4 opacity-10 font-black text-8xl italic">AI</div>
                     <h3 class="text-xl font-black mb-4 flex items-center text-nowrap"><span class="text-blue-500 italic mr-2 text-2xl">Smart</span> Advisor</h3>
                     <div id="ai-response" class="text-xs text-slate-300 leading-relaxed mb-6 h-[180px] overflow-y-auto custom-scroll pr-4 italic border-l-2 border-orange-500/30 pl-4 whitespace-normal">견적 항목을 추가하신 후 정밀 분석을 요청하세요.</div>
-                    <button onclick="app.requestAiAnalysis()" id="ai-btn" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-4 rounded-2xl shadow-xl transition-all flex items-center justify-center space-x-3 transform active:scale-95 text-nowrap"><span>실시간 견적 정밀 분석 요청</span></button>
+                    <div class="space-y-3">
+                        <button onclick="app.requestAiAnalysis()" id="ai-btn" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-4 rounded-2xl shadow-xl transition-all flex items-center justify-center space-x-3 transform active:scale-95 text-nowrap"><span>실시간 견적 정밀 분석 요청</span></button>
+                        <button onclick="app.showRecommendations()" id="recommend-btn" class="w-full bg-green-600 hover:bg-green-500 text-white font-black py-3 rounded-2xl shadow-xl transition-all flex items-center justify-center space-x-2 transform active:scale-95 text-sm"><span>🤖 추천 항목 보기</span></button>
+                    </div>
+                    <div id="recommendations-list" class="mt-4 hidden"></div>
                 </div>
                 <div class="bg-white rounded-[2.5rem] shadow-xl border border-slate-200 overflow-hidden sticky top-24">
                     <div class="p-8 bg-blue-600 text-white flex justify-between items-end text-nowrap">
@@ -285,7 +269,17 @@
     <script>
         // ==================== 앱 상태 관리 ====================
         const app = {
+            // Google Sheets 공개 URL (CSV 형식 - 수식이 계산된 값으로 제공됨)
+            // CSV는 Google Sheets의 수식이 계산된 결과값을 포함합니다.
             sheetUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vT07Uf0iXXGQsjaIkcvhQmY0vJT2KvKBLDXucGKWja8kxLMDwyvrlhlMqBZCEjVh87JxVbzD2p0oQLw/pub?output=csv",
+            // Google Sheets ID (API 사용 시 필요)
+            // Sheet ID는 Google Sheets URL에서 추출: https://docs.google.com/spreadsheets/d/{SHEET_ID}/edit
+            // 공개 URL과는 다른 형식이므로, 필요시 직접 설정하세요.
+            sheetId: "",
+            // Google Sheets API 키 (선택사항)
+            // API 키를 설정하면 Google Sheets API v4를 사용하여 수식 결과를 가져옵니다.
+            // API 키 없이도 CSV를 통해 수식 결과를 가져올 수 있습니다.
+            sheetsApiKey: "",
             MASTER_DB: [],
             selectedItems: [],
             budgetChart: null,
@@ -299,7 +293,7 @@
                 extended: 1.1,
                 high: 1.2
             },
-            orderCriteria: ["가설/철거", "전기 공사", "창호 공사", "설비 공사", "방수/미장 공사", "확장/단열 공사", "목공사", "도어 공사", "타일 공사", "도배 공사", "마루 공사", "욕실 공사", "도장 공사", "필름 공사", "가구 공사", "에어컨 공사", "마감 공사", "기타 공사"],
+            orderCriteria: ["공통 가설", "철거 공사", "설비 공사", "방수 공사", "단열 공사", "창호 공사", "도어 공사", "목공사", "전기 공사", "에어컨 공사", "타일 공사", "도배 공사", "마루 공사", "욕실 공사", "도장 공사", "필름 공사", "가구 공사", "마감 공사", "기타 공사"],
             currentMode: 'search', // 'search' or 'meeting'
             meetingData: {
                 customerName: '',
@@ -450,16 +444,60 @@
                 return rows;
             },
 
-            // 안전한 숫자 변환
+            // 안전한 숫자 변환 (Google Sheets 수식 결과 파싱 개선)
             safeParseInt(str, defaultValue = 0) {
-                const num = parseInt(String(str).replace(/[^0-9]/g, '')) || defaultValue;
-                return isNaN(num) ? defaultValue : num;
+                if (!str && str !== 0) return defaultValue;
+                
+                // 문자열로 변환
+                let cleanStr = String(str).trim();
+                
+                // 빈 문자열 체크
+                if (cleanStr === '' || cleanStr === '-') return defaultValue;
+                
+                // 천 단위 구분자(쉼표), 통화 기호, 공백 제거
+                cleanStr = cleanStr.replace(/[,\s₩$원]/g, '');
+                
+                // 음수 기호 처리
+                const isNegative = cleanStr.startsWith('-');
+                if (isNegative) cleanStr = cleanStr.substring(1);
+                
+                // 숫자만 추출
+                const numStr = cleanStr.replace(/[^0-9.]/g, '');
+                if (!numStr) return defaultValue;
+                
+                // 정수로 변환
+                const num = parseInt(numStr, 10);
+                if (isNaN(num)) return defaultValue;
+                
+                return isNegative ? -num : num;
             },
 
-            // 안전한 실수 변환
+            // 안전한 실수 변환 (Google Sheets 수식 결과 파싱 개선)
             safeParseFloat(str, defaultValue = 0) {
-                const num = parseFloat(String(str)) || defaultValue;
-                return isNaN(num) ? defaultValue : num;
+                if (!str && str !== 0) return defaultValue;
+                
+                // 문자열로 변환
+                let cleanStr = String(str).trim();
+                
+                // 빈 문자열 체크
+                if (cleanStr === '' || cleanStr === '-') return defaultValue;
+                
+                // 천 단위 구분자(쉼표), 통화 기호, 공백 제거 (소수점은 유지)
+                cleanStr = cleanStr.replace(/[,\s₩$원]/g, '');
+                
+                // 음수 기호 처리
+                const isNegative = cleanStr.startsWith('-');
+                if (isNegative) cleanStr = cleanStr.substring(1);
+                
+                // 숫자와 소수점만 추출
+                const numStr = cleanStr.replace(/[^0-9.]/g, '');
+                if (!numStr) return defaultValue;
+                
+                // 실수로 변환
+                const num = parseFloat(numStr);
+                if (isNaN(num)) return defaultValue;
+                
+                return isNegative ? -num : num;
             }
         };
 
@@ -501,11 +539,11 @@
                     "W_SILK_LABOR3": () => Math.ceil((adjustedSize * 1.2) / 15),  // 천장만
                     
                     // 도배 인건비 (합지)
-                    "W_HAP_LABOR": () => Math.ceil((adjustedSize * 3.5) / 30),
-                    "W_HAP_LABOR1": () => Math.ceil((adjustedSize * 3.5) / 30),  // All
-                    "W_HAP_LABOR2": () => Math.ceil((adjustedSize * 2.5) / 30),  // 벽만
-                    "W_HAP_LABOR3": () => Math.ceil((adjustedSize * 1.2) / 30),  // 천장만
-                    "W_HAP_RM_LABOR": () => Math.ceil((adjustedSize * 2.5) / 30),
+                    "W_HAP_LABOR": () => Math.ceil((adjustedSize * 3.5) / 23),
+                    "W_HAP_LABOR1": () => Math.ceil((adjustedSize * 3.5) / 23),  // All
+                    "W_HAP_LABOR2": () => Math.ceil((adjustedSize * 2.5) / 23),  // 벽만
+                    "W_HAP_LABOR3": () => Math.ceil((adjustedSize * 1.2) / 23),  // 천장만
+                    "W_HAP_RM_LABOR": () => Math.ceil((adjustedSize * 2.5) / 23),
                     
                     // 도배 인건비 (고급지)
                     "W_PREM_LABOR": () => Math.ceil((adjustedSize * 3.5) / 14),
@@ -514,20 +552,20 @@
                     "W_PREM_LABOR3": () => Math.ceil((adjustedSize * 1.2) / 14),  // 천장만
                     
                     // 타일 인건비
-                    "T_LABOR5": () => Math.ceil(adjustedSize / 5), 
-                    "T_LABOR6": () => Math.ceil(adjustedSize / 6),  // 600각
-                    "T_LABOR7": () => Math.ceil(adjustedSize / 7),  // 화장실
-                    "T_LABOR8": () => Math.ceil(adjustedSize / 8),  // 작은화장실
+                    "T_LABOR": () => Math.ceil(adjustedSize / 3),
+                    "T_LABOR1": () => Math.ceil(adjustedSize / 5),  // 화장실
+                    "T_LABOR2": () => Math.ceil(adjustedSize / 13),  // 벽만
+                    "T_LABOR3": () => Math.ceil(adjustedSize / 14),  // 천장만
                     
                     // 평수 기반
-                    "PY_1X": () => adjustedSize,
+                    "PY_1X": () => Math.ceil(adjustedSize),
                     "PY_10": () => Math.ceil(adjustedSize / 10),
-                    "PY_K32": () => parseFloat((adjustedSize / 32).toFixed(2)),
+                    "PY_K32": () => Math.ceil(adjustedSize / 32),
                     
                     // 바닥면적
                     "FLOOR_07": () => Math.ceil(adjustedSize * 0.7),
                     "FLOOR_08": () => Math.ceil(adjustedSize * 0.8),
-                    "FLOOR_11": () => Math.ceil((adjustedSize *0.7) * 1.1)
+                    "FLOOR_11": () => Math.ceil((adjustedSize * 0.7) * 1.1)
                 };
 
                 return logicMap[logic] ? logicMap[logic]() : 1;
@@ -535,7 +573,7 @@
 
             // 단가 계산 (FIXED 로직 - 면적 타입 적용)
             calculatePrice(logic, basePrice, size, areaType = 'normal') {
-                const sizeNum = utils.safeParseFloat(size, 0);
+                    const sizeNum = utils.safeParseFloat(size, 0);
                 if (sizeNum <= 0) return basePrice;
 
                 // 면적 타입별 계수
@@ -551,25 +589,25 @@
                 if (logic.endsWith("_FIXED")) {
                     // 특수 계수 로직들
                     if (logic.includes("PY_07_FIXED") || logic.includes("FLOOR_07")) {
-                        return Math.round(basePrice * adjustedSize * 0.7);
+                        return Math.ceil(basePrice * adjustedSize * 0.7);
                     }
                     if (logic.includes("PY_08_FIXED") || logic.includes("FLOOR_08")) {
-                        return Math.round(basePrice * adjustedSize * 0.8);
+                        return Math.ceil(basePrice * adjustedSize * 0.8);
                     }
                     if (logic.includes("PY_11_FIXED") || logic.includes("FLOOR_11")) {
-                        return Math.round(basePrice * adjustedSize * 1.1);
+                        return Math.ceil(basePrice * adjustedSize * 1.1);
                     }
                     if (logic.includes("WALL_25") || logic.includes("PY_WL_WALL25")) {
-                        return Math.round(basePrice * adjustedSize * 2.5);
+                        return Math.ceil(basePrice * adjustedSize * 2.5);
                     }
                     if (logic.includes("WALL_35") || logic.includes("PY_WL_WALL35")) {
-                        return Math.round(basePrice * adjustedSize * 3.5);
+                        return Math.ceil(basePrice * adjustedSize * 3.5);
                     }
                     if (logic.includes("PY_MOLD") || logic.includes("PY_FN") || logic.includes("PY_K")) {
-                        return Math.round(basePrice * adjustedSize * 1.0);
+                        return Math.ceil(basePrice * adjustedSize * 1.0);
                     }
                     // 기본 FIXED: 평수 × 단가
-                    return Math.round(basePrice * adjustedSize);
+                    return Math.ceil(basePrice * adjustedSize);
                 }
                 
                 return basePrice;
@@ -632,21 +670,64 @@
             icon.textContent = '⏳';
 
             try {
-                const response = await fetch(app.sheetUrl);
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                let rows = [];
                 
-                const csvText = await response.text();
-                const rows = utils.parseCSV(csvText);
+                // Google Sheets API를 사용할 수 있는 경우 (API 키와 Sheet ID가 모두 설정된 경우)
+                if (app.sheetsApiKey && app.sheetId) {
+                    try {
+                        // Google Sheets API v4를 사용하여 수식 결과 가져오기
+                        // valueRenderOption: 'FORMATTED_VALUE' - 수식 결과를 포맷된 값으로 가져옴
+                        const apiUrl = `https://sheets.googleapis.com/v4/spreadsheets/${app.sheetId}/values/A:Z?key=${app.sheetsApiKey}&valueRenderOption=FORMATTED_VALUE`;
+                        const apiResponse = await fetch(apiUrl);
+                        
+                        if (apiResponse.ok) {
+                            const apiData = await apiResponse.json();
+                            if (apiData.values && apiData.values.length > 0) {
+                                rows = apiData.values;
+                                console.log('Google Sheets API를 사용하여 수식 결과를 가져왔습니다.');
+                            }
+                        } else {
+                            const errorData = await apiResponse.json();
+                            console.warn('Google Sheets API 오류:', errorData);
+                        }
+                    } catch (apiError) {
+                        console.warn('Google Sheets API 사용 실패, CSV로 대체:', apiError);
+                    }
+                }
+                
+                // API를 사용할 수 없거나 실패한 경우 CSV 사용
+                // CSV는 Google Sheets의 수식이 계산된 결과값을 포함합니다.
+                if (rows.length === 0) {
+                    const response = await fetch(app.sheetUrl);
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    
+                    const csvText = await response.text();
+                    rows = utils.parseCSV(csvText);
+                    console.log('CSV 형식으로 수식 결과를 가져왔습니다.');
+                }
                 
                 if (rows.length < 2) throw new Error('데이터가 없습니다.');
 
                 const newDB = [];
                 const errors = [];
                 
+                // 헤더 행 제외하고 데이터 처리
                 rows.slice(1).forEach((cols, idx) => {
                     if (cols.length >= 5 && cols[0] !== "") {
                         try {
-                            const basePrice = utils.safeParseInt(cols[4], 0);
+                            // 단가 컬럼에서 수식 결과값 가져오기 (이미 계산된 값)
+                            // Google Sheets의 수식이 계산된 결과가 CSV나 API 응답에 포함됨
+                            const priceValue = cols[4] || "0";
+                            
+                            // 숫자로 변환 (수식 결과는 이미 숫자 문자열로 제공됨)
+                            // safeParseInt 함수가 천 단위 구분자, 통화 기호 등을 자동으로 처리함
+                            const basePrice = utils.safeParseInt(priceValue, 0);
+                            
+                            // 수식 결과가 비어있거나 0인 경우 경고 (단, 빈 문자열이 아닌 경우만)
+                            if (basePrice === 0 && priceValue && priceValue.trim() !== "" && priceValue.trim() !== "0") {
+                                console.warn(`행 ${idx + 2}: 단가가 0입니다. 수식 결과를 확인하세요: "${priceValue}"`);
+                            }
+                            
                             const itemId = "CLOUD_" + idx;
                             
                             const item = {
@@ -658,7 +739,7 @@
                                 price: basePrice,
                                 logic: (cols[5] || "MANUAL").trim(),
                                 lTxt: cols[6] || "수량입력",
-                                // 추가 컬럼 저장
+                                // 추가 컬럼 저장 (수식 결과 파싱)
                                 refPrice30: cols[7] ? utils.safeParseInt(cols[7], 0) : null,
                                 pyPrice: cols[8] ? utils.safeParseFloat(cols[8], 0) : null,
                                 note: cols[11] || ""
@@ -672,7 +753,7 @@
                             }
 
                             newDB.push(item);
-                            // 원본 단가 저장
+                            // 원본 단가 저장 (Google Sheets의 수식 결과값)
                             app.basePrices.set(itemId, basePrice);
                         } catch (e) {
                             errors.push(`행 ${idx + 2}: 파싱 오류 - ${e.message}`);
@@ -691,7 +772,7 @@
                     document.getElementById('sync-status')?.classList.remove('hidden');
                     app.renderTabs();
                     app.renderDB();
-                    app.showNotification('데이터 동기화 완료', 'success');
+                    app.showNotification('데이터 동기화 완료 (수식 결과 반영됨)', 'success');
                 } else {
                     throw new Error('유효한 데이터가 없습니다.');
                 }
@@ -707,47 +788,15 @@
 
         // ==================== 모드 전환 ====================
         app.switchMode = function(mode) {
-            app.currentMode = mode;
+            // 테스트 페이지에서는 항상 search 모드만 사용
+            app.currentMode = 'search';
             
-            // 탭 스타일 업데이트
-            const searchTab = document.getElementById('mode-search');
-            const meetingTab = document.getElementById('mode-meeting');
-            
-            if (mode === 'search') {
-                if (searchTab) {
-                    searchTab.className = 'mode-tab flex-1 px-6 py-4 rounded-2xl text-sm font-black transition-all border-2 bg-blue-600 text-white border-blue-600 shadow-lg';
-                }
-                if (meetingTab) {
-                    meetingTab.className = 'mode-tab flex-1 px-6 py-4 rounded-2xl text-sm font-black transition-all border-2 bg-white text-slate-600 border-slate-200 hover:bg-slate-50';
-                }
-            } else {
-                if (meetingTab) {
-                    meetingTab.className = 'mode-tab flex-1 px-6 py-4 rounded-2xl text-sm font-black transition-all border-2 bg-blue-600 text-white border-blue-600 shadow-lg';
-                }
-                if (searchTab) {
-                    searchTab.className = 'mode-tab flex-1 px-6 py-4 rounded-2xl text-sm font-black transition-all border-2 bg-white text-slate-600 border-slate-200 hover:bg-slate-50';
-                }
-            }
-            
-            // 컨텐츠 표시/숨김
+            // 검색 모드 컨텐츠 항상 표시
             const searchContent = document.getElementById('search-mode-content');
-            const meetingContent = document.getElementById('meeting-mode-content');
             const searchTabs = document.getElementById('search-mode-tabs');
             
-            const quantityCard = document.getElementById('estimate-quantity-card');
-            
-            if (mode === 'search') {
-                searchContent.classList.remove('hidden');
-                meetingContent.classList.add('hidden');
-                if (searchTabs) searchTabs.style.display = 'flex';
-                if (quantityCard) quantityCard.classList.add('hidden');
-            } else {
-                searchContent.classList.add('hidden');
-                meetingContent.classList.remove('hidden');
-                if (searchTabs) searchTabs.style.display = 'none';
-                app.renderMeetingForm();
-                app.updateEstimateQuantities();
-            }
+            if (searchContent) searchContent.classList.remove('hidden');
+            if (searchTabs) searchTabs.style.display = 'flex';
         };
 
         // ==================== 미팅지 렌더링 ====================
@@ -1837,6 +1886,11 @@
 
             app.updateAll();
             app.showNotification(`${item.name} 추가됨`, 'success');
+            
+            // 알고리즘화: 추천 목록 업데이트
+            if (document.getElementById('recommendations-list') && !document.getElementById('recommendations-list').classList.contains('hidden')) {
+                app.showRecommendations();
+            }
         };
 
         app.syncAutoCalculations = function() {
@@ -2135,6 +2189,210 @@
             app.updateChart();
             app.updatePrintView();
             app.updateEstimateQuantities();
+            // 알고리즘화: 데이터 수집
+            app.collectEstimateData();
+        };
+
+        // ==================== 알고리즘화: 데이터 수집 및 학습 ====================
+        
+        // 견적서 이력 저장 (알고리즘 학습용)
+        app.collectEstimateData = function() {
+            if (app.selectedItems.length === 0) return;
+            
+            try {
+                const estimateData = {
+                    id: 'EST_' + Date.now(),
+                    customerName: document.getElementById('site-name').value || '',
+                    siteSize: utils.safeParseFloat(document.getElementById('site-size').value, 0),
+                    areaType: app.areaType,
+                    items: app.selectedItems.map(item => ({
+                        id: item.id,
+                        name: item.name,
+                        category: item.cat,
+                        quantity: item.qty,
+                        price: item.price,
+                        total: item.price * item.qty
+                    })),
+                    categories: [...new Set(app.selectedItems.map(i => i.cat))],
+                    totalAmount: app.calculateTotal(),
+                    meetingData: app.meetingData,
+                    timestamp: new Date().toISOString()
+                };
+                
+                // 로컬 스토리지에 이력 저장 (최근 500개만 유지)
+                const history = JSON.parse(localStorage.getItem('estimateHistory') || '[]');
+                history.push(estimateData);
+                const recentHistory = history.slice(-500); // 최근 500개만
+                localStorage.setItem('estimateHistory', JSON.stringify(recentHistory));
+                
+                // 항목 사용 통계 업데이트
+                app.updateItemStatistics(estimateData.items);
+            } catch (e) {
+                console.warn('데이터 수집 오류:', e);
+            }
+        };
+        
+        // 항목 사용 통계 업데이트
+        app.updateItemStatistics = function(items) {
+            try {
+                const stats = JSON.parse(localStorage.getItem('itemStatistics') || '{}');
+                
+                items.forEach(item => {
+                    if (!stats[item.id]) {
+                        stats[item.id] = {
+                            usageCount: 0,
+                            totalQuantity: 0,
+                            avgQuantity: 0,
+                            categories: {},
+                            lastUsed: null
+                        };
+                    }
+                    
+                    const stat = stats[item.id];
+                    stat.usageCount++;
+                    stat.totalQuantity += item.quantity;
+                    stat.avgQuantity = stat.totalQuantity / stat.usageCount;
+                    stat.lastUsed = new Date().toISOString();
+                    
+                    // 카테고리 조합 통계
+                    items.forEach(otherItem => {
+                        if (otherItem.id !== item.id) {
+                            if (!stat.categories[otherItem.category]) {
+                                stat.categories[otherItem.category] = 0;
+                            }
+                            stat.categories[otherItem.category]++;
+                        }
+                    });
+                });
+                
+                localStorage.setItem('itemStatistics', JSON.stringify(stats));
+            } catch (e) {
+                console.warn('통계 업데이트 오류:', e);
+            }
+        };
+        
+        // 추천 시스템 (통계 기반)
+        app.getRecommendations = function() {
+            try {
+                const history = JSON.parse(localStorage.getItem('estimateHistory') || '[]');
+                const stats = JSON.parse(localStorage.getItem('itemStatistics') || '{}');
+                
+                if (history.length === 0) return [];
+                
+                const currentSize = utils.safeParseFloat(document.getElementById('site-size').value, 0);
+                const currentCategories = [...new Set(app.selectedItems.map(i => i.cat))];
+                const currentItemIds = new Set(app.selectedItems.map(i => i.id));
+                
+                // 1. 유사한 견적서 찾기 (평수 ±5평)
+                const similarEstimates = history.filter(e => 
+                    e.siteSize > 0 && Math.abs(e.siteSize - currentSize) <= 5
+                );
+                
+                if (similarEstimates.length === 0) return [];
+                
+                // 2. 자주 함께 사용되는 항목 찾기
+                const itemFrequency = {};
+                const categoryFrequency = {};
+                
+                similarEstimates.forEach(est => {
+                    est.items.forEach(item => {
+                        // 이미 선택된 항목은 제외
+                        if (currentItemIds.has(item.id)) return;
+                        
+                        // 현재 카테고리와 다른 카테고리만 추천
+                        if (!currentCategories.includes(item.category)) {
+                            itemFrequency[item.id] = (itemFrequency[item.id] || 0) + 1;
+                            categoryFrequency[item.category] = (categoryFrequency[item.category] || 0) + 1;
+                        }
+                    });
+                });
+                
+                // 3. 통계 기반 점수 계산
+                const recommendations = Object.entries(itemFrequency).map(([itemId, freq]) => {
+                    const stat = stats[itemId] || {};
+                    const score = freq * 0.6 + (stat.usageCount || 0) * 0.4;
+                    return {
+                        id: itemId,
+                        frequency: freq,
+                        usageCount: stat.usageCount || 0,
+                        score: score,
+                        category: stat.category || ''
+                    };
+                });
+                
+                // 점수순 정렬 후 상위 5개 반환
+                return recommendations
+                    .sort((a, b) => b.score - a.score)
+                    .slice(0, 5)
+                    .map(r => r.id);
+            } catch (e) {
+                console.warn('추천 생성 오류:', e);
+                return [];
+            }
+        };
+        
+        // 추천 항목 표시
+        app.showRecommendations = function() {
+            const recommendations = app.getRecommendations();
+            const listEl = document.getElementById('recommendations-list');
+            const btn = document.getElementById('recommend-btn');
+            
+            if (!listEl || !btn) return;
+            
+            if (recommendations.length === 0) {
+                listEl.innerHTML = '<div class="text-xs text-slate-400 italic text-center py-4">추천할 항목이 없습니다.<br/>더 많은 견적서 데이터가 필요합니다.</div>';
+                listEl.classList.remove('hidden');
+                return;
+            }
+            
+            // 추천 항목 찾기
+            const recommendedItems = recommendations
+                .map(id => app.MASTER_DB.find(item => item.id === id))
+                .filter(item => item && !app.selectedItems.find(s => s.id === item.id));
+            
+            if (recommendedItems.length === 0) {
+                listEl.innerHTML = '<div class="text-xs text-slate-400 italic text-center py-4">모든 추천 항목이 이미 추가되어 있습니다.</div>';
+                listEl.classList.remove('hidden');
+                return;
+            }
+            
+            // UI 생성
+            let html = '<div class="text-xs font-black text-slate-300 mb-3 uppercase tracking-widest">추천 항목</div>';
+            html += '<div class="space-y-2 max-h-[200px] overflow-y-auto custom-scroll">';
+            
+            recommendedItems.slice(0, 5).forEach(item => {
+                html += `
+                    <div class="bg-slate-800 rounded-xl p-3 border border-slate-700 hover:border-green-500 transition-all cursor-pointer" onclick="app.addItem('${item.id}'); app.showRecommendations();">
+                        <div class="text-[10px] font-bold text-green-400 uppercase mb-1">${item.cat}</div>
+                        <div class="text-xs font-black text-white mb-1">${item.name}</div>
+                        <div class="text-[10px] text-slate-400">${item.spec || ''}</div>
+                        <div class="text-xs font-bold text-green-400 mt-2">${item.price.toLocaleString()}원</div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            listEl.innerHTML = html;
+            listEl.classList.remove('hidden');
+            
+            // 버튼 텍스트 업데이트
+            btn.innerHTML = `<span>🤖 추천 항목 (${recommendedItems.length}개)</span>`;
+        };
+        
+        // 총액 계산 (추천 시스템용)
+        app.calculateTotal = function() {
+            let directTotal = 0;
+            app.selectedItems.forEach(item => {
+                directTotal += item.price * item.qty;
+            });
+            
+            const rateExp = utils.safeParseFloat(document.getElementById('rate-exp').value, 0);
+            const rateProfit = utils.safeParseFloat(document.getElementById('rate-profit').value, 0);
+            const adjust = utils.safeParseInt(document.getElementById('val-adjust').value, 0);
+            
+            const exp = Math.round(directTotal * (rateExp / 100));
+            const profit = Math.round(directTotal * (rateProfit / 100));
+            return directTotal + exp + profit + adjust;
         };
 
         // ==================== 디바운스 래퍼 ====================
@@ -2279,6 +2537,278 @@
             }
         };
 
+        app.clearAll = function() {
+            if (app.selectedItems.length === 0) {
+                app.showNotification('지울 항목이 없습니다.', 'info');
+                return;
+            }
+
+            if (!confirm('모든 선택된 항목과 입력 데이터를 지우시겠습니까?\n이 작업은 되돌릴 수 없습니다.')) {
+                return;
+            }
+
+            // 선택된 항목 초기화
+            app.selectedItems = [];
+
+            // 입력 필드 초기화
+            document.getElementById('site-name').value = '';
+            document.getElementById('site-size').value = '';
+            document.getElementById('rate-exp').value = '5';
+            document.getElementById('rate-profit').value = '10';
+            document.getElementById('val-adjust').value = '0';
+            document.getElementById('area-multiplier').value = '1.0';
+
+            // 면적 타입 초기화
+            app.setAreaType('normal');
+
+            // 미팅지 데이터 초기화
+            app.meetingData = {
+                customerName: '',
+                contact: '',
+                siteName: '',
+                constructionDate: '',
+                budget: '',
+                familyCount: '',
+                notes: '',
+                scope: '전체공사',
+                demolition: '',
+                window: '',
+                extension: { living: false, kitchen: false, room: false },
+                aircon: { system: false, stand: false, location: '' },
+                bathroom: {
+                    common: {
+                        enabled: false,
+                        bathtub: '',
+                        partition: '',
+                        sliding: '',
+                        mirror: '',
+                        tile: '',
+                        faucet: ''
+                    },
+                    couple: {
+                        enabled: false,
+                        bathtub: '',
+                        partition: '',
+                        sliding: '',
+                        mirror: '',
+                        tile: '',
+                        faucet: ''
+                    }
+                },
+                floor: { type: '', current: '' },
+                wall: { type: '', spec: '' },
+                kitchen: {
+                    induction: false,
+                    gas: false,
+                    coffee: false,
+                    fridge: '',
+                    kimchi: '',
+                    water: '',
+                    hood: '',
+                    sink: '',
+                    dishwasher: false
+                },
+                furniture: { outdoor: false, aircon: false, location: '' },
+                carpentry: {
+                    ceiling: false,
+                    ceilingLocation: '',
+                    furniture: false,
+                    door: '',
+                    door9mm: false,
+                    doorInso9mm: false,
+                    doorBu: false,
+                    hidden: false
+                },
+                electric: {
+                    embedded: false,
+                    embeddedLocation: '',
+                    main: false,
+                    mainLocation: '',
+                    indirect: false,
+                    indirectLocation: '',
+                    line: false,
+                    lineLocation: '',
+                    aircon: false,
+                    induction: false,
+                    water: false,
+                    purifier: false,
+                    panel: false,
+                    internet: false,
+                    internetLocation: ''
+                },
+                door: { type: '' }
+            };
+
+            // 미팅지 폼 다시 렌더링
+            if (app.currentMode === 'meeting') {
+                app.renderMeetingForm();
+            }
+
+            // 모든 업데이트
+            app.updateAll();
+            app.updateActualSizeDisplay();
+            app.updateEstimateQuantities();
+
+            app.showNotification('모든 데이터가 초기화되었습니다.', 'success');
+        };
+
+        // ==================== 빠른 작업 ====================
+        app.smartRecommend = function() {
+            const size = utils.safeParseFloat(document.getElementById('site-size').value, 0);
+            if (size <= 0) {
+                app.showNotification('먼저 공사 평수를 입력해주세요.', 'info');
+                return;
+            }
+
+            // 필수 항목 키워드 목록
+            const essentialKeywords = [
+                { keywords: ['가설', '공통'], category: '공통 가설', priority: 1 },
+                { keywords: ['철거'], category: '철거 공사', priority: 1 },
+                { keywords: ['방수'], category: '방수 공사', priority: 1 },
+                { keywords: ['단열'], category: '단열 공사', priority: 1 },
+                { keywords: ['도배', '벽지'], category: '도배 공사', priority: 1 },
+                { keywords: ['마루', '바닥'], category: '마루 공사', priority: 1 },
+                { keywords: ['전기', '배선'], category: '전기 공사', priority: 1 },
+                { keywords: ['목공', '천정'], category: '목공사', priority: 1 }
+            ];
+
+            let addedCount = 0;
+            essentialKeywords.forEach(config => {
+                const matches = app.MASTER_DB.filter(item => {
+                    if (config.category && !item.cat.includes(config.category)) return false;
+                    const normalize = (str) => str.replace(/\s+/g, '').toLowerCase();
+                    const itemText = normalize(item.name + ' ' + item.spec + ' ' + item.cat);
+                    return config.keywords.some(keyword => itemText.includes(normalize(keyword)));
+                });
+
+                // 각 카테고리에서 최대 2개씩 추가
+                matches.slice(0, 2).forEach(item => {
+                    if (!app.selectedItems.find(s => s.id === item.id)) {
+                        app.addItem(item.id);
+                        addedCount++;
+                    }
+                });
+            });
+
+            if (addedCount > 0) {
+                app.showNotification(`${addedCount}개 필수 항목이 추가되었습니다.`, 'success');
+            } else {
+                app.showNotification('추가할 필수 항목을 찾을 수 없습니다.', 'info');
+            }
+        };
+
+        app.loadTemplate = function(type) {
+            if (app.selectedItems.length > 0) {
+                if (!confirm('현재 선택된 항목이 모두 제거됩니다. 계속하시겠습니까?')) {
+                    return;
+                }
+                app.selectedItems = [];
+            }
+
+            const size = utils.safeParseFloat(document.getElementById('site-size').value, 0);
+            if (size <= 0) {
+                app.showNotification('먼저 공사 평수를 입력해주세요.', 'info');
+                return;
+            }
+
+            // 템플릿별 항목 키워드
+            const templates = {
+                basic: [
+                    { keywords: ['가설'], category: '공통 가설' },
+                    { keywords: ['도배'], category: '도배 공사' },
+                    { keywords: ['마루'], category: '마루 공사' },
+                    { keywords: ['전기'], category: '전기 공사' }
+                ],
+                full: [
+                    { keywords: ['가설'], category: '공통 가설' },
+                    { keywords: ['철거'], category: '철거 공사' },
+                    { keywords: ['방수'], category: '방수 공사' },
+                    { keywords: ['단열'], category: '단열 공사' },
+                    { keywords: ['도배'], category: '도배 공사' },
+                    { keywords: ['마루'], category: '마루 공사' },
+                    { keywords: ['전기'], category: '전기 공사' },
+                    { keywords: ['목공'], category: '목공사' },
+                    { keywords: ['타일'], category: '타일 공사' },
+                    { keywords: ['도장'], category: '도장 공사' }
+                ]
+            };
+
+            const template = templates[type];
+            if (!template) return;
+
+            let addedCount = 0;
+            template.forEach(config => {
+                const matches = app.MASTER_DB.filter(item => {
+                    if (config.category && !item.cat.includes(config.category)) return false;
+                    const normalize = (str) => str.replace(/\s+/g, '').toLowerCase();
+                    const itemText = normalize(item.name + ' ' + item.spec + ' ' + item.cat);
+                    return config.keywords.some(keyword => itemText.includes(normalize(keyword)));
+                });
+
+                matches.slice(0, 3).forEach(item => {
+                    if (!app.selectedItems.find(s => s.id === item.id)) {
+                        app.addItem(item.id);
+                        addedCount++;
+                    }
+                });
+            });
+
+            app.showNotification(`${type === 'basic' ? '기본' : '전체'} 세트 ${addedCount}개 항목이 추가되었습니다.`, 'success');
+        };
+
+        app.showRecentEstimates = function() {
+            // 로컬 스토리지에서 최근 견적 목록 가져오기
+            const recentKeys = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith('totoEstimate_')) {
+                    try {
+                        const data = JSON.parse(localStorage.getItem(key));
+                        if (data.timestamp) {
+                            recentKeys.push({ key, timestamp: data.timestamp, siteName: data.siteName || '무제목' });
+                        }
+                    } catch (e) {
+                        // 무시
+                    }
+                }
+            }
+
+            // 최근 순으로 정렬
+            recentKeys.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+            if (recentKeys.length === 0) {
+                app.showNotification('저장된 견적이 없습니다.', 'info');
+                return;
+            }
+
+            // 간단한 선택 UI (prompt 사용)
+            let message = '최근 견적 목록:\n\n';
+            recentKeys.slice(0, 10).forEach((item, idx) => {
+                const date = new Date(item.timestamp).toLocaleString('ko-KR');
+                message += `${idx + 1}. ${item.siteName} (${date})\n`;
+            });
+            message += '\n복사할 번호를 입력하세요 (1-' + Math.min(10, recentKeys.length) + '):';
+
+            const choice = prompt(message);
+            if (choice && !isNaN(choice)) {
+                const idx = parseInt(choice) - 1;
+                if (idx >= 0 && idx < recentKeys.length) {
+                    try {
+                        const data = JSON.parse(localStorage.getItem(recentKeys[idx].key));
+                        // 데이터 복원
+                        if (data.selectedItems) {
+                            app.selectedItems = data.selectedItems;
+                            app.syncAutoCalculations();
+                            app.updateAll();
+                            app.showNotification('견적이 복사되었습니다.', 'success');
+                        }
+                    } catch (e) {
+                        app.showNotification('견적 복사 실패: ' + e.message, 'error');
+                    }
+                }
+            }
+        };
+
         // ==================== 알림 시스템 ====================
         app.showNotification = function(message, type = 'info') {
             const colors = {
@@ -2330,9 +2860,6 @@
                 }
             });
         };
-
-        // ==================== 페이지 로드 ====================
-        window.onload = app.init;
 
         // ==================== 자동 저장 (선택사항) ====================
         setInterval(() => {
