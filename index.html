@@ -889,6 +889,9 @@
                                 ${data.aircon.stand ? '<span class="text-green-600 font-black">✓</span>' : ''}
                             </button>
                         </div>
+                           </div>
+                </div>
+                
                 <!-- 바닥재 -->
                 <div class="space-y-4">
                     <div class="flex items-center gap-3 mb-3">
@@ -976,29 +979,6 @@
                             </div>
                             ${data.wall.type === '필름' ? '<span class="text-purple-600 font-black">✓</span>' : ''}
                         </button>
-                    </div>
-                </div>
-                
-                <!-- 주방 -->
-                <div class="bg-slate-50 rounded-2xl p-6 border border-slate-200">
-                    <h3 class="text-sm font-black text-slate-800 mb-4 uppercase tracking-widest">주방</h3>
-                    <div class="grid grid-cols-2 gap-3">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" ${data.kitchen.induction ? 'checked' : ''} onchange="app.updateMeetingData('kitchen', {...app.meetingData.kitchen, induction: this.checked}); app.handleMeetingCheck('kitchen', 'induction', this.checked)" class="w-4 h-4">
-                            <span class="text-sm font-bold">인덕션</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" ${data.kitchen.gas ? 'checked' : ''} onchange="app.updateMeetingData('kitchen', {...app.meetingData.kitchen, gas: this.checked}); app.handleMeetingCheck('kitchen', 'gas', this.checked)" class="w-4 h-4">
-                            <span class="text-sm font-bold">가스레인지</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" ${data.kitchen.coffee ? 'checked' : ''} onchange="app.updateMeetingData('kitchen', {...app.meetingData.kitchen, coffee: this.checked}); app.handleMeetingCheck('kitchen', 'coffee', this.checked)" class="w-4 h-4">
-                            <span class="text-sm font-bold">커피머신</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" ${data.kitchen.dishwasher ? 'checked' : ''} onchange="app.updateMeetingData('kitchen', {...app.meetingData.kitchen, dishwasher: this.checked}); app.handleMeetingCheck('kitchen', 'dishwasher', this.checked)" class="w-4 h-4">
-                            <span class="text-sm font-bold">식기세척기</span>
-                        </label>
                     </div>
                 </div>
                 
