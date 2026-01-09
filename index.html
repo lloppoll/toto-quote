@@ -827,70 +827,86 @@
                     </div>
                 </div>
                 
-                <!-- 창호 & 에어컨 (좌우 배치) -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- 창호 (왼쪽) -->
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="w-4 h-4 bg-blue-500 rounded"></div>
-                            <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest">창호 (WINDOW)</h3>
-                        </div>
-                        <div class="grid grid-cols-1 gap-3">
-                            <button onclick="app.selectMeetingOption('window', 'LX하우시스')" class="meeting-btn ${data.window === 'LX하우시스' ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.window === 'LX하우시스' ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-blue-300'} rounded-xl transition-all text-left">
-                                <div>
-                                    <div class="text-sm font-black text-slate-800">LX 수퍼세이브</div>
-                                    <div class="text-[10px] text-slate-500 mt-1">가격20%△, 단열성능△</div>
-                                </div>
-                                ${data.window === 'LX하우시스' ? '<span class="text-blue-600 font-black">✓</span>' : ''}
-                            </button>
-                            <button onclick="app.selectMeetingOption('window', '이건창호')" class="meeting-btn ${data.window === '이건창호' ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.window === '이건창호' ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-blue-300'} rounded-xl transition-all text-left">
-                                <div>
-                                    <div class="text-sm font-black text-slate-800">이건창호</div>
-                                    <div class="text-[10px] text-slate-500 mt-1">가격10%△, 단열성능 중간</div>
-                                </div>
-                                ${data.window === '이건창호' ? '<span class="text-blue-600 font-black">✓</span>' : ''}
-                            </button>
-                            <button onclick="app.selectMeetingOption('window', 'KCC')" class="meeting-btn ${data.window === 'KCC' ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.window === 'KCC' ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-blue-300'} rounded-xl transition-all text-left">
-                                <div>
-                                    <div class="text-sm font-black text-slate-800">KCC 뉴프라임</div>
-                                    <div class="text-[10px] text-slate-500 mt-1">가격 0%, 단열성능 ▽</div>
-                                </div>
-                                ${data.window === 'KCC' ? '<span class="text-blue-600 font-black">✓</span>' : ''}
-                            </button>
-                            <button onclick="app.selectMeetingOption('window', '기존재사용')" class="meeting-btn ${data.window === '기존재사용' ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.window === '기존재사용' ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-blue-300'} rounded-xl transition-all text-left">
-                                <div>
-                                    <div class="text-sm font-black text-slate-800">기존 재사용</div>
-                                    <div class="text-[10px] text-slate-500 mt-1">교체 안함</div>
-                                </div>
-                                ${data.window === '기존재사용' ? '<span class="text-blue-600 font-black">✓</span>' : ''}
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <!-- 에어컨 (오른쪽) -->
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="w-4 h-4 bg-green-500 rounded"></div>
-                            <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest">에어컨 (AC)</h3>
-                        </div>
-                        <div class="grid grid-cols-1 gap-3">
-                            <button onclick="app.selectMeetingOption('aircon', 'system')" class="meeting-btn ${data.aircon.system ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.aircon.system ? 'border-green-500 bg-green-50' : 'border-slate-200 hover:border-green-300'} rounded-xl transition-all text-left">
-                                <div>
-                                    <div class="text-sm font-black text-slate-800">시스템 에어컨</div>
-                                    <div class="text-[10px] text-slate-500 mt-1">목공/전기 번들</div>
-                                </div>
-                                ${data.aircon.system ? '<span class="text-green-600 font-black">✓</span>' : ''}
-                            </button>
-                            <button onclick="app.selectMeetingOption('aircon', 'stand')" class="meeting-btn ${data.aircon.stand ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.aircon.stand ? 'border-green-500 bg-green-50' : 'border-slate-200 hover:border-green-300'} rounded-xl transition-all text-left">
-                                <div>
-                                    <div class="text-sm font-black text-slate-800">스탠드/벽걸이</div>
-                                    <div class="text-[10px] text-slate-500 mt-1">배관 매립형</div>
-                                </div>
-                                ${data.aircon.stand ? '<span class="text-green-600 font-black">✓</span>' : ''}
-                            </button>
-                        </div>
-                           </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6"> 
+    
+    <div class="space-y-4">
+        <div class="flex items-center gap-3 mb-3">
+            <div class="w-4 h-4 bg-blue-500 rounded"></div>
+            <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest">창호 (WINDOW)</h3>
+        </div>
+        <div class="grid grid-cols-1 gap-3">
+            <button onclick="app.selectMeetingOption('window', 'LX하우시스')" class="meeting-btn ${data.window === 'LX하우시스' ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.window === 'LX하우시스' ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-blue-300'} rounded-xl transition-all text-left">
+                <div>
+                    <div class="text-sm font-black text-slate-800">LX하우시스</div>
+                    <div class="text-[10px] text-slate-500 mt-1">가격20%△, 단열성능△</div>
                 </div>
+                ${data.window === 'LX하우시스' ? '<span class="text-blue-600 font-black">✓</span>' : ''}
+            </button>
+            <button onclick="app.selectMeetingOption('window', '이건창호')" class="meeting-btn ${data.window === '이건창호' ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.window === '이건창호' ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-blue-300'} rounded-xl transition-all text-left">
+                <div>
+                    <div class="text-sm font-black text-slate-800">이건창호</div>
+                    <div class="text-[10px] text-slate-500 mt-1">가격10%△, 단열성능 중간</div>
+                </div>
+                ${data.window === '이건창호' ? '<span class="text-blue-600 font-black">✓</span>' : ''}
+            </button>
+            <button onclick="app.selectMeetingOption('window', 'KCC')" class="meeting-btn ${data.window === 'KCC' ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.window === 'KCC' ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-blue-300'} rounded-xl transition-all text-left">
+                <div>
+                    <div class="text-sm font-black text-slate-800">KCC 뉴프라임</div>
+                    <div class="text-[10px] text-slate-500 mt-1">가격 0%, 단열성능 ▽</div>
+                </div>
+                ${data.window === 'KCC' ? '<span class="text-blue-600 font-black">✓</span>' : ''}
+            </button>
+        </div>
+    </div>
+
+    <div class="space-y-4">
+        <div class="flex items-center gap-3 mb-3">
+            <div class="w-4 h-4 bg-green-500 rounded"></div>
+            <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest">에어컨 (AC)</h3>
+        </div>
+        <div class="grid grid-cols-1 gap-3">
+            <button onclick="app.selectMeetingOption('aircon', 'system')" class="meeting-btn ${data.aircon.system ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.aircon.system ? 'border-green-500 bg-green-50' : 'border-slate-200 hover:border-green-300'} rounded-xl transition-all text-left">
+                <div>
+                    <div class="text-sm font-black text-slate-800">시스템 에어컨</div>
+                    <div class="text-[10px] text-slate-500 mt-1">목공/전기 번들</div>
+                </div>
+                ${data.aircon.system ? '<span class="text-green-600 font-black">✓</span>' : ''}
+            </button>
+            <button onclick="app.selectMeetingOption('aircon', 'stand')" class="meeting-btn ${data.aircon.stand ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.aircon.stand ? 'border-green-500 bg-green-50' : 'border-slate-200 hover:border-green-300'} rounded-xl transition-all text-left">
+                <div>
+                    <div class="text-sm font-black text-slate-800">스탠드/벽걸이</div>
+                    <div class="text-[10px] text-slate-500 mt-1">배관 매립형</div>
+                </div>
+                ${data.aircon.stand ? '<span class="text-green-600 font-black">✓</span>' : ''}
+            </button>
+        </div>
+    </div>
+
+    <div class="space-y-4">
+        <div class="flex items-center gap-3 mb-3">
+            <div class="w-4 h-4 bg-orange-500 rounded"></div>
+            <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest">확장공사 (EXT)</h3>
+        </div>
+        <div class="grid grid-cols-2 gap-3"> <button onclick="app.selectMeetingOption('extension', 'living')" class="meeting-btn ${data.extension.living ? 'active' : ''} flex items-center justify-between p-3 bg-white border-2 ${data.extension.living ? 'border-orange-500 bg-orange-50' : 'border-slate-200 hover:border-orange-300'} rounded-xl transition-all text-left">
+                <span class="text-xs font-black text-slate-800">거실</span>
+                ${data.extension.living ? '<span class="text-orange-600 font-black text-xs">✓</span>' : ''}
+            </button>
+            <button onclick="app.selectMeetingOption('extension', 'kitchen')" class="meeting-btn ${data.extension.kitchen ? 'active' : ''} flex items-center justify-between p-3 bg-white border-2 ${data.extension.kitchen ? 'border-orange-500 bg-orange-50' : 'border-slate-200 hover:border-orange-300'} rounded-xl transition-all text-left">
+                <span class="text-xs font-black text-slate-800">주방</span>
+                ${data.extension.kitchen ? '<span class="text-orange-600 font-black text-xs">✓</span>' : ''}
+            </button>
+            <button onclick="app.selectMeetingOption('extension', 'room1')" class="meeting-btn ${data.extension.room1 ? 'active' : ''} flex items-center justify-between p-3 bg-white border-2 ${data.extension.room1 ? 'border-orange-500 bg-orange-50' : 'border-slate-200 hover:border-orange-300'} rounded-xl transition-all text-left">
+                <span class="text-xs font-black text-slate-800">방 1</span>
+                ${data.extension.room1 ? '<span class="text-orange-600 font-black text-xs">✓</span>' : ''}
+            </button>
+            <button onclick="app.selectMeetingOption('extension', 'room2')" class="meeting-btn ${data.extension.room2 ? 'active' : ''} flex items-center justify-between p-3 bg-white border-2 ${data.extension.room2 ? 'border-orange-500 bg-orange-50' : 'border-slate-200 hover:border-orange-300'} rounded-xl transition-all text-left">
+                <span class="text-xs font-black text-slate-800">방 2</span>
+                ${data.extension.room2 ? '<span class="text-orange-600 font-black text-xs">✓</span>' : ''}
+            </button>
+        </div>
+    </div>
+
+</div>
                 
                 <!-- 바닥재 -->
                 <div class="space-y-4">
