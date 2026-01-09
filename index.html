@@ -269,13 +269,20 @@
     <script>
         // ==================== 앱 상태 관리 ====================
         const app = {
-            // Google Sheets 공개 URL (CSV 형식 - 수식이 계산된 값으로 제공됨)
+            // Google Sheets 마스터 DB URL (CSV 형식 - 수식이 계산된 값으로 제공됨)
             // CSV는 Google Sheets의 수식이 계산된 결과값을 포함합니다.
-            sheetUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vT07Uf0iXXGQsjaIkcvhQmY0vJT2KvKBLDXucGKWja8kxLMDwyvrlhlMqBZCEjVh87JxVbzD2p0oQLw/pub?output=csv",
+            // Sheet ID: 1mt91Y8JjM5H9wYaDhNXANqkexXn1gfwBGIwa8rSY-4w
+            // GID: 688312038
+            // 
+            // 공개 URL 생성 방법 (시트가 공개되지 않은 경우):
+            // 1. Google Sheets 열기
+            // 2. 파일 → 공유 → 웹에 게시
+            // 3. "링크" 탭에서 "공개" 선택
+            // 4. CSV 형식으로 내보내기 URL 복사하여 아래에 입력
+            sheetUrl: "https://docs.google.com/spreadsheets/d/1mt91Y8JjM5H9wYaDhNXANqkexXn1gfwBGIwa8rSY-4w/export?format=csv&gid=688312038",
             // Google Sheets ID (API 사용 시 필요)
             // Sheet ID는 Google Sheets URL에서 추출: https://docs.google.com/spreadsheets/d/{SHEET_ID}/edit
-            // 공개 URL과는 다른 형식이므로, 필요시 직접 설정하세요.
-            sheetId: "",
+            sheetId: "1mt91Y8JjM5H9wYaDhNXANqkexXn1gfwBGIwa8rSY-4w",
             // Google Sheets API 키 (선택사항)
             // API 키를 설정하면 Google Sheets API v4를 사용하여 수식 결과를 가져옵니다.
             // API 키 없이도 CSV를 통해 수식 결과를 가져올 수 있습니다.
@@ -699,9 +706,21 @@
                 // CSV는 Google Sheets의 수식이 계산된 결과값을 포함합니다.
                 if (rows.length === 0) {
                     const response = await fetch(app.sheetUrl);
-                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    if (!response.ok) {
+                        // 시트가 공개되지 않은 경우 안내
+                        if (response.status === 403 || response.status === 404) {
+                            throw new Error(`시트 접근 권한이 없습니다. Google Sheets를 공개로 설정하거나 공개 URL을 생성해주세요.\n\n공개 URL 생성 방법:\n1. Google Sheets 열기\n2. 파일 → 공유 → 웹에 게시\n3. "링크" 탭에서 "공개" 선택\n4. CSV 형식으로 내보내기 URL 복사`);
+                        }
+                        throw new Error(`HTTP ${response.status}: 시트 데이터를 가져올 수 없습니다.`);
+                    }
                     
                     const csvText = await response.text();
+                    
+                    // CSV가 비어있거나 HTML 오류 페이지인 경우 확인
+                    if (csvText.trim().length === 0 || csvText.includes('<!DOCTYPE')) {
+                        throw new Error('시트가 공개되지 않았거나 접근 권한이 없습니다. Google Sheets를 공개로 설정해주세요.');
+                    }
+                    
                     rows = utils.parseCSV(csvText);
                     console.log('CSV 형식으로 수식 결과를 가져왔습니다.');
                 }
@@ -2860,6 +2879,8 @@
                 }
             });
         };
+
+
 
         // ==================== 자동 저장 (선택사항) ====================
         setInterval(() => {
