@@ -827,68 +827,68 @@
                     </div>
                 </div>
                 
-                <!-- 창호 -->
-                <div class="space-y-4">
-                    <div class="flex items-center gap-3 mb-3">
-                        <div class="w-4 h-4 bg-blue-500 rounded"></div>
-                        <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest">창호 (WINDOW)</h3>
+                <!-- 창호 & 에어컨 (좌우 배치) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- 창호 (왼쪽) -->
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-4 h-4 bg-blue-500 rounded"></div>
+                            <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest">창호 (WINDOW)</h3>
+                        </div>
+                        <div class="grid grid-cols-1 gap-3">
+                            <button onclick="app.selectMeetingOption('window', 'LX하우시스')" class="meeting-btn ${data.window === 'LX하우시스' ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.window === 'LX하우시스' ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-blue-300'} rounded-xl transition-all text-left">
+                                <div>
+                                    <div class="text-sm font-black text-slate-800">LX 수퍼세이브</div>
+                                    <div class="text-[10px] text-slate-500 mt-1">가격20%△, 단열성능△</div>
+                                </div>
+                                ${data.window === 'LX하우시스' ? '<span class="text-blue-600 font-black">✓</span>' : ''}
+                            </button>
+                            <button onclick="app.selectMeetingOption('window', '이건창호')" class="meeting-btn ${data.window === '이건창호' ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.window === '이건창호' ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-blue-300'} rounded-xl transition-all text-left">
+                                <div>
+                                    <div class="text-sm font-black text-slate-800">이건창호</div>
+                                    <div class="text-[10px] text-slate-500 mt-1">가격10%△, 단열성능 중간</div>
+                                </div>
+                                ${data.window === '이건창호' ? '<span class="text-blue-600 font-black">✓</span>' : ''}
+                            </button>
+                            <button onclick="app.selectMeetingOption('window', 'KCC')" class="meeting-btn ${data.window === 'KCC' ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.window === 'KCC' ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-blue-300'} rounded-xl transition-all text-left">
+                                <div>
+                                    <div class="text-sm font-black text-slate-800">KCC 뉴프라임</div>
+                                    <div class="text-[10px] text-slate-500 mt-1">가격 0%, 단열성능 ▽</div>
+                                </div>
+                                ${data.window === 'KCC' ? '<span class="text-blue-600 font-black">✓</span>' : ''}
+                            </button>
+                            <button onclick="app.selectMeetingOption('window', '기존재사용')" class="meeting-btn ${data.window === '기존재사용' ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.window === '기존재사용' ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-blue-300'} rounded-xl transition-all text-left">
+                                <div>
+                                    <div class="text-sm font-black text-slate-800">기존 재사용</div>
+                                    <div class="text-[10px] text-slate-500 mt-1">교체 안함</div>
+                                </div>
+                                ${data.window === '기존재사용' ? '<span class="text-blue-600 font-black">✓</span>' : ''}
+                            </button>
+                        </div>
                     </div>
-                    <div class="grid grid-cols-1 gap-3">
-                        <button onclick="app.selectMeetingOption('window', 'LX하우시스')" class="meeting-btn ${data.window === 'LX하우시스' ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.window === 'LX하우시스' ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-blue-300'} rounded-xl transition-all text-left">
-                            <div>
-                                <div class="text-sm font-black text-slate-800">LX 수퍼세이브</div>
-                                <div class="text-[10px] text-slate-500 mt-1">가격20%△, 단열성능△</div>
-                            </div>
-                            ${data.window === 'LX하우시스' ? '<span class="text-blue-600 font-black">✓</span>' : ''}
-                        </button>
-                        <button onclick="app.selectMeetingOption('window', '이건창호')" class="meeting-btn ${data.window === '이건창호' ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.window === '이건창호' ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-blue-300'} rounded-xl transition-all text-left">
-                            <div>
-                                <div class="text-sm font-black text-slate-800">이건창호</div>
-                                <div class="text-[10px] text-slate-500 mt-1">가격10%△, 단열성능 중간</div>
-                            </div>
-                            ${data.window === '이건창호' ? '<span class="text-blue-600 font-black">✓</span>' : ''}
-                        </button>
-                        <button onclick="app.selectMeetingOption('window', 'KCC')" class="meeting-btn ${data.window === 'KCC' ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.window === 'KCC' ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-blue-300'} rounded-xl transition-all text-left">
-                            <div>
-                                <div class="text-sm font-black text-slate-800">KCC 뉴프라임</div>
-                                <div class="text-[10px] text-slate-500 mt-1">가격 0%, 단열성능 ▽</div>
-                            </div>
-                            ${data.window === 'KCC' ? '<span class="text-blue-600 font-black">✓</span>' : ''}
-                        </button>
-                        <button onclick="app.selectMeetingOption('window', '기존재사용')" class="meeting-btn ${data.window === '기존재사용' ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.window === '기존재사용' ? 'border-blue-500 bg-blue-50' : 'border-slate-200 hover:border-blue-300'} rounded-xl transition-all text-left">
-                            <div>
-                                <div class="text-sm font-black text-slate-800">기존 재사용</div>
-                                <div class="text-[10px] text-slate-500 mt-1">교체 안함</div>
-                            </div>
-                            ${data.window === '기존재사용' ? '<span class="text-blue-600 font-black">✓</span>' : ''}
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- 에어컨 -->
-                <div class="space-y-4">
-                    <div class="flex items-center gap-3 mb-3">
-                        <div class="w-4 h-4 bg-green-500 rounded"></div>
-                        <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest">에어컨 (AC)</h3>
-                    </div>
-                    <div class="grid grid-cols-1 gap-3">
-                        <button onclick="app.selectMeetingOption('aircon', 'system')" class="meeting-btn ${data.aircon.system ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.aircon.system ? 'border-green-500 bg-green-50' : 'border-slate-200 hover:border-green-300'} rounded-xl transition-all text-left">
-                            <div>
-                                <div class="text-sm font-black text-slate-800">시스템 에어컨(4실)</div>
-                                <div class="text-[10px] text-slate-500 mt-1">목공/전기 번들</div>
-                            </div>
-                            ${data.aircon.system ? '<span class="text-green-600 font-black">✓</span>' : ''}
-                        </button>
-                        <button onclick="app.selectMeetingOption('aircon', 'stand')" class="meeting-btn ${data.aircon.stand ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.aircon.stand ? 'border-green-500 bg-green-50' : 'border-slate-200 hover:border-green-300'} rounded-xl transition-all text-left">
-                            <div>
-                                <div class="text-sm font-black text-slate-800">스탠드/벽걸이</div>
-                                <div class="text-[10px] text-slate-500 mt-1">배관 매립형</div>
-                            </div>
-                            ${data.aircon.stand ? '<span class="text-green-600 font-black">✓</span>' : ''}
-                        </button>
-                    </div>
-                </div>
-                
+                    
+                    <!-- 에어컨 (오른쪽) -->
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-4 h-4 bg-green-500 rounded"></div>
+                            <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest">에어컨 (AC)</h3>
+                        </div>
+                        <div class="grid grid-cols-1 gap-3">
+                            <button onclick="app.selectMeetingOption('aircon', 'system')" class="meeting-btn ${data.aircon.system ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.aircon.system ? 'border-green-500 bg-green-50' : 'border-slate-200 hover:border-green-300'} rounded-xl transition-all text-left">
+                                <div>
+                                    <div class="text-sm font-black text-slate-800">시스템 에어컨</div>
+                                    <div class="text-[10px] text-slate-500 mt-1">목공/전기 번들</div>
+                                </div>
+                                ${data.aircon.system ? '<span class="text-green-600 font-black">✓</span>' : ''}
+                            </button>
+                            <button onclick="app.selectMeetingOption('aircon', 'stand')" class="meeting-btn ${data.aircon.stand ? 'active' : ''} flex items-center justify-between p-4 bg-white border-2 ${data.aircon.stand ? 'border-green-500 bg-green-50' : 'border-slate-200 hover:border-green-300'} rounded-xl transition-all text-left">
+                                <div>
+                                    <div class="text-sm font-black text-slate-800">스탠드/벽걸이</div>
+                                    <div class="text-[10px] text-slate-500 mt-1">배관 매립형</div>
+                                </div>
+                                ${data.aircon.stand ? '<span class="text-green-600 font-black">✓</span>' : ''}
+                            </button>
+                        </div>
                 <!-- 바닥재 -->
                 <div class="space-y-4">
                     <div class="flex items-center gap-3 mb-3">
