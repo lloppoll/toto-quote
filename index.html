@@ -2247,6 +2247,136 @@
             app.updateEstimateQuantities();
         };
 
+        // ==================== 전체 지우기 ====================
+        app.clearAll = function() {
+            if (!confirm('모든 데이터를 초기화하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) {
+                return;
+            }
+
+            try {
+                // 입력 필드 초기화
+                const siteNameEl = document.getElementById('site-name');
+                const siteSizeEl = document.getElementById('site-size');
+                const rateExpEl = document.getElementById('rate-exp');
+                const rateProfitEl = document.getElementById('rate-profit');
+                const valAdjustEl = document.getElementById('val-adjust');
+                const areaMultiplierEl = document.getElementById('area-multiplier');
+
+                if (siteNameEl) siteNameEl.value = '';
+                if (siteSizeEl) siteSizeEl.value = '';
+                if (rateExpEl) rateExpEl.value = '5';
+                if (rateProfitEl) rateProfitEl.value = '10';
+                if (valAdjustEl) valAdjustEl.value = '0';
+                if (areaMultiplierEl) areaMultiplierEl.value = '1.0';
+
+                // 선택된 항목 초기화
+                app.selectedItems = [];
+
+                // 면적 타입 초기화
+                app.areaType = 'normal';
+                app.areaMultipliers = {
+                    normal: 1.0,
+                    extended: 1.1,
+                    high: 1.2
+                };
+                app.setAreaType('normal');
+
+                // 미팅 데이터 초기화
+                app.meetingData = {
+                    customerName: '',
+                    contact: '',
+                    siteName: '',
+                    constructionDate: '',
+                    budget: '',
+                    familyCount: '',
+                    notes: '',
+                    scope: '전체공사',
+                    demolition: '',
+                    window: '',
+                    extension: { living: false, kitchen: false, room: false },
+                    aircon: { system: false, stand: false, location: '' },
+                    bathroom: {
+                        common: {
+                            enabled: false,
+                            bathtub: '',
+                            partition: '',
+                            sliding: '',
+                            mirror: '',
+                            tile: '',
+                            faucet: ''
+                        },
+                        couple: {
+                            enabled: false,
+                            bathtub: '',
+                            partition: '',
+                            sliding: '',
+                            mirror: '',
+                            tile: '',
+                            faucet: ''
+                        }
+                    },
+                    floor: { type: '', current: '' },
+                    wall: { type: '', spec: '' },
+                    kitchen: {
+                        induction: false,
+                        gas: false,
+                        coffee: false,
+                        fridge: '',
+                        kimchi: '',
+                        water: '',
+                        hood: '',
+                        sink: '',
+                        dishwasher: false
+                    },
+                    furniture: { outdoor: false, aircon: false, location: '' },
+                    carpentry: {
+                        ceiling: false,
+                        ceilingLocation: '',
+                        furniture: false,
+                        door: '',
+                        door9mm: false,
+                        doorInso9mm: false,
+                        doorBu: false,
+                        hidden: false
+                    },
+                    electric: {
+                        embedded: false,
+                        embeddedLocation: '',
+                        main: false,
+                        mainLocation: '',
+                        indirect: false,
+                        indirectLocation: '',
+                        line: false,
+                        lineLocation: '',
+                        aircon: false,
+                        induction: false,
+                        water: false,
+                        purifier: false,
+                        panel: false,
+                        internet: false,
+                        internetLocation: ''
+                    },
+                    door: { type: '' }
+                };
+
+                // 미팅 모드 폼 초기화
+                if (app.currentMode === 'meeting') {
+                    app.renderMeetingForm();
+                }
+
+                // 모든 UI 업데이트
+                app.updateAll();
+
+                // 로컬 스토리지도 클리어
+                localStorage.removeItem('totoEstimate');
+
+                app.showNotification('모든 데이터가 초기화되었습니다.', 'success');
+            } catch (e) {
+                app.showNotification('초기화 중 오류가 발생했습니다: ' + e.message, 'error');
+                console.error('clearAll error:', e);
+            }
+        };
+
         // ==================== 디바운스 래퍼 ====================
         app.debounceUpdate = utils.debounce(app.updateAll, 300);
         app.debounceRenderDB = utils.debounce(app.renderDB, 300);
